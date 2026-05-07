@@ -35,7 +35,7 @@ class LoginController extends Controller
                 return back()->withErrors(['email' => 'Your account has been deactivated.']);
             }
 
-            //AuditLogger::login();
+            AuditLogger::login();
 
             return $user->isStaff()
                 ? redirect()->intended(route('admin.dashboard'))

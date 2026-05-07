@@ -218,10 +218,9 @@
   <div class="auth-wrap">
 
     <div class="form-header">
-      <div class="form-logo">
-        <span class="material-icons">water_drop</span>
+      <div>
+        <img src="../../twblogo3_transparent.png"></img>
       </div>
-      <h1 class="form-title">Welcome back</h1>
       <p class="form-sub">Sign in to your TWB Billing account</p>
     </div>
 

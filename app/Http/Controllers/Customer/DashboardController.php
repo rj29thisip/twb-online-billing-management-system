@@ -3,33 +3,59 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
+use App\Models\Announcement;
+use App\Models\AuditLog;
+use App\Models\Invoice;
 use App\Models\MeterReading;
+use App\Models\Payment;
+use App\Services\BillingService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
+    public function __construct(protected BillingService $billing) {}
+
     public function index()
     {
         $customer = auth()->user()->customer;
-        $meter    = $customer->activeMeter;
 
-        // ── Usage this month ──────────────────────────────────────────────────
-        $usageThisMonth = 0;
-        if ($meter) {
-            $usageThisMonth = MeterReading::where('meter_id', $meter->id)
-                ->whereMonth('capture_time', now()->month)
-                ->whereYear('capture_time',  now()->year)
-                ->sum('usage');
-        }
+        $billing            = $this->billing->estimatedCurrentMonthBill($customer);
+        $outstandingBalance = $customer->outstandingBalance();
 
-        // ── Daily usage chart — current month ─────────────────────────────────
+        $overdueInvoice = Invoice::where('customer_id', $customer->id)
+            ->where('status', 'overdue')
+            ->latest('due_date')
+            ->first();
+
+        $anomalyAlert = optional($customer->activeMeter)
+            ->readings()
+            ->where('is_anomaly', true)
+            ->latest('capture_time')
+            ->first();
+
+        $recentInvoices = $customer->invoices()->limit(5)->get();
+
+        $lastPayment = Payment::where('customer_id', $customer->id)
+            ->latest('payment_date')
+            ->first();
+
+        $announcements = Announcement::where('is_published', true)
+            ->where(fn ($q) => $q->whereNull('publish_from')->orWhere('publish_from', '<=', now()))
+            ->where(fn ($q) => $q->whereNull('publish_to')->orWhere('publish_to', '>=', now()))
+            ->orderByDesc('created_at')
+            ->limit(5)
+            ->get();
+
+        // Daily usage chart — current month
+        $meter        = $customer->activeMeter;
         $dailyReadings = collect();
+
         if ($meter) {
             $dailyReadings = MeterReading::where('meter_id', $meter->id)
                 ->whereMonth('capture_time', now()->month)
-                ->whereYear('capture_time',  now()->year)
+                ->whereYear('capture_time', now()->year)
                 ->select(
                     DB::raw('DATE(`capture_time`) as date'),
                     DB::raw('SUM(`usage`) as total')
@@ -44,22 +70,13 @@ class DashboardController extends Controller
                 ->map(fn ($d) => Carbon::parse($d)->format('d M'))->toArray(),
             'data'     => $dailyReadings->pluck('total')
                 ->map(fn ($v) => (float) $v)->toArray(),
+            // Raw dates for AJAX hourly fetch
             'rawDates' => $dailyReadings->pluck('date')->toArray(),
         ];
 
-        // ── Latest reading ────────────────────────────────────────────────────
-        $latestReading = $meter
-            ? MeterReading::where('meter_id', $meter->id)
-                ->orderByDesc('capture_time')
-                ->first()
-            : null;
-
         return view('customer.dashboard', compact(
-            'customer',
-            'meter',
-            'usageThisMonth',
-            'usageChart',
-            'latestReading'
+            'customer', 'billing', 'outstandingBalance', 'overdueInvoice',
+            'anomalyAlert', 'recentInvoices', 'lastPayment', 'announcements', 'usageChart'
         ));
     }
 
