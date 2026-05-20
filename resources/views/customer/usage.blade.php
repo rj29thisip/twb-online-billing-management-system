@@ -134,22 +134,33 @@
 
 @push('scripts')
 <script>
-Chart.defaults.color = 'rgba(255,255,255,0.5)';
+// ES5 compatible — works on Safari iOS 12+
 
-const dailyLabels = @json($dailyReadings->pluck('date')->map(fn($d) => \Carbon\Carbon::parse($d)->format('d M'))->values());
-const dailyData   = @json($dailyReadings->pluck('total')->map(fn($v) => round((float)$v / 1000, 3))->values());
-let chartInst;
+function chartColors() {
+  var isLight = document.documentElement.classList.contains('light-mode');
+  return {
+    text: isLight ? 'rgba(74,85,104,0.9)' : 'rgba(255,255,255,0.65)',
+    grid: isLight ? 'rgba(0,0,0,0.07)'    : 'rgba(255,255,255,0.06)',
+  };
+}
+
+var dailyLabels = @json($dailyReadings->pluck('date')->map(fn($d) => \Carbon\Carbon::parse($d)->format('d M'))->values());
+var dailyData   = @json($dailyReadings->pluck('total')->map(fn($v) => round((float)$v / 1000, 3))->values());
+var rawDates    = @json($dailyReadings->pluck('date')->values());
+var chartInst;
 
 function buildChart(labels, data, label, color) {
-  if (chartInst) chartInst.destroy();
-  const ctx = document.getElementById('usageChart').getContext('2d');
+  if (chartInst) { chartInst.destroy(); }
+  var c = chartColors();
+  Chart.defaults.color = c.text;
+  var ctx = document.getElementById('usageChart').getContext('2d');
   chartInst = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels,
+      labels: labels,
       datasets: [{
-        label,
-        data,
+        label: label,
+        data: data,
         backgroundColor: color + '99',
         borderColor: color,
         borderWidth: 1,
@@ -157,18 +168,17 @@ function buildChart(labels, data, label, color) {
       }]
     },
     options: {
-      responsive: true, maintainAspectRatio: false,
-      onClick: (e, els) => {
+      responsive: true,
+      maintainAspectRatio: false,
+      onClick: function(e, els) {
         if (els.length && document.getElementById('backBtn').style.display === 'none') {
-          const idx = els[0].index;
-          const rawDate = @json($dailyReadings->pluck('date')->values());
-          loadHourly(rawDate[idx]);
+          loadHourly(rawDates[els[0].index]);
         }
       },
       plugins: { legend: { display: false } },
       scales: {
-        x: { grid: { color: 'rgba(255,255,255,0.05)' } },
-        y: { grid: { color: 'rgba(255,255,255,0.05)' }, beginAtZero: true }
+        x: { grid: { color: c.grid }, ticks: { color: c.text } },
+        y: { grid: { color: c.grid }, ticks: { color: c.text }, beginAtZero: true },
       }
     }
   });
@@ -181,15 +191,32 @@ function showDaily() {
   buildChart(dailyLabels, dailyData, 'Usage (m³)', '#1a73e8');
 }
 
-async function loadHourly(date) {
+function loadHourly(date) {
   document.getElementById('backBtn').style.display = '';
   document.getElementById('chart-title').textContent = 'Hourly Usage — ' + date;
   document.getElementById('chart-sub').textContent = 'Consumption per hour';
-  const res  = await fetch(`{{ route('customer.usage.hourly') }}?date=${date}`);
-  const json = await res.json();
-  buildChart(json.labels, json.data, 'Usage (L)', '#26c6da');
+  var url = '{{ route("customer.usage.hourly") }}?date=' + date;
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', url, true);
+  xhr.setRequestHeader('Accept', 'application/json');
+  xhr.onload = function() {
+    if (xhr.status >= 200 && xhr.status < 300) {
+      try {
+        var json = JSON.parse(xhr.responseText);
+        buildChart(json.labels, json.data, 'Usage (L)', '#26c6da');
+      } catch(ex) {}
+    }
+  };
+  xhr.send();
 }
 
 buildChart(dailyLabels, dailyData, 'Usage (m³)', '#1a73e8');
+
+// Rebuild chart when theme toggles
+var _origToggleThemeUsage = window.toggleTheme;
+window.toggleTheme = function() {
+  _origToggleThemeUsage();
+  if (chartInst) { showDaily(); }
+};
 </script>
 @endpush

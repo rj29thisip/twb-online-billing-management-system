@@ -143,7 +143,7 @@
               </td>
               <td>T$ {{ number_format($inv->balance_due, 2) }}</td>
               <td>
-                <a href="#" class="action-btn" title="View invoice">
+                <a href="{{ route('admin.invoices.show', $inv) }}" class="action-btn" title="View invoice">
                   <span class="material-icons">open_in_new</span>
                 </a>
               </td>
@@ -160,7 +160,7 @@
     </div>
     @if($overdueInvoices->count() > 0)
       <div style="padding:12px 20px;border-top:1px solid var(--border);">
-        <a href="#?status=overdue" style="font-size:12px;color:var(--accent-blue);">
+        <a href="{{ route('admin.invoices.index') }}?status=overdue" style="font-size:12px;color:var(--accent-blue);">
           View all overdue invoices →
         </a>
       </div>
@@ -233,63 +233,129 @@
 
 @push('scripts')
 <script>
-Chart.defaults.color = 'rgba(255,255,255,0.5)';
-Chart.defaults.font  = { family: 'Roboto', size: 12 };
+// ── Chart colour helper — reads current theme ─────────────────────
+function chartColors() {
+  var isLight = document.documentElement.classList.contains('light-mode');
+  return {
+    text:     isLight ? 'rgba(74,85,104,0.9)'    : 'rgba(255,255,255,0.65)',
+    legend:   isLight ? 'rgba(74,85,104,0.9)'    : 'rgba(255,255,255,0.65)',
+    grid:     isLight ? 'rgba(0,0,0,0.07)'        : 'rgba(255,255,255,0.06)',
+    tickLine: isLight ? 'rgba(0,0,0,0.10)'        : 'rgba(255,255,255,0.10)',
+  };
+}
 
-const consumptionCtx = document.getElementById('consumptionChart').getContext('2d');
-new Chart(consumptionCtx, {
-  type: 'bar',
-  data: {
-    labels: @json($consumptionChart['labels']),
-    datasets: [{
-      label: 'Usage (m³)',
-      data: @json($consumptionChart['data']),
-      backgroundColor: 'rgba(26,115,232,0.6)',
-      borderColor: 'rgba(26,115,232,1)',
-      borderWidth: 1,
-      borderRadius: 4,
-    }]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
-    scales: {
-      x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { maxRotation: 0 } },
-      y: { grid: { color: 'rgba(255,255,255,0.05)' }, beginAtZero: true }
-    }
-  }
-});
+Chart.defaults.font = { family: 'Roboto', size: 12 };
 
-const revenueCtx = document.getElementById('revenueChart').getContext('2d');
-new Chart(revenueCtx, {
-  type: 'bar',
-  data: {
-    labels: @json($revenueChart['labels']),
-    datasets: [
-      {
-        label: 'Invoiced',
-        data: @json($revenueChart['invoiced']),
-        backgroundColor: 'rgba(26,115,232,0.5)',
-        borderRadius: 4,
+var consumptionData = {
+  labels: @json($consumptionChart['labels']),
+  data:   @json($consumptionChart['data']),
+};
+var revenueData = {
+  labels:    @json($revenueChart['labels']),
+  invoiced:  @json($revenueChart['invoiced']),
+  collected: @json($revenueChart['collected']),
+};
+
+var consumptionChart = null;
+var revenueChart     = null;
+
+function buildCharts() {
+  var c = chartColors();
+  Chart.defaults.color = c.text;
+
+  // Destroy existing instances before rebuilding
+  if (consumptionChart) { consumptionChart.destroy(); consumptionChart = null; }
+  if (revenueChart)     { revenueChart.destroy();     revenueChart = null; }
+
+  // ── Daily Consumption ────────────────────────────────────────────
+  var consumptionCtx = document.getElementById('consumptionChart');
+  if (consumptionCtx) {
+    consumptionChart = new Chart(consumptionCtx.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: consumptionData.labels,
+        datasets: [{
+          label: 'Usage (m³)',
+          data: consumptionData.data,
+          backgroundColor: 'rgba(26,115,232,0.60)',
+          borderColor:     'rgba(26,115,232,0.90)',
+          borderWidth: 1,
+          borderRadius: 4,
+        }]
       },
-      {
-        label: 'Collected',
-        data: @json($revenueChart['collected']),
-        backgroundColor: 'rgba(76,175,80,0.6)',
-        borderRadius: 4,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: {
+            grid:  { color: c.grid, borderColor: c.tickLine },
+            ticks: { color: c.text, maxRotation: 0 }
+          },
+          y: {
+            grid:       { color: c.grid, borderColor: c.tickLine },
+            ticks:      { color: c.text },
+            beginAtZero: true
+          }
+        }
       }
-    ]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: {
-      legend: { labels: { color: 'rgba(255,255,255,0.6)', boxWidth: 12, font: { size: 12 } } }
-    },
-    scales: {
-      x: { grid: { color: 'rgba(255,255,255,0.05)' } },
-      y: { grid: { color: 'rgba(255,255,255,0.05)' }, beginAtZero: true }
-    }
+    });
   }
-});
+
+  // ── Revenue 6-month ──────────────────────────────────────────────
+  var revenueCtx = document.getElementById('revenueChart');
+  if (revenueCtx) {
+    revenueChart = new Chart(revenueCtx.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: revenueData.labels,
+        datasets: [
+          {
+            label: 'Invoiced',
+            data:  revenueData.invoiced,
+            backgroundColor: 'rgba(26,115,232,0.55)',
+            borderRadius: 4,
+          },
+          {
+            label: 'Collected',
+            data:  revenueData.collected,
+            backgroundColor: 'rgba(76,175,80,0.65)',
+            borderRadius: 4,
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            labels: { color: c.legend, boxWidth: 12, font: { size: 12 } }
+          }
+        },
+        scales: {
+          x: {
+            grid:  { color: c.grid, borderColor: c.tickLine },
+            ticks: { color: c.text }
+          },
+          y: {
+            grid:       { color: c.grid, borderColor: c.tickLine },
+            ticks:      { color: c.text },
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  }
+}
+
+// Build on first load
+buildCharts();
+
+// Rebuild when theme toggle is clicked — hook into the global toggleTheme()
+var _origToggleTheme = window.toggleTheme;
+window.toggleTheme = function() {
+  _origToggleTheme();   // run the original toggle (class swap + localStorage)
+  buildCharts();        // then redraw charts with new colours
+};
 </script>
 @endpush
