@@ -248,22 +248,33 @@
 
 @push('scripts')
 <script>
-Chart.defaults.color = 'rgba(255,255,255,0.5)';
+// ES5 compatible — works on Safari iOS 12+
 
-const dailyLabels = @json($usageChart['labels']);
-const dailyData   = @json($usageChart['data']);
-let chartInst;
+function chartColors() {
+  var isLight = document.documentElement.classList.contains('light-mode');
+  return {
+    text: isLight ? 'rgba(74,85,104,0.9)' : 'rgba(255,255,255,0.65)',
+    grid: isLight ? 'rgba(0,0,0,0.07)'    : 'rgba(255,255,255,0.06)',
+  };
+}
+
+var dailyLabels = @json($usageChart['labels']);
+var dailyData   = @json($usageChart['data']);
+var rawDates    = @json($usageChart['rawDates'] ?? []);
+var chartInst;
 
 function buildChart(labels, data, label, color) {
-  if (chartInst) chartInst.destroy();
-  const ctx = document.getElementById('usageChart').getContext('2d');
+  if (chartInst) { chartInst.destroy(); }
+  var c = chartColors();
+  Chart.defaults.color = c.text;
+  var ctx = document.getElementById('usageChart').getContext('2d');
   chartInst = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels,
+      labels: labels,
       datasets: [{
-        label,
-        data,
+        label: label,
+        data: data,
         backgroundColor: color + '99',
         borderColor: color,
         borderWidth: 1,
@@ -273,16 +284,15 @@ function buildChart(labels, data, label, color) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      onClick: (e, els) => {
+      onClick: function(e, els) {
         if (els.length && document.getElementById('backBtn').style.display === 'none') {
-          const rawDates = @json($usageChart['rawDates'] ?? []);
-          if (rawDates.length) loadHourly(rawDates[els[0].index]);
+          if (rawDates.length) { loadHourly(rawDates[els[0].index]); }
         }
       },
       plugins: { legend: { display: false } },
       scales: {
-        x: { grid: { color: 'rgba(255,255,255,0.05)' } },
-        y: { grid: { color: 'rgba(255,255,255,0.05)' }, beginAtZero: true },
+        x: { grid: { color: c.grid }, ticks: { color: c.text } },
+        y: { grid: { color: c.grid }, ticks: { color: c.text }, beginAtZero: true },
       },
     },
   });
@@ -294,19 +304,36 @@ function showDaily() {
   buildChart(dailyLabels, dailyData, 'Usage (L)', '#1a73e8');
 }
 
-async function loadHourly(date) {
+function loadHourly(date) {
   document.getElementById('backBtn').style.display = '';
   document.getElementById('chart-subtitle').textContent = 'Hourly usage — ' + date;
-  const res  = await fetch(`{{ route('customer.usage.hourly') }}?date=${date}`);
-  const json = await res.json();
-  buildChart(json.labels, json.data, 'Usage (L)', '#26c6da');
+  var url = '{{ route("customer.usage.hourly") }}?date=' + date;
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', url, true);
+  xhr.setRequestHeader('Accept', 'application/json');
+  xhr.onload = function() {
+    if (xhr.status >= 200 && xhr.status < 300) {
+      try {
+        var json = JSON.parse(xhr.responseText);
+        buildChart(json.labels, json.data, 'Usage (L)', '#26c6da');
+      } catch(ex) {}
+    }
+  };
+  xhr.send();
 }
 
 buildChart(dailyLabels, dailyData, 'Usage (L)', '#1a73e8');
 
+// Rebuild chart when theme toggles
+var _origToggleThemeCustDash = window.toggleTheme;
+window.toggleTheme = function() {
+  _origToggleThemeCustDash();
+  if (chartInst) { buildChart(dailyLabels, dailyData, 'Usage (L)', '#1a73e8'); }
+};
+
 // Announcement modal
 function openAnnouncement(title, content, type, date) {
-  const badgeMap = { alert:'badge-overdue', promotion:'badge-paid', event:'badge-partially', news:'badge-issued' };
+  var badgeMap = { alert:'badge-overdue', promotion:'badge-paid', event:'badge-partially', news:'badge-issued' };
   document.getElementById('ann-badge').className    = 'badge-status ' + (badgeMap[type] || 'badge-issued');
   document.getElementById('ann-badge').textContent  = type.charAt(0).toUpperCase() + type.slice(1);
   document.getElementById('ann-title').textContent  = title;
@@ -318,7 +345,7 @@ function closeAnnouncement() {
   document.getElementById('annModal').classList.remove('open');
 }
 document.getElementById('annModal').addEventListener('click', function(e) {
-  if (e.target === this) closeAnnouncement();
+  if (e.target === this) { closeAnnouncement(); }
 });
 </script>
 @endpush
