@@ -17,12 +17,12 @@
 
   <div class="card">
     <div class="table-card-header">
-      <div class="card-header-float" style="background:var(--gradient-blue);">
+      <div class="card-header-float" style="background:var(--gradient-black);">
         <div>
           <h3>{{ isset($customer) ? 'Edit Customer Record' : 'New Customer' }}</h3>
           <p>{{ isset($customer) ? 'Account: ' . $customer->account_number : 'Fill in all required fields below' }}</p>
         </div>
-        <span class="material-icons">{{ isset($customer) ? 'edit' : 'person_add' }}</span>
+        <span class="material-icons" style="color:var(--accent-blue)">{{ isset($customer) ? 'edit' : 'person_add' }}</span>
       </div>
     </div>
 
@@ -36,7 +36,7 @@
         @if(isset($customer)) @method('PUT') @endif
 
         {{-- ACCOUNT INFO --}}
-        <h4 style="font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-muted);margin-bottom:16px;display:flex;align-items:center;gap:8px;">
+        <h4 style="font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-muted);margin-bottom:16px;display:flex;align-items:center;gap:8px;">
           <span class="material-icons" style="font-size:16px;">badge</span> Account Information
         </h4>
 
@@ -138,10 +138,10 @@
 
           {{-- PORTAL ACCESS --}}
           <hr style="border:none;border-top:1px solid var(--border);margin:24px 0;">
-          <h4 style="font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-muted);margin-bottom:16px;display:flex;align-items:center;gap:8px;">
+          <h4 style="font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-muted);margin-bottom:16px;display:flex;align-items:center;gap:8px;">
             <span class="material-icons" style="font-size:16px;">manage_accounts</span> Portal Access
           </h4>
-          <div style="background:rgba(26,115,232,0.06);border:1px solid rgba(26,115,232,0.15);border-radius:8px;padding:14px 16px;margin-bottom:20px;font-size:13px;color:var(--text-secondary);">
+          <div style="background:rgba(26,115,232,0.06);border:1px solid rgba(26,115,232,0.15);border-radius:8px;padding:14px 16px;margin-bottom:20px;font-size:14px;color:var(--text-secondary);">
             <span class="material-icons" style="font-size:16px;vertical-align:middle;margin-right:6px;color:var(--accent-blue);">info</span>
             If an email is provided, a customer portal account will be auto-created and login credentials emailed to the customer.
           </div>

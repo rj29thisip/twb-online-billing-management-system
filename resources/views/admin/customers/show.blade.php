@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Customer Detail')
 @section('breadcrumb', 'Admin / Customers / Detail')
-@section('page-title', 'Customer Detail')
+@section('page-title', 'CUSTOMER DETAILS')
 
 @section('content')
 
@@ -19,7 +19,7 @@
   {{-- LEFT: Customer Info --}}
   <div style="display:flex;flex-direction:column;gap:24px;">
 
-    <div class="card">
+    <div class="card-tight-margin">
       <div class="table-card-header">
         <div class="card-header-float" style="background:var(--gradient-blue);">
           <div>
@@ -66,9 +66,9 @@
     {{-- Meters --}}
     <div class="card">
       <div class="table-card-header">
-        <div class="card-header-float" style="background:var(--gradient-dark);">
+        <div class="card-header-float" style="background:var(--gradient-black);">
           <div><h3>Meters</h3><p>Registered meter devices</p></div>
-          <span class="material-icons">speed</span>
+          <span class="material-icons" style="color:var(--accent-blue)">speed</span>
         </div>
       </div>
       <div class="table-wrapper">
@@ -80,7 +80,7 @@
             @forelse($customer->meters as $meter)
               <tr>
                 <td class="td-primary" style="font-family:monospace;">{{ $meter->meter_id }}</td>
-                <td style="font-family:monospace;font-size:11px;color:var(--accent-teal);">{{ $meter->endpoint_id }}</td>
+                <td style="font-family:monospace;font-size:14px;color:var(--accent-teal);">{{ $meter->endpoint_id }}</td>
                 <td>{{ ucfirst($meter->meter_type) }}</td>
                 <td><span class="badge-status badge-{{ $meter->status }}">{{ ucfirst($meter->status) }}</span></td>
                 <td>{{ $meter->installation_date?->format('d M Y') ?? '—' }}</td>
@@ -98,11 +98,11 @@
   {{-- RIGHT: Invoices & Payments --}}
   <div style="display:flex;flex-direction:column;gap:24px;">
 
-    <div class="card">
+    <div class="card-tight-margin">
       <div class="table-card-header">
-        <div class="card-header-float" style="background:var(--gradient-orange);">
+        <div class="card-header-float" style="background:var(--gradient-black);">
           <div><h3>Recent Invoices</h3><p>Last 12 billing periods</p></div>
-          <span class="material-icons">receipt_long</span>
+          <span class="material-icons" style="color:var(--accent-blue)">receipt_long</span>
         </div>
       </div>
       <div class="table-wrapper">
@@ -113,7 +113,7 @@
           <tbody>
             @forelse($customer->invoices as $inv)
               <tr>
-                <td style="font-family:monospace;font-size:11px;">{{ $inv->invoice_number }}</td>
+                <td style="font-family:monospace;font-size:14px;">{{ $inv->invoice_number }}</td>
                 <td>{{ $inv->billing_period_start->format('M Y') }}</td>
                 <td>T$ {{ number_format($inv->total_amount, 2) }}</td>
                 <td>
@@ -137,9 +137,9 @@
 
     <div class="card">
       <div class="table-card-header">
-        <div class="card-header-float" style="background:var(--gradient-green);">
+        <div class="card-header-float" style="background:var(--gradient-black);">
           <div><h3>Recent Payments</h3><p>Last 10 payments received</p></div>
-          <span class="material-icons">payments</span>
+          <span class="material-icons" style="color:var(--accent-blue)">payments</span>
         </div>
       </div>
       <div class="table-wrapper">
@@ -150,7 +150,7 @@
           <tbody>
             @forelse($customer->payments as $pay)
               <tr>
-                <td style="font-family:monospace;font-size:11px;">{{ $pay->receipt_number }}</td>
+                <td style="font-family:monospace;font-size:14px;">{{ $pay->receipt_number }}</td>
                 <td>{{ $pay->payment_date->format('d M Y') }}</td>
                 <td>{{ ucfirst(str_replace('_',' ',$pay->payment_method)) }}</td>
                 <td class="td-primary">T$ {{ number_format($pay->amount, 2) }}</td>

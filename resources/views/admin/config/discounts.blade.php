@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Discount Configuration')
 @section('breadcrumb', 'Admin / Configuration / Discounts')
-@section('page-title', 'Discount Management')
+@section('page-title', 'DISCOUNT MANAGEMENT')
 
 @section('content')
 
@@ -15,7 +15,7 @@
   </button>
 </div>
 
-<div class="card">
+<div class="card-tight-margin">
   <div class="table-wrapper">
     <table>
       <thead>

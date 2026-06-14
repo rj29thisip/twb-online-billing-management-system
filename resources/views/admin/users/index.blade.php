@@ -1,21 +1,21 @@
 @extends('layouts.app')
 @section('title', 'User Management')
 @section('breadcrumb', 'Admin / System / Users')
-@section('page-title', 'User Management')
+@section('page-title', 'USER MANAGEMENT')
 
 @section('content')
 
 <div class="section-header">
   <div>
-    <h2>System Users</h2>
-    <p>Manage admin, officer, and customer portal accounts</p>
+    <h2>Staff - System Users</h2>
+    <p>Add and manage staff users: admin, cashier, counter, engineers, etc.</p>
   </div>
   <button class="btn btn-primary" onclick="openModal()">
     <span class="material-icons">person_add</span> Add Staff User
   </button>
 </div>
 
-<div class="card">
+<div class="card-tight-margin">
   <form method="GET" class="filter-bar">
     <input type="text" name="search" class="form-control" placeholder="Name, email..."
            value="{{ request('search') }}">
@@ -52,7 +52,7 @@
           <tr>
             <td>
               <div class="user-cell">
-                <div class="u-avatar" style="background:var(--gradient-{{ $user->isAdmin() ? 'pink' : ($user->isOfficer() ? 'blue' : 'dark') }});color:#fff;font-size:11px;">
+                <div class="u-avatar" style="background:var(--gradient-{{ $user->isAdmin() ? 'pink' : ($user->isOfficer() ? 'blue' : 'dark') }});color:#fff;font-size:14px;">
                   {{ substr($user->name, 0, 2) }}
                 </div>
                 <div>
@@ -73,7 +73,7 @@
             </td>
             <td>
               @if($user->customer)
-                <a href="{{ route('admin.customers.show', $user->customer) }}" style="color:var(--accent-blue);font-size:13px;">
+                <a href="{{ route('admin.customers.show', $user->customer) }}" style="color:var(--accent-blue);font-size:14px;">
                   {{ $user->customer->account_number }}
                 </a>
               @else
@@ -85,7 +85,7 @@
                 {{ $user->is_active ? 'Active' : 'Inactive' }}
               </span>
             </td>
-            <td style="color:var(--text-muted);font-size:12px;">
+            <td style="color:var(--text-muted);font-size:14px;">
               {{ $user->created_at->format('d M Y') }}
             </td>
             <td>
@@ -144,7 +144,7 @@
     <div class="modal-header">
       <div>
         <h3 class="modal-title">Add Staff User</h3>
-        <p style="font-size:12px;color:var(--text-muted);margin-top:3px;">
+        <p style="font-size:14px;color:var(--text-muted);margin-top:3px;">
           Create a new admin or officer account
         </p>
       </div>
@@ -192,7 +192,7 @@
         </div>
 
         {{-- Info box --}}
-        <div style="background:rgba(26,115,232,0.07);border:1px solid rgba(26,115,232,0.2);border-radius:8px;padding:12px 16px;font-size:12px;color:rgba(255,255,255,0.6);line-height:1.6;">
+        <div style="background:rgba(26,115,232,0.07);border:1px solid rgba(26,115,232,0.2);border-radius:8px;padding:12px 16px;font-size:14px;color:rgba(255,255,255,0.6);line-height:1.6;">
           <span class="material-icons" style="font-size:15px;vertical-align:middle;margin-right:5px;color:var(--accent-blue);">info</span>
           <strong style="color:rgba(255,255,255,0.8);">Officers</strong> can manage customers, meters, invoices and payments.
           <strong style="color:rgba(255,255,255,0.8);">Administrators</strong> have full access including user management and audit logs.
