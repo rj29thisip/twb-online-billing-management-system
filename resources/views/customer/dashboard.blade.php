@@ -24,7 +24,7 @@
   </div>
 @endif
 
-@if($anomalyAlert)
+@if(isset($anomalyAlert) && $anomalyAlert)
   <div class="alert alert-error" role="alert">
     <span class="material-icons" style="font-size:18px">error</span>
     Unusual water usage detected on {{ $anomalyAlert->capture_time->format('d M Y H:i') }}.

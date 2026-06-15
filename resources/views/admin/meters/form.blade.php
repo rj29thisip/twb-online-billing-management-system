@@ -31,15 +31,21 @@
 
         <div class="form-group">
           <label class="form-label">Customer <span style="color:var(--accent-pink)">*</span></label>
-          <select name="customer_id" class="form-control @error('customer_id') is-invalid @enderror"
-                  {{ isset($meter) ? 'disabled' : 'required' }}>
-            <option value="">— Select Customer —</option>
-            @foreach($customers as $c)
-              <option value="{{ $c->id }}"
-                {{ old('customer_id', $meter->customer_id ?? '') == $c->id ? 'selected' : '' }}>
-                {{ $c->account_number }} — {{ $c->name }}
+          <select
+            name="customer_id"
+            id="customerSelect"
+            class="form-control select2-customer @error('customer_id') is-invalid @enderror"
+            {{ isset($meter) ? 'disabled' : 'required' }}
+            style="width:100%">
+            @if(isset($meter) && $meter->customer)
+              <option value="{{ $meter->customer->id }}" selected>
+                {{ $meter->customer->account_number }} — {{ $meter->customer->name }}
               </option>
-            @endforeach
+            @elseif(old('customer_id'))
+              <option value="{{ old('customer_id') }}" selected>{{ old('customer_id') }}</option>
+            @else
+              <option value=""></option>
+            @endif
           </select>
           @error('customer_id') <div class="form-error">{{ $message }}</div> @enderror
         </div>
@@ -120,4 +126,65 @@
     </div>
   </div>
 </div>
+@push('scripts')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-5-theme/1.3.0/select2-bootstrap-5-theme.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<style>
+  .select2-container { z-index: 9999; }
+  .select2-container .select2-selection--single {
+    height: auto !important;
+    min-height: 42px;
+    background: var(--surface-2, rgba(255,255,255,0.06)) !important;
+    border: 1px solid var(--border, rgba(255,255,255,0.12)) !important;
+    border-radius: 8px !important;
+  }
+  .select2-container .select2-selection--single .select2-selection__rendered {
+    color: var(--text-primary, #fff) !important;
+    line-height: 40px !important;
+    padding-left: 12px !important;
+  }
+  .select2-container .select2-selection--single .select2-selection__arrow {
+    height: 42px !important;
+  }
+  .select2-dropdown {
+    background: var(--surface, #1e2a3a) !important;
+    border: 1px solid var(--border, rgba(255,255,255,0.12)) !important;
+    border-radius: 8px !important;
+  }
+  .select2-container--default .select2-results__option {
+    color: var(--text-primary, #fff) !important;
+    padding: 8px 12px !important;
+    font-size: 13px !important;
+  }
+  .select2-container--default .select2-results__option--highlighted {
+    background: var(--accent-blue, #1a73e8) !important;
+  }
+  .select2-container--default .select2-search--dropdown .select2-search__field {
+    background: var(--surface-2, rgba(255,255,255,0.06)) !important;
+    border: 1px solid var(--border, rgba(255,255,255,0.15)) !important;
+    color: var(--text-primary, #fff) !important;
+    border-radius: 6px !important;
+    padding: 6px 10px !important;
+  }
+</style>
+<script>
+$(document).ready(function() {
+  $('#customerSelect').select2({
+    placeholder: 'Search by account number or name...',
+    allowClear: true,
+    minimumInputLength: 0,
+    ajax: {
+      url: '{{ route("admin.api.customers.search") }}',
+      dataType: 'json',
+      delay: 200,
+      data: function(params) { return { q: params.term || '' }; },
+      processResults: function(data) { return { results: data.results }; },
+      cache: true
+    }
+  });
+});
+</script>
+@endpush
 @endsection

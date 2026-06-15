@@ -49,13 +49,16 @@
 
         <div class="form-group">
           <label class="form-label">Customer</label>
-          <select name="customer_id" class="form-control">
-            <option value="">All Customers</option>
-            @foreach($customers as $c)
-              <option value="{{ $c->id }}" {{ request('customer_id') == $c->id ? 'selected' : '' }}>
-                {{ $c->account_number }} — {{ $c->name }}
-              </option>
-            @endforeach
+          <select name="customer_id" id="invoiceCustomerSelect"
+                  class="form-control select2-customer" style="width:100%">
+            @if(request('customer_id'))
+              @php $sc = \App\Models\Customer::find(request('customer_id')) @endphp
+              @if($sc)
+                <option value="{{ $sc->id }}" selected>{{ $sc->account_number }} — {{ $sc->name }}</option>
+              @endif
+            @else
+              <option value="">All Customers</option>
+            @endif
           </select>
         </div>
 
@@ -203,6 +206,38 @@
   </div>
 </div>
 
+
+@push('scripts')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<style>
+.select2-container--default .select2-selection--single{background:var(--surface-2,rgba(255,255,255,.06))!important;border:1px solid var(--border,rgba(255,255,255,.12))!important;border-radius:8px!important;height:42px!important;}
+.select2-container--default .select2-selection--single .select2-selection__rendered{color:var(--text-primary,#fff)!important;line-height:40px!important;padding-left:12px!important;}
+.select2-container--default .select2-selection--single .select2-selection__arrow{height:42px!important;}
+.select2-dropdown{background:var(--surface,#1e2a3a)!important;border:1px solid var(--border,rgba(255,255,255,.12))!important;}
+.select2-container--default .select2-results__option{color:var(--text-primary,#fff)!important;font-size:13px!important;}
+.select2-container--default .select2-results__option--highlighted{background:var(--accent-blue,#1a73e8)!important;}
+.select2-container--default .select2-search--dropdown .select2-search__field{background:var(--surface-2,rgba(255,255,255,.06))!important;border:1px solid var(--border,rgba(255,255,255,.15))!important;color:var(--text-primary,#fff)!important;}
+</style>
+<script>
+$(document).ready(function(){
+  $('#invoiceCustomerSelect').select2({
+    placeholder:'All customers / search by name or account...',
+    allowClear:true,
+    minimumInputLength:0,
+    ajax:{
+      url:'{{ route("admin.api.customers.search") }}',
+      dataType:'json',
+      delay:200,
+      data:function(p){return{q:p.term||''};},
+      processResults:function(d){return{results:d.results};},
+      cache:true
+    }
+  });
+});
+</script>
+@endpush
 @endsection
 
 @push('scripts')

@@ -18,9 +18,34 @@ class InvoiceController extends Controller
         protected InvoicePdfService $pdfService,
     ) {}
 
+    /** Scope invoices to district. Shared by index + district guard on show/destroy. */
+    private function districtScope()
+    {
+        $user = auth()->user();
+        if ($user->isAdmin() || $user->isHeadquarters() || !$user->district_id) {
+            return Invoice::query();
+        }
+        return Invoice::whereHas('customer', fn ($q) =>
+            $q->where(fn ($s) =>
+                $s->where('district_id', $user->district_id)->orWhereNull('district_id')
+            )
+        );
+    }
+
+    private function authorizeInvoiceDistrict(Invoice $invoice): void
+    {
+        $user = auth()->user();
+        if ($user->isAdmin() || $user->isHeadquarters() || !$user->district_id) return;
+        $custDistrict = optional($invoice->customer)->district_id;
+        if ($custDistrict !== null && $custDistrict !== $user->district_id) {
+            abort(403, 'You do not have access to this invoice.');
+        }
+    }
+
     public function index(Request $request)
     {
-        $invoices = Invoice::with('customer')
+        $invoices = $this->districtScope()
+            ->with('customer')
             ->when($request->search, fn ($q) => $q->where(fn ($q) =>
                 $q->where('invoice_number', 'like', '%' . $request->search . '%')
                   ->orWhereHas('customer', fn ($q) =>
@@ -43,7 +68,6 @@ class InvoiceController extends Controller
     public function checkBilling(Request $request)
     {
         $blocks    = Customer::select('block_number')->distinct()->whereNotNull('block_number')->orderBy('block_number')->pluck('block_number');
-        $customers = Customer::where('status', 'active')->orderBy('name')->get();
         $previews  = null;
 
         if ($request->has('period_start') && $request->period_start) {
@@ -60,7 +84,7 @@ class InvoiceController extends Controller
             }
         }
 
-        return view('admin.invoices.create', compact('blocks', 'customers', 'previews'));
+        return view('admin.invoices.create', compact('blocks', 'previews'));
     }
 
     public function generateBulk(Request $request)
@@ -92,12 +116,14 @@ class InvoiceController extends Controller
 
     public function show(Invoice $invoice)
     {
+        $this->authorizeInvoiceDistrict($invoice);
         $invoice->load(['customer', 'meter', 'items.tariffTier', 'payments']);
         return view('admin.invoices.show', compact('invoice'));
     }
 
     public function destroy(Invoice $invoice)
     {
+        $this->authorizeInvoiceDistrict($invoice);
         abort_if($invoice->status === 'paid', 403, 'Cannot cancel a paid invoice.');
         $invoice->load('customer');
         AuditLogger::invoiceCancelled($invoice);
@@ -108,6 +134,7 @@ class InvoiceController extends Controller
     /** Stream PDF in TWB official format using DomPDF */
     public function pdf(Invoice $invoice)
     {
+        $this->authorizeInvoiceDistrict($invoice);
         return $this->pdfService->stream($invoice);
     }
 

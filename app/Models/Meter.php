@@ -9,15 +9,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Meter extends Model
 {
     protected $fillable = [
-        'customer_id',
-        'meter_id',
-        'endpoint_id',
-        'meter_type',
-        'installation_date',
-        'last_maintenance_date',
-        'status',
-        'brand',
-        'model',
+        'customer_id', 'meter_id', 'endpoint_id', 'serial_number',
+        'meter_type', 'brand', 'model', 'manufacturer',
+        'installation_date', 'last_maintenance_date',
+        'status', 'notes',
     ];
 
     protected $casts = [
