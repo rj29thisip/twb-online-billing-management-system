@@ -1,14 +1,12 @@
 @extends('layouts.app')
 @section('title', 'Import Meter Readings')
 @section('breadcrumb', 'Admin / Readings / Import')
-@section('page-title', 'IMPORT METER READINGS')
+@section('page-title', 'Import Meter Readings')
 
 @section('content')
 
 {{-- ── IMPORT FORM ─────────────────────────────────────────────── --}}
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
-
-{{-- <div style="max-width:760px;margin:0 auto;"> --}}
+<div style="max-width:760px;margin:0 auto;">
 
   <div class="card">
     <div class="table-card-header">
@@ -17,7 +15,7 @@
           <h3>Upload File</h3>
           <p>Supported formats: TWB XML (Itron OpenWay) and CSV</p>
         </div>
-        <span class="material-icons" style="color:var(--accent-blue)">upload_file</span>
+        <span class="material-icons">upload_file</span>
       </div>
     </div>
 
@@ -39,10 +37,10 @@
           <span class="material-icons" style="font-size:48px;color:var(--text-muted);display:block;margin-bottom:12px;">
             cloud_upload
           </span>
-          <div style="font-size:16px;font-weight:500;color:var(--text-secondary);margin-bottom:6px;">
+          <div style="font-size:15px;font-weight:500;color:var(--text-secondary);margin-bottom:6px;">
             Drag & drop your file here
           </div>
-          <div style="font-size:14px;color:var(--text-muted);margin-bottom:16px;">
+          <div style="font-size:12px;color:var(--text-muted);margin-bottom:16px;">
             or click to browse
           </div>
           <input type="file" name="file" id="fileInput" accept=".xml,.csv,.txt"
@@ -50,7 +48,7 @@
           <button type="button" class="btn btn-outline btn-sm" onclick="document.getElementById('fileInput').click()">
             <span class="material-icons">folder_open</span> Browse File
           </button>
-          <div id="fileName" style="margin-top:12px;font-size:14px;color:var(--accent-teal);display:none;"></div>
+          <div id="fileName" style="margin-top:12px;font-size:13px;color:var(--accent-teal);display:none;"></div>
         </div>
 
         {{-- File type info --}}
@@ -58,12 +56,12 @@
 
           <div style="background:rgba(26,115,232,0.08);border:1px solid rgba(26,115,232,0.2);
                       border-radius:10px;padding:16px;">
-            <div style="font-size:16px;font-weight:700;color:var(--accent-blue);
+            <div style="font-size:12px;font-weight:700;color:var(--accent-blue);
                         text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">
-              <span class="material-icons" style="font-size:16px;vertical-align:middle;">code</span>
+              <span class="material-icons" style="font-size:14px;vertical-align:middle;">code</span>
               XML Format (Itron OpenWay AMR)
             </div>
-            <div style="font-size:14px;color:var(--text-muted);line-height:1.8;">
+            <div style="font-size:12px;color:var(--text-muted);line-height:1.8;">
               ✓ Auto-detected from file extension<br>
               ✓ Supports multiple channels per file<br>
               ✓ endpoint_id matched to meter<br>
@@ -74,16 +72,16 @@
 
           <div style="background:rgba(0,201,167,0.08);border:1px solid rgba(0,201,167,0.2);
                       border-radius:10px;padding:16px;">
-            <div style="font-size:16px;font-weight:700;color:var(--accent-teal);
+            <div style="font-size:12px;font-weight:700;color:var(--accent-teal);
                         text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">
-              <span class="material-icons" style="font-size:16px;vertical-align:middle;">table_chart</span>
+              <span class="material-icons" style="font-size:14px;vertical-align:middle;">table_chart</span>
               CSV Format
             </div>
-            <div style="font-size:14px;color:var(--text-muted);line-height:1.8;">
+            <div style="font-size:12px;color:var(--text-muted);line-height:1.8;">
               Columns (in order):<br>
               <code style="color:var(--accent-teal);">meter_id, capture_time, value, usage</code><br><br>
               Example:<br>
-              <code style="color:var(--text-secondary);font-size:14px;">
+              <code style="color:var(--text-secondary);font-size:11px;">
                 I19VA001800,2026-04-24 08:00:00,4301969,6109
               </code>
             </div>
@@ -98,7 +96,7 @@
           <span class="material-icons" style="color:var(--accent-amber);font-size:20px;flex-shrink:0;margin-top:1px;">
             shield
           </span>
-          <div style="font-size:14px;color:var(--text-muted);line-height:1.8;">
+          <div style="font-size:12px;color:var(--text-muted);line-height:1.8;">
             <strong style="color:var(--text-secondary);">Import safety features:</strong><br>
             Duplicate readings (same meter + same timestamp) are automatically skipped —
             you can safely re-upload the same file without creating duplicate data.
@@ -107,7 +105,7 @@
           </div>
         </div>
 
-        <div style="display:flex;gap:14px;align-items:center;">
+        <div style="display:flex;gap:12px;align-items:center;">
           <button type="submit" class="btn btn-primary" id="submitBtn" disabled>
             <span class="material-icons">upload</span>
             Import Readings
@@ -132,7 +130,7 @@
     <div class="table-card-header">
       <div class="card-header-float" style="background:var(--gradient-dark);">
         <div><h3>Manual Entry</h3><p>Enter a single reading manually</p></div>
-        <span class="material-icons" style="color:var(--accent-blue)">edit</span>
+        <span class="material-icons">edit</span>
       </div>
     </div>
 
@@ -158,37 +156,6 @@
             <input type="number" name="value" class="form-control" min="0" placeholder="e.g. 4301969" required>
           </div>
         </div>
-
-        <div style="background:rgba(0,201,167,0.08);border:1px solid rgba(0,201,167,0.2);
-                    border-radius:10px;padding:16px; margin-bottom: 20px">
-          <div style="font-size:16px;font-weight:700;color:var(--accent-blue);
-              text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">
-                <span class="material-icons" style="font-size:16px;vertical-align:middle;">pending_actions</span>
-                  Manually Record Meter Reading
-            </div>
-            <div style="font-size:14px;color:var(--text-muted);line-height:1.8;">
-              - Select meter ID - Customer <br>
-              - Input reading date and time <br>
-              - Input meter reading value in litres unit<br>
-              - Click "Save Reading" button<br>
-          </div>
-        </div>
-        
-        {{-- Safety info --}}
-        <div style="background:rgba(255,152,0,0.08);border:1px solid rgba(255,152,0,0.2);
-                    border-radius:10px;padding:14px 16px;margin-bottom:20px;
-                    display:flex;align-items:flex-start;gap:12px;">
-          <span class="material-icons" style="color:var(--accent-amber);font-size:20px;flex-shrink:0;margin-top:1px;">
-            shield
-          </span>
-          <div style="font-size:14px;color:var(--text-muted);line-height:1.8;">
-            <strong style="color:var(--text-secondary);">Important Reminder:</strong><br>
-            Record only approved meter reading. 
-            Carefully review filled out items before clicking the "Save Reading" button.  
-            Incorrect input reading may only be fixed by database updates.
-          </div> 
-        </div>
-  
         <button type="submit" class="btn btn-primary btn-sm">
           <span class="material-icons">save</span> Save Reading
         </button>

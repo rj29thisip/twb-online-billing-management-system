@@ -44,11 +44,17 @@ class BillingService
         $totalUsageRaw = (float) $readings->sum('usage'); // liters
         $totalUsageM3  = $totalUsageRaw / 1000;           // cubic meters
 
-        // Get active tariff tiers
-        $tiers = TariffTier::activeForDate($periodStart);
+        // Resolve tariff category from meter_type
+        // meter_type values: 'residential', 'commercial'
+        $meterType       = strtolower($meter->meter_type ?? 'residential');
+        $tariffCategory  = $meterType === 'commercial' ? 'commercial' : 'residential';
+
+        $tiers = TariffTier::activeForCategory($tariffCategory, $periodStart);
 
         if ($tiers->isEmpty()) {
-            throw new \RuntimeException("No active tariff tiers found for this billing period.");
+            throw new \RuntimeException(
+                "No active {$tariffCategory} tariff tiers found for this billing period."
+            );
         }
 
         // Calculate tiered charges
@@ -79,6 +85,7 @@ class BillingService
                 'unit_rate'      => (float) $tier->rate_per_unit,
                 'line_total'     => $lineTotal,
                 'description'    => "{$tier->name} ({$tierMin} – " . ($tier->max_units ?? '∞') . " m³)",
+                'category'       => $tariffCategory,
             ];
         }
 
@@ -94,6 +101,7 @@ class BillingService
         return [
             'customer'        => $customer,
             'meter'           => $meter,
+            'tariff_category' => $tariffCategory,
             'period_start'    => $periodStart,
             'period_end'      => $periodEnd,
             'total_usage_raw' => $totalUsageRaw,
@@ -211,7 +219,9 @@ class BillingService
             ->sum('usage');
 
         $totalUsageM3 = $totalUsageLt / 1000;
-        $tiers        = TariffTier::activeForDate($periodStart);
+        $meterType2    = strtolower($meter->meter_type ?? 'residential');
+        $billCategory  = $meterType2 === 'commercial' ? 'commercial' : 'residential';
+        $tiers         = TariffTier::activeForCategory($billCategory, $periodStart);
 
         $subtotal  = 0;
         $remaining = $totalUsageM3;

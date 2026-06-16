@@ -8,6 +8,7 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        $this->call(TariffTierSeeder::class);
         $this->call([
             DistrictSeeder::class,
             EmailConfigSeeder::class,

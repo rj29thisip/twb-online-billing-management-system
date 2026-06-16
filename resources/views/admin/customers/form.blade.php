@@ -16,15 +16,6 @@
     <div class="alert alert-error" style="margin-bottom:16px;">
       <span class="material-icons" style="font-size:16px;">error</span>
       {{ $errors->first() }}
-  <div class="card">
-    <div class="table-card-header">
-      <div class="card-header-float" style="background:var(--gradient-dark);">
-        <div>
-          <h3>{{ isset($customer) ? 'Edit Customer Record' : 'New Customer' }}</h3>
-          <p>{{ isset($customer) ? 'Account: ' . $customer->account_number : 'Fill in all required fields below' }}</p>
-        </div>
-        <span class="material-icons" style="color:var(--accent-blue)">{{ isset($customer) ? 'edit' : 'person_add' }}</span>
-      </div>
     </div>
   @endif
 
@@ -48,10 +39,6 @@
         </div>
       </div>
       <div class="card-body" style="padding:20px 24px;">
-        {{-- ACCOUNT INFO --}}
-        <h4 style="font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-muted);margin-bottom:16px;display:flex;align-items:center;gap:8px;">
-          <span class="material-icons" style="font-size:16px;">badge</span> Account Information
-        </h4>
 
         <div class="form-grid-2">
           <div class="form-group">
@@ -244,71 +231,38 @@
               <option value="suspended" {{ old('status', $customer->status ?? '') === 'suspended'        ? 'selected' : '' }}>Suspended</option>
             </select>
           </div>
+          <div class="form-group">
+            <label class="form-label">Customer Type
+              <span style="font-size:11px;color:var(--text-muted);font-weight:400;margin-left:6px;">
+                Determines tariff category for billing
+              </span>
+            </label>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px;">
+              <label style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:8px;
+                            cursor:pointer;border:2px solid var(--border);transition:all .2s;"
+                     id="ctype-lbl-residential">
+                <input type="radio" name="customer_type" value="residential"
+                       {{ old('customer_type', $customer->customer_type ?? 'residential') === 'residential' ? 'checked' : '' }}
+                       onchange="updateCTypeStyle()"
+                       style="accent-color:var(--accent-blue);">
+                <span class="material-icons" style="font-size:16px;color:var(--accent-blue);">home</span>
+                <span style="font-size:13px;font-weight:600;">Residential</span>
+              </label>
+              <label style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:8px;
+                            cursor:pointer;border:2px solid var(--border);transition:all .2s;"
+                     id="ctype-lbl-commercial">
+                <input type="radio" name="customer_type" value="commercial"
+                       {{ old('customer_type', $customer->customer_type ?? '') === 'commercial' ? 'checked' : '' }}
+                       onchange="updateCTypeStyle()"
+                       style="accent-color:var(--accent-teal);">
+                <span class="material-icons" style="font-size:16px;color:var(--accent-teal);">business</span>
+                <span style="font-size:13px;font-weight:600;">Commercial</span>
+              </label>
+            </div>
+          </div>
         </div>
 
       </div>
-        <div class="form-group">
-          <label class="form-label">Address</label>
-          <textarea name="address" class="form-control @error('address') is-invalid @enderror"
-                    rows="3" placeholder="Full property address">{{ old('address', $customer->address ?? '') }}</textarea>
-          @error('address') <div class="form-error">{{ $message }}</div> @enderror
-        </div>
-
-        @if(!isset($customer))
-          {{-- METER (only on create) --}}
-          <hr style="border:none;border-top:1px solid var(--border);margin:24px 0;">
-          <h4 style="font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-muted);margin-bottom:16px;display:flex;align-items:center;gap:8px;">
-            <span class="material-icons" style="font-size:16px;">speed</span> Meter Assignment (optional)
-          </h4>
-          <div class="form-grid-2">
-            <div class="form-group">
-              <label class="form-label">Meter ID</label>
-              <input type="text" name="meter_id" class="form-control @error('meter_id') is-invalid @enderror"
-                     value="{{ old('meter_id') }}" placeholder="e.g. I18VA001347">
-              @error('meter_id') <div class="form-error">{{ $message }}</div> @enderror
-            </div>
-            <div class="form-group">
-              <label class="form-label">Endpoint ID</label>
-              <input type="text" name="endpoint_id" class="form-control @error('endpoint_id') is-invalid @enderror"
-                     value="{{ old('endpoint_id') }}" placeholder="e.g. 120206576">
-              @error('endpoint_id') <div class="form-error">{{ $message }}</div> @enderror
-            </div>
-          </div>
-          <div class="form-grid-2">
-            <div class="form-group">
-              <label class="form-label">Meter Type</label>
-              <select name="meter_type" class="form-control">
-                <option value="residential">Residential</option>
-                <option value="commercial">Commercial</option>
-                <option value="industrial">Industrial</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Installation Date</label>
-              <input type="date" name="installation_date" class="form-control" value="{{ old('installation_date') }}">
-            </div>
-          </div>
-
-          {{-- PORTAL ACCESS --}}
-          <hr style="border:none;border-top:1px solid var(--border);margin:24px 0;">
-          <h4 style="font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-muted);margin-bottom:16px;display:flex;align-items:center;gap:8px;">
-            <span class="material-icons" style="font-size:16px;">manage_accounts</span> Portal Access
-          </h4>
-          <div style="background:rgba(26,115,232,0.06);border:1px solid rgba(26,115,232,0.15);border-radius:8px;padding:14px 16px;margin-bottom:20px;font-size:14px;color:var(--text-secondary);">
-            <span class="material-icons" style="font-size:16px;vertical-align:middle;margin-right:6px;color:var(--accent-blue);">info</span>
-            If an email is provided, a customer portal account will be auto-created and login credentials emailed to the customer.
-          </div>
-        @endif
-
-        <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:8px;">
-          <a href="{{ route('admin.customers.index') }}" class="btn btn-outline">Cancel</a>
-          <button type="submit" class="btn btn-primary">
-            <span class="material-icons">save</span>
-            {{ isset($customer) ? 'Update Customer' : 'Create Customer' }}
-          </button>
-        </div>
-
-      </form>
     </div>
 
     {{-- ══════════════════════════════════════════════════════════════
@@ -393,7 +347,6 @@
             <select name="meter_type" class="form-control">
               <option value="residential" selected>Residential</option>
               <option value="commercial">Commercial</option>
-              <option value="industrial">Industrial</option>
             </select>
           </div>
         </div>
@@ -464,6 +417,21 @@
 
 @push('scripts')
 <script>
+function updateCTypeStyle() {
+  const isRes = document.querySelector('input[name="customer_type"][value="residential"]').checked;
+  const lblR  = document.getElementById('ctype-lbl-residential');
+  const lblC  = document.getElementById('ctype-lbl-commercial');
+  if (lblR) {
+    lblR.style.borderColor = isRes ? 'var(--accent-blue)'  : 'var(--border)';
+    lblR.style.background  = isRes ? 'rgba(56,189,248,.08)' : 'transparent';
+  }
+  if (lblC) {
+    lblC.style.borderColor = !isRes ? 'var(--accent-teal)' : 'var(--border)';
+    lblC.style.background  = !isRes ? 'rgba(20,184,166,.08)' : 'transparent';
+  }
+}
+document.addEventListener('DOMContentLoaded', updateCTypeStyle);
+
 function updateIslandCode(sel) {
   var opt = sel.options[sel.selectedIndex];
   document.getElementById('islandCode').value = opt.dataset.code || '';

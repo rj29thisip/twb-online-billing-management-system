@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Customer: ' . $customer->full_name)
 @section('breadcrumb', 'Admin / Customers / ' . $customer->account_number)
-@section('page-title', 'CUSTOMER DETAILS')
+@section('page-title', 'Customer Detail')
 
 @section('content')
 
@@ -34,7 +34,8 @@
   {{-- ── LEFT COLUMN ─────────────────────────────────────────────────── --}}
   <div style="display:flex;flex-direction:column;gap:20px;">
 
-    <div class="card-tight-margin">
+    {{-- Personal Details --}}
+    <div class="card">
       <div class="table-card-header">
         <div style="padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">
           <h4 style="margin:0;font-size:13px;display:flex;align-items:center;gap:6px;">
@@ -46,6 +47,12 @@
             'suspended' => 'badge-overdue',
             default     => 'badge-inactive'
           } }}">{{ ucfirst($customer->status) }}</span>
+          <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600;
+                       background:{{ $customer->customer_type === 'commercial' ? 'rgba(20,184,166,.15)' : 'rgba(56,189,248,.15)' }};
+                       color:{{ $customer->customer_type === 'commercial' ? 'var(--accent-teal)' : 'var(--accent-blue)' }};">
+            <span class="material-icons" style="font-size:13px;">{{ $customer->customer_type === 'commercial' ? 'business' : 'home' }}</span>
+            {{ $customer->customer_type_label }}
+          </span>
         </div>
       </div>
       <div class="card-body" style="padding:0 20px 16px;">
@@ -126,7 +133,7 @@
   <div style="display:flex;flex-direction:column;gap:20px;">
 
     {{-- Account Details --}}
-    <div class="card-tight-margin">
+    <div class="card">
       <div class="table-card-header">
         <div style="padding:14px 20px;">
           <h4 style="margin:0;font-size:13px;display:flex;align-items:center;gap:6px;">

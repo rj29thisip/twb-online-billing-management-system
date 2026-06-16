@@ -2,7 +2,7 @@
 @extends('layouts.app')
 @section('title', 'My Invoices')
 @section('breadcrumb', 'Customer / Invoices')
-@section('page-title', 'MY INVOICES')
+@section('page-title', 'My Invoices')
 
 @section('content')
 
@@ -10,7 +10,7 @@
   <div class="table-card-header">
     <div class="card-header-float" style="background:var(--gradient-dark);">
       <div><h3>Invoices</h3><p>Your billing documents</p></div>
-      <span class="material-icons" style="color:var(--accent-blue)">receipt</span>
+      <span class="material-icons">receipt</span>
     </div>
   </div>
   <div class="table-wrapper">

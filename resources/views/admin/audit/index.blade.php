@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Audit Logs')
 @section('breadcrumb', 'Admin / System / Audit Logs')
-@section('page-title', 'AUDIT LOGS')
+@section('page-title', 'Audit Logs')
 
 @section('content')
 
@@ -33,7 +33,7 @@
   </div>
 </div>
 
-<div class="card-tight-margin">
+<div class="card">
   {{-- FILTERS --}}
   <form method="GET" class="filter-bar">
     <input type="date" name="date" class="form-control" value="{{ request('date') }}" title="Filter by date">
@@ -82,7 +82,7 @@
       <tbody>
         @forelse($logs as $log)
           <tr>
-            <td style="font-size:14px;white-space:nowrap;">
+            <td style="font-size:12px;white-space:nowrap;">
               <div style="color:var(--text-primary);">{{ $log->created_at->format('d M Y') }}</div>
               <div style="color:var(--text-muted);">{{ $log->created_at->format('H:i:s') }}</div>
             </td>
@@ -114,9 +114,9 @@
               </span>
             </td>
             <td>
-              <div style="font-size:14px;color:var(--text-primary);">{{ $log->model_type }}</div>
+              <div style="font-size:13px;color:var(--text-primary);">{{ $log->model_type }}</div>
               @if($log->model_id)
-                <div style="font-size:12px;color:var(--text-muted);font-family:monospace;">#{{ $log->model_id }}</div>
+                <div style="font-size:11px;color:var(--text-muted);font-family:monospace;">#{{ $log->model_id }}</div>
               @endif
             </td>
             <td style="max-width:280px;">
@@ -126,10 +126,10 @@
                 unset($details['_note'], $details['password'], $details['remember_token']);
               @endphp
               @if($note)
-                <div style="font-size:14px;color:var(--text-primary);margin-bottom:4px;">{{ $note }}</div>
+                <div style="font-size:12px;color:var(--text-primary);margin-bottom:4px;">{{ $note }}</div>
               @endif
               @if(!empty($details))
-                <div style="font-size:12px;color:var(--text-muted);line-height:1.6;">
+                <div style="font-size:11px;color:var(--text-muted);line-height:1.6;">
                   @foreach(array_slice($details, 0, 3) as $key => $val)
                     <span style="color:var(--accent-teal);">{{ $key }}</span>:
                     <span>{{ is_array($val) ? json_encode($val) : Str::limit((string)$val, 40) }}</span><br>
@@ -151,7 +151,7 @@
                 </div>
               @endif
             </td>
-            <td style="font-size:14px;color:var(--text-muted);font-family:monospace;">
+            <td style="font-size:11px;color:var(--text-muted);font-family:monospace;">
               {{ $log->ip_address ?? '—' }}
             </td>
             <td>
@@ -205,7 +205,7 @@
       <h3 class="modal-title">Audit Log Detail</h3>
       <button class="modal-close" onclick="closeDetail()"><span class="material-icons">close</span></button>
     </div>
-    <div class="modal-body" id="detail-body" style="font-size:14px;"></div>
+    <div class="modal-body" id="detail-body" style="font-size:13px;"></div>
     <div class="modal-footer">
       <button class="btn btn-outline" onclick="closeDetail()">Close</button>
     </div>
@@ -218,14 +218,14 @@
 <script>
 function showDetail(log) {
   const body = document.getElementById('detail-body');
-  const fmt  = (obj) => obj ? `<pre style="background:rgba(255,255,255,0.05);border-radius:6px;padding:10px;font-size:14px;overflow-x:auto;white-space:pre-wrap;color:var(--text-secondary);">${JSON.stringify(obj, null, 2)}</pre>` : '<span style="color:var(--text-muted);">—</span>';
+  const fmt  = (obj) => obj ? `<pre style="background:rgba(255,255,255,0.05);border-radius:6px;padding:10px;font-size:11px;overflow-x:auto;white-space:pre-wrap;color:var(--text-secondary);">${JSON.stringify(obj, null, 2)}</pre>` : '<span style="color:var(--text-muted);">—</span>';
 
   body.innerHTML = `
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;">
-      <div><span style="font-size:14px;text-transform:uppercase;color:var(--text-muted);">Time</span><div style="margin-top:4px;">${new Date(log.created_at).toLocaleString()}</div></div>
-      <div><span style="font-size:14px;text-transform:uppercase;color:var(--text-muted);">Action</span><div style="margin-top:4px;">${log.action}</div></div>
-      <div><span style="font-size:14px;text-transform:uppercase;color:var(--text-muted);">Model</span><div style="margin-top:4px;">${log.model_type} #${log.model_id ?? '—'}</div></div>
-      <div><span style="font-size:14px;text-transform:uppercase;color:var(--text-muted);">IP Address</span><div style="margin-top:4px;font-family:monospace;">${log.ip_address ?? '—'}</div></div>
+      <div><span style="font-size:11px;text-transform:uppercase;color:var(--text-muted);">Time</span><div style="margin-top:4px;">${new Date(log.created_at).toLocaleString()}</div></div>
+      <div><span style="font-size:11px;text-transform:uppercase;color:var(--text-muted);">Action</span><div style="margin-top:4px;">${log.action}</div></div>
+      <div><span style="font-size:11px;text-transform:uppercase;color:var(--text-muted);">Model</span><div style="margin-top:4px;">${log.model_type} #${log.model_id ?? '—'}</div></div>
+      <div><span style="font-size:11px;text-transform:uppercase;color:var(--text-muted);">IP Address</span><div style="margin-top:4px;font-family:monospace;">${log.ip_address ?? '—'}</div></div>
     </div>
     ${log.old_values ? `<div style="margin-bottom:12px;"><div style="font-size:11px;text-transform:uppercase;color:var(--accent-pink);margin-bottom:6px;">Before</div>${fmt(log.old_values)}</div>` : ''}
     ${log.new_values ? `<div><div style="font-size:11px;text-transform:uppercase;color:var(--accent-green);margin-bottom:6px;">After</div>${fmt(log.new_values)}</div>` : ''}

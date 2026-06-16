@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Dashboard — ' . $districtLabel)
 @section('breadcrumb', 'Dashboard')
-@section('page-title', 'DASHBOARD — ' . $districtLabel)
+@section('page-title', 'Dashboard — ' . $districtLabel)
 
 @push('head')
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -18,7 +18,7 @@
     </div>
     <div class="stat-body">
       <div>
-        <div class="stat-label">Total Customers Count</div>
+        <div class="stat-label">Total Customers</div>
         <div class="stat-value">{{ number_format($stats['total_customers']) }}</div>
       </div>
     </div>
@@ -35,7 +35,7 @@
     </div>
     <div class="stat-body">
       <div>
-        <div class="stat-label">Water Consumption (Current Month)</div>
+        <div class="stat-label">Consumption This Month</div>
         <div class="stat-value">{{ number_format($stats['consumption_this_month'], 1) }} m³</div>
       </div>
     </div>
@@ -52,7 +52,7 @@
     </div>
     <div class="stat-body">
       <div>
-        <div class="stat-label">Payments Collected (Current Month)</div>
+        <div class="stat-label">Collected This Month</div>
         <div class="stat-value">T$ {{ number_format($stats['collected_this_month'], 0) }}</div>
       </div>
     </div>
@@ -64,12 +64,12 @@
   </div>
 
   <div class="stat-card">
-    <div class="stat-icon" style="background:var(--gradient-pink);">
+    <div class="stat-icon" style="background:var(--gradient-orange);">
       <span class="material-icons">pending_actions</span>
     </div>
     <div class="stat-body">
       <div>
-        <div class="stat-label">Outstanding Invoices (Unpaid)</div>
+        <div class="stat-label">Outstanding Invoices</div>
         <div class="stat-value">{{ $stats['outstanding_count'] }}</div>
       </div>
     </div>
@@ -121,8 +121,8 @@
   {{-- Overdue Invoices --}}
   <div class="card">
     <div class="table-card-header">
-      <div class="card-header-float" style="background:var(--gradient-pink);">
-        <div><h3>Overdue Invoices</h3><p>Unpaid Bills - requires immediate attention</p></div>
+      <div class="card-header-float" style="background:var(--gradient-orange);">
+        <div><h3>Overdue Invoices</h3><p>Requires immediate attention</p></div>
         <span class="material-icons">warning_amber</span>
       </div>
     </div>

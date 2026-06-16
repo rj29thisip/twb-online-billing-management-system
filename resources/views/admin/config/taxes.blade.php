@@ -1,21 +1,21 @@
 @extends('layouts.app')
 @section('title', 'Tax Configuration')
 @section('breadcrumb', 'Admin / Configuration / Taxes')
-@section('page-title', 'TAX RATE MANAGEMENT')
+@section('page-title', 'Tax Rate Management')
 
 @section('content')
 
 <div class="section-header">
   <div>
     <h2>Tax Rates</h2>
-    <p>Add and configure tax rates applied during billing</p>
+    <p>Configure tax rates applied during billing</p>
   </div>
   <button class="btn btn-primary" onclick="openModal()">
     <span class="material-icons">add</span> Add Tax Rate
   </button>
 </div>
 
-<div class="card-tight-margin">
+<div class="card">
   <div class="table-wrapper">
     <table>
       <thead>

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'My Dashboard')
 @section('breadcrumb', 'Customer / Dashboard')
-@section('page-title', 'MY TWB ACCOUNT')
+@section('page-title', 'My Water Account')
 
 @push('head')
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -44,7 +44,7 @@
     </div>
     <div class="stat-body">
       <div>
-        <div class="stat-label">Usage this Month</div>
+        <div class="stat-label">Usage This Month</div>
         <div class="stat-value">{{ number_format($billing['usage_m3'], 2) }} m³</div>
       </div>
     </div>
@@ -68,12 +68,12 @@
     <hr class="stat-divider">
     <div class="stat-footer">
       <span class="material-icons">trending_up</span>
-      <span>~T$ {{ number_format($billing['estimated_full_bill'], 2) }} estimated</span>
+      <span>~T$ {{ number_format($billing['estimated_full_bill'], 2) }} est. full month</span>
     </div>
   </div>
 
   <div class="stat-card">
-    <div class="stat-icon" style="background:var(--gradient-pink);">
+    <div class="stat-icon" style="background:var(--gradient-orange);">
       <span class="material-icons">receipt_long</span>
     </div>
     <div class="stat-body">
@@ -139,7 +139,7 @@
     <div class="table-card-header">
       <div class="card-header-float" style="background:var(--gradient-dark);">
         <div><h3>Recent Invoices</h3><p>Last 5 billing periods</p></div>
-        <span class="material-icons" style="color:var(--accent-blue)">receipt</span>
+        <span class="material-icons">receipt</span>
       </div>
     </div>
     <div class="table-wrapper">
@@ -182,9 +182,9 @@
   {{-- Announcements --}}
   <div class="card">
     <div class="table-card-header">
-      <div class="card-header-float" style="background:var(--gradient-orange);">
+      <div class="card-header-float" style="background:var(--gradient-purple);">
         <div><h3>News & Announcements</h3><p>Latest updates from TWB</p></div>
-        <span class="material-icons" style="color:var(--accent-blue)">campaign</span>
+        <span class="material-icons">campaign</span>
       </div>
     </div>
     <div class="card-body" style="padding-top:0;">

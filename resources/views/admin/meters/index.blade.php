@@ -1,18 +1,18 @@
 @extends('layouts.app')
 @section('title', 'Meters')
 @section('breadcrumb', 'Admin / Meters')
-@section('page-title', 'METER REGISTRY')
+@section('page-title', 'Meter Registry')
 
 @section('content')
 
 <div class="section-header">
-  <div><h2>Meter Devices</h2><p>View, add, and modify customers' meter devices</p></div>
+  <div><h2>Meters</h2><p>All registered water meter devices</p></div>
   <a href="{{ route('admin.meters.create') }}" class="btn btn-primary">
     <span class="material-icons">add</span> Add Meter
   </a>
 </div>
 
-<div class="card-tight-margin">
+<div class="card">
   <form method="GET" class="filter-bar">
     <input type="text" name="search" class="form-control" placeholder="Meter ID, Endpoint ID, customer..." value="{{ request('search') }}">
     <select name="status" class="form-control">
@@ -26,7 +26,6 @@
       <option value="">All Types</option>
       <option value="residential"  {{ request('type') === 'residential'  ? 'selected' : '' }}>Residential</option>
       <option value="commercial"   {{ request('type') === 'commercial'   ? 'selected' : '' }}>Commercial</option>
-      <option value="industrial"   {{ request('type') === 'industrial'   ? 'selected' : '' }}>Industrial</option>
     </select>
     <button type="submit" class="btn btn-outline btn-sm"><span class="material-icons">filter_list</span> Filter</button>
     @if(request()->hasAny(['search','status','type']))
@@ -43,12 +42,12 @@
         @forelse($meters as $meter)
           <tr>
             <td class="td-primary" style="font-family:monospace;">{{ $meter->meter_id }}</td>
-            <td style="font-family:monospace;font-size:14px;color:var(--accent-teal);">{{ $meter->endpoint_id ?? '—' }}</td>
+            <td style="font-family:monospace;font-size:11px;color:var(--accent-teal);">{{ $meter->endpoint_id ?? '—' }}</td>
             <td>
               <a href="{{ route('admin.customers.show', $meter->customer) }}" style="color:var(--accent-blue);">
                 {{ $meter->customer->name }}
               </a>
-              <div style="font-size:14px;color:var(--text-muted);">{{ $meter->customer->account_number }}</div>
+              <div style="font-size:11px;color:var(--text-muted);">{{ $meter->customer->account_number }}</div>
             </td>
             <td>
               @if($meter->customer->district)

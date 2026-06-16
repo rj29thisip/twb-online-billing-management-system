@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Payment Detail')
 @section('breadcrumb', 'Admin / Payments / Detail')
-@section('page-title', 'PAYMENT DETAILS')
+@section('page-title', 'Payment Detail')
 
 @section('content')
 

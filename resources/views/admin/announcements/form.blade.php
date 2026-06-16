@@ -18,9 +18,9 @@
       <div class="card-header-float" style="background:var(--gradient-dark);">
         <div>
           <h3>{{ isset($announcement) ? 'Edit Announcement' : 'New Announcement' }}</h3>
-          <p>{{ isset($announcement) ? 'Update existing announcement' : 'Broadcast an announcement to the customers' }}</p>
+          <p>{{ isset($announcement) ? 'Update existing announcement' : 'Create a new announcement for customers' }}</p>
         </div>
-        <span class="material-icons" style="color:var(--accent-blue)">campaign</span>
+        <span class="material-icons">campaign</span>
       </div>
     </div>
 
@@ -89,7 +89,7 @@
           <a href="{{ route('admin.announcements.index') }}" class="btn btn-outline">Cancel</a>
           <button type="submit" class="btn btn-primary">
             <span class="material-icons">save</span>
-            {{ isset($announcement) ? 'Update' : 'Post' }} Announcement
+            {{ isset($announcement) ? 'Update' : 'Create' }} Announcement
           </button>
         </div>
 

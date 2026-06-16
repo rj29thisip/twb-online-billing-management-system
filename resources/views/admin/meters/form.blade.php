@@ -18,7 +18,7 @@
           <h3>{{ isset($meter) ? 'Edit Meter' : 'Register New Meter' }}</h3>
           <p>{{ isset($meter) ? $meter->meter_id : 'Fill in meter device details' }}</p>
         </div>
-        <span class="material-icons" style="color:var(--accent-blue)">speed</span>
+        <span class="material-icons">speed</span>
       </div>
     </div>
     <div class="card-body" style="padding-top:0;">
@@ -75,7 +75,6 @@
             <select name="meter_type" class="form-control">
               <option value="residential" {{ old('meter_type', $meter->meter_type ?? 'residential') === 'residential' ? 'selected' : '' }}>Residential</option>
               <option value="commercial"  {{ old('meter_type', $meter->meter_type ?? '') === 'commercial'  ? 'selected' : '' }}>Commercial</option>
-              <option value="industrial"  {{ old('meter_type', $meter->meter_type ?? '') === 'industrial'  ? 'selected' : '' }}>Industrial</option>
             </select>
           </div>
           <div class="form-group">

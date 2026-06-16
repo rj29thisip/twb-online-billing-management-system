@@ -46,7 +46,7 @@ class MeterController extends Controller
             'customer_id'       => 'required|exists:customers,id',
             'meter_id'          => 'required|string|max:50|unique:meters',
             'endpoint_id'       => 'required|string|max:50|unique:meters',
-            'meter_type'        => 'required|in:residential,commercial,industrial',
+            'meter_type'        => 'required|in:residential,commercial',
             'installation_date' => 'nullable|date',
             'brand'             => 'nullable|string|max:100',
             'model'             => 'nullable|string|max:100',
@@ -73,7 +73,7 @@ class MeterController extends Controller
     public function update(Request $request, Meter $meter)
     {
         $validated = $request->validate([
-            'meter_type'           => 'required|in:residential,commercial,industrial',
+            'meter_type'           => 'required|in:residential,commercial',
             'installation_date'    => 'nullable|date',
             'last_maintenance_date'=> 'nullable|date',
             'brand'                => 'nullable|string|max:100',
