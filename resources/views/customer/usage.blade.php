@@ -28,7 +28,7 @@
 {{-- SUMMARY CARDS --}}
 <div class="stat-cards" style="grid-template-columns:repeat(3,1fr);margin-bottom:24px;">
   <div class="stat-card">
-    <div class="stat-icon" style="background:var(--gradient-black);">
+    <div class="stat-icon" style="background:var(--gradient-dark);">
       <span class="material-icons">water_drop</span>
     </div>
     <div class="stat-body">
@@ -44,7 +44,7 @@
     </div>
   </div>
   <div class="stat-card">
-    <div class="stat-icon" style="background:var(--gradient-black);">
+    <div class="stat-icon" style="background:var(--gradient-dark);">
       <span class="material-icons">today</span>
     </div>
     <div class="stat-body">
@@ -84,7 +84,7 @@
 {{-- CHART --}}
 <div class="card-tight-margin">
   <div class="table-card-header">
-    <div class="card-header-float" style="background:var(--gradient-black);">
+    <div class="card-header-float" style="background:var(--gradient-dark);">
       <div>
         <h3 id="chart-title">Daily Usage — {{ $month->format('F Y') }}</h3>
         <p id="chart-sub">Click a bar to see hourly breakdown</p>

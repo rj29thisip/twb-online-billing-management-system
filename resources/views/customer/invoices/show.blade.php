@@ -19,7 +19,7 @@
 
     <div class="card-tight-margin">
       <div class="table-card-header">
-        <div class="card-header-float" style="background:var(--gradient-black);">
+        <div class="card-header-float" style="background:var(--gradient-dark);">
           <div>
             <h3>{{ $invoice->invoice_number }}</h3>
             <p>{{ $invoice->billing_period_start->format('d M Y') }} – {{ $invoice->billing_period_end->format('d M Y') }}</p>
@@ -88,7 +88,7 @@
   <div>
     <div class="card-tight-margin">
       <div class="table-card-header">
-        <div class="card-header-float" style="background:var(--gradient-black);">
+        <div class="card-header-float" style="background:var(--gradient-dark);">
           <div><h3>Payment History</h3></div>
           <span class="material-icons" style="color:var(--accent-blue)">receipt</span>
         </div>
