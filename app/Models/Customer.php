@@ -11,7 +11,7 @@ class Customer extends Model
 {
     protected $fillable = [
         // Account
-        'account_number', 'status', 'district_id', 'block_number',
+        'account_number', 'status', 'customer_type', 'district_id', 'block_number',
         // Personal
         'name', 'given_name', 'family_name', 'date_of_birth', 'gender',
         // Contact
@@ -30,6 +30,21 @@ class Customer extends Model
     ];
 
     // ─── Helpers ───────────────────────────────────────────────────────────────
+
+    /** Returns human-readable customer type label */
+    public function getCustomerTypeLabelAttribute(): string
+    {
+        return match($this->customer_type) {
+            'commercial' => 'Commercial',
+            default      => 'Residential',
+        };
+    }
+
+    /** True if commercial customer */
+    public function isCommercial(): bool
+    {
+        return $this->customer_type === 'commercial';
+    }
 
     /** Full name derived from given + family, or fallback to name */
     public function getFullNameAttribute(): string

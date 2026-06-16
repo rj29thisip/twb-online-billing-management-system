@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Invoice ' . $invoice->invoice_number)
 @section('breadcrumb', 'Customer / Invoices / Detail')
-@section('page-title', 'INVOICE DETAILS')
+@section('page-title', 'Invoice Detail')
 
 @section('content')
 
@@ -17,9 +17,9 @@
 <div class="detail-grid">
   <div style="display:flex;flex-direction:column;gap:24px;">
 
-    <div class="card-tight-margin">
+    <div class="card">
       <div class="table-card-header">
-        <div class="card-header-float" style="background:var(--gradient-black);">
+        <div class="card-header-float" style="background:var(--gradient-dark);">
           <div>
             <h3>{{ $invoice->invoice_number }}</h3>
             <p>{{ $invoice->billing_period_start->format('d M Y') }} – {{ $invoice->billing_period_end->format('d M Y') }}</p>
@@ -30,7 +30,7 @@
               'partially_paid' => 'badge-partially', default => 'badge-draft'
             };
           @endphp
-          <span class="badge-status {{ $bc }}" style="font-size:14px;padding:6px 14px;">
+          <span class="badge-status {{ $bc }}" style="font-size:13px;padding:6px 14px;">
             {{ ucfirst(str_replace('_',' ',$invoice->status)) }}
           </span>
         </div>
@@ -49,9 +49,9 @@
 
     <div class="card">
       <div class="table-card-header">
-        <div class="card-header-float" style="background:var(--gradient-dark);">
+        <div class="card-header-float" style="background:var(--gradient-blue);">
           <div><h3>Charge Breakdown</h3></div>
-          <span class="material-icons" style="color:var(--accent-blue)">layers</span>
+          <span class="material-icons">layers</span>
         </div>
       </div>
       <div class="table-wrapper">
@@ -86,11 +86,11 @@
   </div>
 
   <div>
-    <div class="card-tight-margin">
+    <div class="card">
       <div class="table-card-header">
-        <div class="card-header-float" style="background:var(--gradient-black);">
+        <div class="card-header-float" style="background:var(--gradient-green);">
           <div><h3>Payment History</h3></div>
-          <span class="material-icons" style="color:var(--accent-blue)">receipt</span>
+          <span class="material-icons">receipt</span>
         </div>
       </div>
       <div class="table-wrapper">

@@ -2,21 +2,21 @@
 @extends('layouts.app')
 @section('title', 'Customers')
 @section('breadcrumb', 'Admin / Customers')
-@section('page-title', 'CUSTOMER MANAGEMENT')
+@section('page-title', 'Customer Management')
 
 @section('content')
 
 <div class="section-header">
   <div>
-    <h2>Customer Accounts</h2>
-    <p>View, add, and modify registered customer accounts</p>
+    <h2>Customers</h2>
+    <p>All registered water service subscribers</p>
   </div>
   <a href="{{ route('admin.customers.create') }}" class="btn btn-primary">
     <span class="material-icons">person_add</span> Add Customer
   </a>
 </div>
 
-<div class="card-tight-margin">
+<div class="card">
   <form method="GET" class="filter-bar">
     <input type="text" name="search" class="form-control" placeholder="Name, account #, phone..."
            value="{{ request('search') }}">
@@ -60,6 +60,7 @@
           <th>Customer</th>
           <th>Account #</th>
           <th>District</th>
+          <th>Type</th>
           <th>Block</th>
           <th>Phone</th>
           <th>Meter ID</th>
@@ -92,11 +93,19 @@
                 <span style="color:var(--text-muted);font-size:12px;">—</span>
               @endif
             </td>
+            <td>
+              <span style="display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;
+                           background:{{ ($customer->customer_type ?? 'residential') === 'commercial' ? 'rgba(20,184,166,.15)' : 'rgba(56,189,248,.15)' }};
+                           color:{{ ($customer->customer_type ?? 'residential') === 'commercial' ? 'var(--accent-teal)' : 'var(--accent-blue)' }};">
+                <span class="material-icons" style="font-size:12px;">{{ ($customer->customer_type ?? 'residential') === 'commercial' ? 'business' : 'home' }}</span>
+                {{ ($customer->customer_type ?? 'residential') === 'commercial' ? 'Com' : 'Res' }}
+              </span>
+            </td>
             <td>{{ $customer->block_number ?? '—' }}</td>
             <td>{{ $customer->phone ?? '—' }}</td>
             <td>
               @if($customer->activeMeter)
-                <code style="font-size:14px;color:var(--accent-teal);">{{ $customer->activeMeter->meter_id }}</code>
+                <code style="font-size:11px;color:var(--accent-teal);">{{ $customer->activeMeter->meter_id }}</code>
               @else
                 <span style="color:var(--text-muted);">No meter</span>
               @endif

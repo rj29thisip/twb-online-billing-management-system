@@ -76,7 +76,7 @@
     .signin-quote { position: relative; z-index: 1; }
     .quote-icon  { font-size: 52px; color: rgba(255,255,255,0.2); margin-bottom: 16px; line-height: 1; }
     .quote-text  { font-size: 22px; font-weight: 300; line-height: 1.6; margin-bottom: 20px; color: rgba(255,255,255,0.8); }
-    .quote-sub   { font-size: 14px; color: var(--text-muted); }
+    .quote-sub   { font-size: 13px; color: var(--text-muted); }
 
     /* RIGHT PANEL */
     .signin-right {
@@ -98,13 +98,13 @@
     }
     .form-logo .material-icons { font-size: 28px; color: #fff; }
     .form-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
-    .form-sub   { font-size: 14px; color: var(--text-muted); line-height: 1.5; }
+    .form-sub   { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
 
     /* Form Elements */
     .form-group { margin-bottom: 20px; }
     .form-label {
       display: block;
-      font-size: 14px; font-weight: 600; letter-spacing: 0.5px;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.5px;
       color: var(--text-secondary);
       margin-bottom: 8px; text-transform: uppercase;
     }
@@ -207,9 +207,9 @@
   </div>
 
   <div class="signin-quote">
-    <div class="quote-icon"></div>
-    <p class="quote-text">Access to clean water is a human right. Efficient billing management ensures it reaches every household.</p>
-    <p class="quote-sub">TWB ONLINE — Managing water, sustaining life..</p>
+    <div class="quote-icon">"</div>
+    <p class="quote-text">Clean water is a human right. Efficient management makes it possible for everyone.</p>
+    <p class="quote-sub">TWB Water Billing System — Managing water, sustaining life.</p>
   </div>
 </div>
 
@@ -221,7 +221,7 @@
       <div>
         <img src="../../twblogo3_transparent.png"></img>
       </div>
-      <p class="form-sub">Sign in to your TWB ONLINE account</p>
+      <p class="form-sub">Sign in to your TWB Billing account</p>
     </div>
 
     @if($errors->any())
@@ -288,7 +288,7 @@
     </form>
 
     <div class="divider">or</div>
-    <p style="text-align:center;font-size:14px;color:var(--text-muted);">
+    <p style="text-align:center;font-size:13px;color:var(--text-muted);">
       Contact your administrator to create an account.
     </p>
 

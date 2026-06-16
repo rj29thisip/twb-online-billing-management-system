@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Meter Readings')
 @section('breadcrumb', 'Admin / Meters / Readings')
-@section('page-title', 'METER READINGS')
+@section('page-title', 'Meter Readings')
 
 @section('content')
 
@@ -15,13 +15,13 @@
 @endif
 
 <div class="section-header">
-  <div><h2>Consumption Readings</h2><p>View Automated Meter Readings (AMR) or Manual Meter Readings and Import Manual Meter Readings.</p></div>
+  <div><h2>Meter Readings</h2><p>All AMR and manual readings</p></div>
   <a href="{{ route('admin.readings.import') }}" class="btn btn-primary">
-    <span class="material-icons">upload_file</span> Import Meter Readings
+    <span class="material-icons">upload_file</span> Import CSV
   </a>
 </div>
 
-<div class="card-tight-margin">
+<div class="card">
   <form method="GET" action="{{ route('admin.readings.index') }}" class="filter-bar" style="flex-wrap:wrap;gap:8px;">
 
     {{-- Meter ID --}}
