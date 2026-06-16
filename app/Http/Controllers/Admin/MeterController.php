@@ -11,13 +11,19 @@ class MeterController extends Controller
 {
     public function index(Request $request)
     {
-        $meters = Meter::with('customer')
+        $user = auth()->user();
+
+        $meters = Meter::with(['customer.district'])
+            ->when(!$user->isAdmin() && !$user->isHeadquarters() && $user->district_id,
+                fn($q) => $q->whereHas('customer', fn($cq) =>
+                    $cq->where('district_id', $user->district_id)->orWhereNull('district_id')
+                )
+            )
             ->when($request->search, fn ($q) => $q->where(fn ($q) =>
                 $q->where('meter_id', 'like', '%' . $request->search . '%')
                   ->orWhere('endpoint_id', 'like', '%' . $request->search . '%')
-                  ->orWhereHas('customer', fn ($q) =>
-                      $q->where('name', 'like', '%' . $request->search . '%')
-                        ->orWhere('account_number', 'like', '%' . $request->search . '%')
+                  ->orWhereHas('customer', fn ($cq) =>
+                      $cq->where('name', 'like', '%' . $request->search . '%')
                   )
             ))
             ->when($request->status, fn ($q) => $q->where('status', $request->status))
@@ -31,8 +37,7 @@ class MeterController extends Controller
 
     public function create()
     {
-        $customers = Customer::where('status', 'active')->orderBy('name')->get();
-        return view('admin.meters.form', compact('customers'));
+        return view('admin.meters.form');
     }
 
     public function store(Request $request)
@@ -62,8 +67,7 @@ class MeterController extends Controller
 
     public function edit(Meter $meter)
     {
-        $customers = Customer::where('status', 'active')->orderBy('name')->get();
-        return view('admin.meters.form', compact('meter', 'customers'));
+        return view('admin.meters.form', compact('meter'));
     }
 
     public function update(Request $request, Meter $meter)

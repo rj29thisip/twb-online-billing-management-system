@@ -13,9 +13,33 @@ class PaymentController extends Controller
 {
     public function __construct(protected BillingService $billing) {}
 
+
+    private function districtScope()
+    {
+        $user = auth()->user();
+        if ($user->isAdmin() || $user->isHeadquarters() || !$user->district_id) {
+            return Payment::query();
+        }
+        return Payment::whereHas('customer', fn ($q) =>
+            $q->where(fn ($s) =>
+                $s->where('district_id', $user->district_id)->orWhereNull('district_id')
+            )
+        );
+    }
+
+    private function authorizePaymentDistrict(Payment $payment): void
+    {
+        $user = auth()->user();
+        if ($user->isAdmin() || $user->isHeadquarters() || !$user->district_id) return;
+        $custDistrict = optional($payment->customer)->district_id;
+        if ($custDistrict !== null && $custDistrict !== $user->district_id) {
+            abort(403, 'You do not have access to this payment.');
+        }
+    }
+
     public function index(Request $request)
     {
-        $payments = Payment::with(['customer', 'invoice'])
+        $payments = $this->districtScope()->with(['customer', 'invoice'])
             ->when($request->search, fn ($q) => $q->where(fn ($q) =>
                 $q->where('receipt_number', 'like', '%' . $request->search . '%')
                   ->orWhereHas('customer', fn ($q) =>
@@ -59,12 +83,14 @@ class PaymentController extends Controller
 
     public function show(Payment $payment)
     {
+        $this->authorizePaymentDistrict($payment);
         $payment->load(['invoice', 'customer', 'recorder']);
         return view('admin.payments.show', compact('payment'));
     }
 
     public function receipt(Payment $payment)
     {
+        $this->authorizePaymentDistrict($payment);
         $payment->load(['invoice.customer', 'recorder']);
         return view('admin.payments.receipt', compact('payment'));
     }

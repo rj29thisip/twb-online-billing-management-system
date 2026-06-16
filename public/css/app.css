@@ -583,3 +583,19 @@ select.form-control option { background-color: #202940; color: rgba(255,255,255,
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   select.form-control { -webkit-appearance: none; }
 }
+
+/* ── Sidebar district chip (appears on Dashboard nav item for area users) ── */
+.sidebar-district-chip {
+  display: inline-block;
+  margin-left: auto;
+  padding: 1px 7px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .3px;
+  border-radius: 20px;
+  background: rgba(56, 189, 248, 0.18);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  white-space: nowrap;
+  flex-shrink: 0;
+}

@@ -37,7 +37,7 @@
   <div class="table-wrapper">
     <table>
       <thead>
-        <tr><th>Meter ID</th><th>Endpoint ID</th><th>Customer</th><th>Type</th><th>Status</th><th>Installed</th><th>Actions</th></tr>
+        <tr><th>Meter ID</th><th>Endpoint ID</th><th>Customer</th><th>District</th><th>Type</th><th>Status</th><th>Installed</th><th>Actions</th></tr>
       </thead>
       <tbody>
         @forelse($meters as $meter)
@@ -50,6 +50,15 @@
               </a>
               <div style="font-size:14px;color:var(--text-muted);">{{ $meter->customer->account_number }}</div>
             </td>
+            <td>
+              @if($meter->customer->district)
+                <span style="font-size:11px;background:rgba(26,188,156,0.12);color:var(--accent-teal);padding:2px 8px;border-radius:10px;">
+                  {{ $meter->customer->district->name }}
+                </span>
+              @else
+                <span style="color:var(--text-muted);font-size:12px;">—</span>
+              @endif
+            </td>
             <td>{{ ucfirst($meter->meter_type) }}</td>
             <td><span class="badge-status badge-{{ $meter->status }}">{{ ucfirst($meter->status) }}</span></td>
             <td>{{ $meter->installation_date?->format('d M Y') ?? '—' }}</td>
@@ -61,7 +70,7 @@
             </td>
           </tr>
         @empty
-          <tr><td colspan="7"><div class="empty-state"><span class="material-icons">speed</span><h3>No meters found</h3></div></td></tr>
+          <tr><td colspan="8"><div class="empty-state"><span class="material-icons">speed</span><h3>No meters found</h3></div></td></tr>
         @endforelse
       </tbody>
     </table>

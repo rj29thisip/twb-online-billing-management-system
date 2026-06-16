@@ -21,9 +21,12 @@
            value="{{ request('search') }}">
     <select name="role" class="form-control">
       <option value="">All Roles</option>
-      <option value="admin"    {{ request('role') === 'admin'    ? 'selected' : '' }}>Admin</option>
-      <option value="officer"  {{ request('role') === 'officer'  ? 'selected' : '' }}>Officer</option>
-      <option value="customer" {{ request('role') === 'customer' ? 'selected' : '' }}>Customer</option>
+      <option value="admin"            {{ request('role')=='admin'            ?'selected':'' }}>Administrator</option>
+      <option value="cashier"          {{ request('role')=='cashier'          ?'selected':'' }}>Cashier</option>
+      <option value="account_employee" {{ request('role')=='account_employee' ?'selected':'' }}>Account Employee</option>
+      <option value="ceo"              {{ request('role')=='ceo'              ?'selected':'' }}>CEO</option>
+      <option value="accountant"       {{ request('role')=='accountant'       ?'selected':'' }}>Accountant</option>
+      <option value="manager"          {{ request('role')=='manager'          ?'selected':'' }}>Manager</option>
     </select>
     <button type="submit" class="btn btn-outline btn-sm">
       <span class="material-icons">filter_list</span> Filter
@@ -41,7 +44,7 @@
         <tr>
           <th>User</th>
           <th>Role</th>
-          <th>Customer Account</th>
+          <th>District</th><th>Customer Account</th>
           <th>Status</th>
           <th>Created</th>
           <th>Actions</th>
@@ -63,13 +66,23 @@
             </td>
             <td>
               <span class="badge-status {{ match($user->role) {
-                'admin'    => 'badge-overdue',
-                'officer'  => 'badge-issued',
-                'customer' => 'badge-active',
-                default    => 'badge-draft'
+                'admin'            => 'badge-overdue',
+                'cashier'          => 'badge-issued',
+                'account_employee' => 'badge-draft',
+                'ceo','accountant','manager' => 'badge-active',
+                default            => 'badge-inactive'
               } }}">
-                {{ ucfirst($user->role) }}
+                {{ $user->role_label }}
               </span>
+            </td>
+            <td>
+              @if($user->district)
+                <span style="font-size:12px;background:rgba(26,188,156,0.12);color:var(--accent-teal);padding:2px 8px;border-radius:10px;">
+                  {{ $user->district->name }}
+                </span>
+              @else
+                <span style="color:var(--text-muted);font-size:12px;">—</span>
+              @endif
             </td>
             <td>
               @if($user->customer)
@@ -108,7 +121,7 @@
           </tr>
         @empty
           <tr>
-            <td colspan="6">
+            <td colspan="7">
               <div class="empty-state">
                 <span class="material-icons">manage_accounts</span>
                 <h3>No users found</h3>
@@ -157,45 +170,65 @@
       @csrf
       <div class="modal-body">
 
-        {{-- ROW 1 --}}
+        {{-- ROW 1: Name + Email --}}
         <div class="form-grid-2">
           <div class="form-group">
             <label class="form-label">Full Name <span style="color:var(--accent-pink)">*</span></label>
             <input type="text" name="name" class="form-control" required
-                   placeholder="e.g. John Smith"
-                   style="font-size:14px;padding:11px 14px;">
+                   placeholder="e.g. John Smith" style="font-size:14px;padding:11px 14px;">
           </div>
-          <div class="form-group">
-            <label class="form-label">Role <span style="color:var(--accent-pink)">*</span></label>
-            <select name="role" class="form-control" required
-                    style="font-size:14px;padding:11px 14px;">
-              <option value="officer">Billing Officer</option>
-              <option value="admin">Administrator</option>
-            </select>
-          </div>
-        </div>
-
-        {{-- ROW 2 --}}
-        <div class="form-grid-2">
           <div class="form-group">
             <label class="form-label">Email Address <span style="color:var(--accent-pink)">*</span></label>
             <input type="email" name="email" class="form-control" required
-                   placeholder="staff@twb.to"
-                   style="font-size:14px;padding:11px 14px;">
+                   placeholder="staff@twb.to" style="font-size:14px;padding:11px 14px;">
+          </div>
+        </div>
+
+        {{-- ROW 2: Role + District --}}
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label">Role <span style="color:var(--accent-pink)">*</span></label>
+            <select name="role" class="form-control" required id="addStaffRole"
+                    style="font-size:14px;padding:11px 14px;">
+              <option value="">-- Select Role --</option>
+              <option value="admin">Administrator</option>
+              <option value="cashier">Cashier</option>
+              <option value="account_employee">Account Employee</option>
+              <option value="ceo">CEO</option>
+              <option value="accountant">Accountant</option>
+              <option value="manager">Manager</option>
+            </select>
+            <div id="roleHintText" style="font-size:11px;color:var(--text-muted);margin-top:4px;"></div>
           </div>
           <div class="form-group">
-            <label class="form-label">Password <span style="color:var(--accent-pink)">*</span></label>
-            <input type="password" name="password" class="form-control" required minlength="8"
-                   placeholder="Minimum 8 characters"
-                   style="font-size:14px;padding:11px 14px;">
+            <label class="form-label">District / Area</label>
+            <select name="district_id" class="form-control" style="font-size:14px;padding:11px 14px;">
+              <option value="">-- No District --</option>
+              @foreach(\App\Models\District::where('is_active', true)->orderByDesc('is_headquarters')->orderBy('name')->get() as $dist)
+                <option value="{{ $dist->id }}">{{ $dist->name }}{{ $dist->is_headquarters ? ' (HQ)' : '' }}</option>
+              @endforeach
+            </select>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">HQ staff see all customers. Area staff see their district only.</div>
+          </div>
+        </div>
+
+        {{-- ROW 3: Password --}}
+        <div class="form-group">
+          <label class="form-label">Password <span style="color:var(--accent-pink)">*</span></label>
+          <input type="password" name="password" class="form-control" required minlength="8"
+                 placeholder="Minimum 8 characters" style="font-size:14px;padding:11px 14px;">
+          <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">
+            Staff will be asked to change this password on their first login.
           </div>
         </div>
 
         {{-- Info box --}}
         <div style="background:rgba(26,115,232,0.07);border:1px solid rgba(26,115,232,0.2);border-radius:8px;padding:12px 16px;font-size:14px;color:rgba(255,255,255,0.6);line-height:1.6;">
           <span class="material-icons" style="font-size:15px;vertical-align:middle;margin-right:5px;color:var(--accent-blue);">info</span>
-          <strong style="color:rgba(255,255,255,0.8);">Officers</strong> can manage customers, meters, invoices and payments.
-          <strong style="color:rgba(255,255,255,0.8);">Administrators</strong> have full access including user management and audit logs.
+          <strong style="color:rgba(255,255,255,0.8);">Administrator</strong>: full access &nbsp;·&nbsp;
+          <strong style="color:rgba(255,255,255,0.8);">Cashier</strong>: customers + payments &nbsp;·&nbsp;
+          <strong style="color:rgba(255,255,255,0.8);">Account Employee</strong>: customers, readings, invoices &nbsp;·&nbsp;
+          <strong style="color:rgba(255,255,255,0.8);">CEO / Accountant / Manager</strong>: dashboard only
         </div>
 
       </div>
@@ -213,6 +246,23 @@
 
 @push('scripts')
 <script>
+var roleHints = {
+  'admin':            'Full access to all modules including user management and audit logs.',
+  'cashier':          'Can access: Customers and process Payments.',
+  'account_employee': 'Can access: Customers, Meter Readings, and create Invoices.',
+  'ceo':              'Dashboard view only.',
+  'accountant':       'Dashboard view only.',
+  'manager':          'Dashboard view only.',
+};
+document.addEventListener('DOMContentLoaded', function() {
+  var sel = document.getElementById('addStaffRole');
+  var hint = document.getElementById('roleHintText');
+  if (sel && hint) {
+    sel.addEventListener('change', function() {
+      hint.textContent = roleHints[this.value] || '';
+    });
+  }
+});
 function openModal() {
   document.getElementById('userModal').classList.add('open');
 }

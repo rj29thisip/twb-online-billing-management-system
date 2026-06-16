@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
@@ -20,57 +19,42 @@ class DashboardController extends Controller
     public function index()
     {
         $customer = auth()->user()->customer;
-
         $billing            = $this->billing->estimatedCurrentMonthBill($customer);
         $outstandingBalance = $customer->outstandingBalance();
 
         $overdueInvoice = Invoice::where('customer_id', $customer->id)
-            ->where('status', 'overdue')
-            ->latest('due_date')
-            ->first();
+            ->where('status', 'overdue')->latest('due_date')->first();
 
+        // FIX: Only show anomaly alert for CURRENT MONTH — not stale old data
+        $now = Carbon::now();
         $anomalyAlert = optional($customer->activeMeter)
             ->readings()
             ->where('is_anomaly', true)
+            ->whereYear('capture_time', $now->year)
+            ->whereMonth('capture_time', $now->month)
             ->latest('capture_time')
             ->first();
 
         $recentInvoices = $customer->invoices()->limit(5)->get();
-
-        $lastPayment = Payment::where('customer_id', $customer->id)
-            ->latest('payment_date')
-            ->first();
+        $lastPayment    = Payment::where('customer_id', $customer->id)->latest('payment_date')->first();
 
         $announcements = Announcement::where('is_published', true)
-            ->where(fn ($q) => $q->whereNull('publish_from')->orWhere('publish_from', '<=', now()))
-            ->where(fn ($q) => $q->whereNull('publish_to')->orWhere('publish_to', '>=', now()))
-            ->orderByDesc('created_at')
-            ->limit(5)
-            ->get();
+            ->where(fn($q) => $q->whereNull('publish_from')->orWhere('publish_from', '<=', now()))
+            ->where(fn($q) => $q->whereNull('publish_to')->orWhere('publish_to', '>=', now()))
+            ->orderByDesc('created_at')->limit(5)->get();
 
-        // Daily usage chart — current month
-        $meter        = $customer->activeMeter;
+        $meter = $customer->activeMeter;
         $dailyReadings = collect();
-
         if ($meter) {
             $dailyReadings = MeterReading::where('meter_id', $meter->id)
-                ->whereMonth('capture_time', now()->month)
-                ->whereYear('capture_time', now()->year)
-                ->select(
-                    DB::raw('DATE(`capture_time`) as date'),
-                    DB::raw('SUM(`usage`) as total')
-                )
-                ->groupBy('date')
-                ->orderBy('date')
-                ->get();
+                ->whereMonth('capture_time', now()->month)->whereYear('capture_time', now()->year)
+                ->select(DB::raw('DATE(`capture_time`) as date'), DB::raw('SUM(`usage`) as total'))
+                ->groupBy('date')->orderBy('date')->get();
         }
 
         $usageChart = [
-            'labels'   => $dailyReadings->pluck('date')
-                ->map(fn ($d) => Carbon::parse($d)->format('d M'))->toArray(),
-            'data'     => $dailyReadings->pluck('total')
-                ->map(fn ($v) => (float) $v)->toArray(),
-            // Raw dates for AJAX hourly fetch
+            'labels'   => $dailyReadings->pluck('date')->map(fn($d) => Carbon::parse($d)->format('d M'))->toArray(),
+            'data'     => $dailyReadings->pluck('total')->map(fn($v) => (float) $v)->toArray(),
             'rawDates' => $dailyReadings->pluck('date')->toArray(),
         ];
 
@@ -88,13 +72,8 @@ class DashboardController extends Controller
 
     public function updateProfile(Request $request)
     {
-        $validated = $request->validate([
-            'phone'   => 'nullable|string|max:20',
-            'address' => 'nullable|string',
-        ]);
-
+        $validated = $request->validate(['phone' => 'nullable|string|max:20', 'address' => 'nullable|string']);
         auth()->user()->customer->update($validated);
-
         return back()->with('success', 'Profile updated successfully.');
     }
 }

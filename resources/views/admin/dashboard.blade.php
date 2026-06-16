@@ -1,7 +1,7 @@
 @extends('layouts.app')
-@section('title', 'Admin Dashboard')
-@section('breadcrumb', 'Admin / Dashboard')
-@section('page-title', 'DASHBOARD')
+@section('title', 'Dashboard — ' . $districtLabel)
+@section('breadcrumb', 'Dashboard')
+@section('page-title', 'DASHBOARD — ' . $districtLabel)
 
 @push('head')
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>

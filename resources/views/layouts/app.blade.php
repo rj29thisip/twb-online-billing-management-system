@@ -40,7 +40,12 @@
 
 {{-- ═══ SIDEBAR ════════════════════════════════════════════════ --}}
 <aside class="sidebar" id="sidebar">
-  <a href="{{ url('/') }}" class="sidebar-brand" style="text-decoration: none; color: inherit;">
+  {{-- Brand logo — links to dashboard --}}
+  @if(auth()->user()->isStaff())
+  <a href="{{ route('admin.dashboard') }}" class="sidebar-brand" style="text-decoration:none;display:flex;align-items:center;gap:12px;">
+  @else
+  <a href="{{ route('customer.dashboard') }}" class="sidebar-brand" style="text-decoration:none;display:flex;align-items:center;gap:12px;">
+  @endif
     <div class="brand-logo">
       <span class="material-icons" style="color:#fff;font-size:25px">water_drop</span>
     </div>
@@ -52,20 +57,30 @@
 
   <nav class="sidebar-nav">
     @if(auth()->user()->isStaff())
+      {{-- ── Main / Dashboard (all staff) ── --}}
       <div class="nav-section-title">Main</div>
       <a href="{{ route('admin.dashboard') }}"
          class="nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
          onclick="closeSidebar()">
-        <span class="material-icons">dashboard</span> Dashboard
+        <span class="material-icons">dashboard</span>
+        Dashboard
+        @if(!auth()->user()->isAdmin() && !auth()->user()->isHeadquarters() && auth()->user()->district_id)
+          <span class="sidebar-district-chip">{{ optional(auth()->user()->district)->name }}</span>
+        @endif
       </a>
 
+      {{-- ── Customers (admin, cashier, account_employee) ── --}}
+      @if(auth()->user()->canManageCustomers())
       <div class="nav-section-title">Customers</div>
       <a href="{{ route('admin.customers.index') }}"
          class="nav-item {{ request()->routeIs('admin.customers.*') ? 'active' : '' }}"
          onclick="closeSidebar()">
         <span class="material-icons">people</span> Customers
       </a>
+      @endif
 
+      {{-- ── Meters (admin, account_employee) ── --}}
+      @if(auth()->user()->canAccessMeters())
       <div class="nav-section-title">Meters</div>
       <a href="{{ route('admin.meters.index') }}"
          class="nav-item {{ request()->routeIs('admin.meters.*') ? 'active' : '' }}"
@@ -77,24 +92,39 @@
          onclick="closeSidebar()">
         <span class="material-icons">data_usage</span> Readings
       </a>
+      @endif
 
+      {{-- ── Billing (cashier sees invoices+payments; account_employee also sees create) ── --}}
+      @if(auth()->user()->canViewInvoices() || auth()->user()->canProcessPayments())
       <div class="nav-section-title">Billing</div>
+
+      @if(auth()->user()->canViewInvoices())
       <a href="{{ route('admin.invoices.index') }}"
          class="nav-item {{ request()->routeIs('admin.invoices.*') ? 'active' : '' }}"
          onclick="closeSidebar()">
         <span class="material-icons">receipt_long</span> Invoices
       </a>
+      @endif
+
+      @if(auth()->user()->canCreateInvoices())
       <a href="{{ route('admin.billing.check') }}"
          class="nav-item {{ request()->routeIs('admin.billing.*') ? 'active' : '' }}"
          onclick="closeSidebar()">
         <span class="material-icons">fact_check</span> Create Invoices
       </a>
+      @endif
+
+      @if(auth()->user()->canProcessPayments())
       <a href="{{ route('admin.payments.index') }}"
          class="nav-item {{ request()->routeIs('admin.payments.*') ? 'active' : '' }}"
          onclick="closeSidebar()">
         <span class="material-icons">payments</span> Payments
       </a>
+      @endif
+      @endif
 
+      {{-- ── Configuration (admin, account_employee) ── --}}
+      @if(auth()->user()->canAccessConfig())
       <div class="nav-section-title">Configuration</div>
       <a href="{{ route('admin.config.tariffs.index') }}"
          class="nav-item {{ request()->routeIs('admin.config.tariffs.*') ? 'active' : '' }}"
@@ -116,13 +146,33 @@
          onclick="closeSidebar()">
         <span class="material-icons">campaign</span> Announcements
       </a>
+      @endif
 
+      {{-- ── Account: Change Password (all staff) ── --}}
+      <div class="nav-section-title">Account</div>
+      <a href="{{ route('admin.account.password.show') }}"
+         class="nav-item {{ request()->routeIs('admin.account.password.*') ? 'active' : '' }}"
+         onclick="closeSidebar()">
+        <span class="material-icons">lock_reset</span> Change Password
+      </a>
+
+      {{-- ── System (admin only) ── --}}
       @if(auth()->user()->isAdmin())
       <div class="nav-section-title">System</div>
       <a href="{{ route('admin.users.index') }}"
          class="nav-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}"
          onclick="closeSidebar()">
         <span class="material-icons">manage_accounts</span> Users
+      </a>
+      <a href="{{ route('admin.districts.index') }}"
+         class="nav-item {{ request()->routeIs('admin.districts.*') ? 'active' : '' }}"
+         onclick="closeSidebar()">
+        <span class="material-icons">map</span> Districts
+      </a>
+      <a href="{{ route('admin.email-config.index') }}"
+         class="nav-item {{ request()->routeIs('admin.email-config.*') ? 'active' : '' }}"
+         onclick="closeSidebar()">
+        <span class="material-icons">email</span> Email Config
       </a>
       <a href="{{ route('admin.audit.index') }}"
          class="nav-item {{ request()->routeIs('admin.audit.*') ? 'active' : '' }}"
@@ -197,6 +247,15 @@
       <span class="page-title">@yield('page-title', 'Dashboard')</span>
     </div>
     <div class="topbar-right">
+
+      {{-- PDF EXPORT — only on dashboard --}}
+      @if(auth()->user()->isStaff() && request()->routeIs('admin.dashboard'))
+      <button class="icon-btn" title="Export Dashboard PDF"
+              onclick="document.getElementById('dashPdfModal').style.display='flex'"
+              style="position:relative;">
+        <span class="material-icons">picture_as_pdf</span>
+      </button>
+      @endif
 
       {{-- DARK/LIGHT MODE TOGGLE --}}
       <button class="icon-btn" id="themeToggle" title="Toggle light/dark mode" onclick="toggleTheme()">
@@ -456,5 +515,90 @@ function esc(str) {
 @endif
 
 @stack('scripts')
+
+@if(auth()->user()->isStaff())
+{{-- ═══ DASHBOARD PDF EXPORT MODAL ══════════════════════════════════ --}}
+<div id="dashPdfModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.55);align-items:center;justify-content:center;">
+  <div style="background:var(--surface,#1e2a3a);border:1px solid var(--border,rgba(255,255,255,0.1));border-radius:12px;padding:28px 32px;width:100%;max-width:440px;box-shadow:0 20px 60px rgba(0,0,0,0.4);">
+
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+      <span class="material-icons" style="color:#e74c3c;font-size:22px;">picture_as_pdf</span>
+      <h3 style="margin:0;font-size:16px;color:var(--text-primary,#fff);">Export Executive Summary</h3>
+    </div>
+    <p style="font-size:13px;color:var(--text-secondary,rgba(255,255,255,0.6));margin:0 0 20px;">
+      Generate a PDF report containing financial overview, collection rates, meter readings, anomalies, overdue invoices, and top customers by usage.
+    </p>
+
+    <div style="background:rgba(52,152,219,0.1);border:1px solid rgba(52,152,219,0.3);border-radius:8px;padding:14px 16px;margin-bottom:20px;">
+      <div style="font-size:12px;color:var(--text-secondary,rgba(255,255,255,0.6));margin-bottom:6px;">Select Period</div>
+      <input type="month" id="pdfMonth"
+             value="{{ now()->format('Y-m') }}"
+             max="{{ now()->format('Y-m') }}"
+             style="width:100%;background:var(--surface-2,rgba(255,255,255,0.05));border:1px solid var(--border,rgba(255,255,255,0.15));border-radius:6px;padding:8px 12px;color:var(--text-primary,#fff);font-size:13px;font-family:inherit;">
+      <div style="font-size:11px;color:var(--text-muted,rgba(255,255,255,0.4));margin-top:6px;" id="pdfTitlePreview">
+        Executive Summary for {{ now()->format('F Y') }} — as per {{ now()->format('d/m/Y') }}
+      </div>
+    </div>
+
+    <div style="display:flex;gap:10px;justify-content:flex-end;">
+      <button onclick="document.getElementById('dashPdfModal').style.display='none'"
+              style="padding:8px 18px;background:none;border:1px solid var(--border,rgba(255,255,255,0.15));border-radius:6px;color:var(--text-secondary,rgba(255,255,255,0.6));cursor:pointer;font-size:13px;">
+        Cancel
+      </button>
+      <button id="btnDlPdf" onclick="downloadDashPdf()"
+              style="padding:8px 20px;background:var(--accent-blue,#1a73e8);border:none;border-radius:6px;color:#fff;cursor:pointer;font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px;">
+        <span class="material-icons" style="font-size:16px;">download</span> Download PDF
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  var monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var today = '{{ now()->format("d/m/Y") }}';
+  var baseUrl = '{{ route("admin.dashboard.export-pdf") }}';
+
+  function labelFromVal(val) {
+    if (!val) return '';
+    var parts = val.split('-');
+    return monthNames[parseInt(parts[1],10)-1] + ' ' + parts[0];
+  }
+
+  var picker = document.getElementById('pdfMonth');
+  var preview = document.getElementById('pdfTitlePreview');
+
+  if (picker) {
+    picker.addEventListener('change', function() {
+      if (preview) preview.textContent = 'Executive Summary for ' + labelFromVal(this.value) + ' — as per ' + today;
+    });
+  }
+
+  window.downloadDashPdf = function() {
+    var val = picker ? picker.value : '{{ now()->format("Y-m") }}';
+    var btn = document.getElementById('btnDlPdf');
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<span class="material-icons" style="font-size:16px;">refresh</span> Generating...';
+    }
+    // Use direct navigation — respects Content-Disposition: attachment header properly
+    // (Edge/Chrome sometimes ignore it with programmatic <a> clicks)
+    window.location.href = baseUrl + '?month=' + val;
+    setTimeout(function() {
+      document.getElementById('dashPdfModal').style.display = 'none';
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<span class="material-icons" style="font-size:16px;">download</span> Download PDF';
+      }
+    }, 3000);
+  };
+
+  // Close modal on backdrop click
+  document.getElementById('dashPdfModal').addEventListener('click', function(e) {
+    if (e.target === this) this.style.display = 'none';
+  });
+})();
+</script>
+@endif
 </body>
 </html>

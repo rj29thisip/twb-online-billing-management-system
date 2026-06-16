@@ -32,10 +32,21 @@
       <option value="inactive"  {{ request('status') === 'inactive'  ? 'selected' : '' }}>Inactive</option>
       <option value="suspended" {{ request('status') === 'suspended' ? 'selected' : '' }}>Suspended</option>
     </select>
+    {{-- District filter: only for HQ/admin --}}
+    @if(auth()->user()->isAdmin() || auth()->user()->isHeadquarters())
+    <select name="district_id" class="form-control">
+      <option value="">All Districts</option>
+      @foreach($districts ?? [] as $dist)
+        <option value="{{ $dist->id }}" {{ request('district_id') == $dist->id ? 'selected' : '' }}>
+          {{ $dist->name }}
+        </option>
+      @endforeach
+    </select>
+    @endif
     <button type="submit" class="btn btn-outline btn-sm">
       <span class="material-icons">filter_list</span> Filter
     </button>
-    @if(request()->hasAny(['search','block','status']))
+    @if(request()->hasAny(['search','block','status','district_id']))
       <a href="{{ route('admin.customers.index') }}" class="btn btn-outline btn-sm">
         <span class="material-icons">clear</span> Clear
       </a>
@@ -48,6 +59,7 @@
         <tr>
           <th>Customer</th>
           <th>Account #</th>
+          <th>District</th>
           <th>Block</th>
           <th>Phone</th>
           <th>Meter ID</th>
@@ -71,6 +83,15 @@
               </div>
             </td>
             <td class="td-primary" style="font-family:monospace;">{{ $customer->account_number }}</td>
+            <td>
+              @if($customer->district)
+                <span style="font-size:11px;background:rgba(26,188,156,0.12);color:var(--accent-teal);padding:2px 8px;border-radius:10px;">
+                  {{ $customer->district->name }}
+                </span>
+              @else
+                <span style="color:var(--text-muted);font-size:12px;">—</span>
+              @endif
+            </td>
             <td>{{ $customer->block_number ?? '—' }}</td>
             <td>{{ $customer->phone ?? '—' }}</td>
             <td>
@@ -102,7 +123,7 @@
           </tr>
         @empty
           <tr>
-            <td colspan="8">
+            <td colspan="9">
               <div class="empty-state">
                 <span class="material-icons">people</span>
                 <h3>No customers found</h3>
