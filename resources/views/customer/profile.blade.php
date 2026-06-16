@@ -8,7 +8,7 @@
 
   <div class="card">
     <div class="table-card-header">
-      <div class="card-header-float" style="background:var(--gradient-black);">
+      <div class="card-header-float" style="background:var(--gradient-dark);">
         <div>
           <h3>Account Information</h3>
           <p>{{ $customer->account_number }} — {{ ucfirst($customer->status ?? 'active') }}</p>

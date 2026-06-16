@@ -18,7 +18,7 @@
   {{-- LEFT: Controls --}}
   <div class="card-tight-margin">
 
-    <div class="card-header-float" style="background:var(--gradient-black);">
+    <div class="card-header-float" style="background:var(--gradient-dark);">
       <div><h3>Billing Parameters</h3></div>
         <span class="material-icons" style="color:var(--accent-blue)">tune</span>
       </div>

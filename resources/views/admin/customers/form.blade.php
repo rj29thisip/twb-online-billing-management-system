@@ -18,7 +18,7 @@
       {{ $errors->first() }}
   <div class="card">
     <div class="table-card-header">
-      <div class="card-header-float" style="background:var(--gradient-black);">
+      <div class="card-header-float" style="background:var(--gradient-dark);">
         <div>
           <h3>{{ isset($customer) ? 'Edit Customer Record' : 'New Customer' }}</h3>
           <p>{{ isset($customer) ? 'Account: ' . $customer->account_number : 'Fill in all required fields below' }}</p>
