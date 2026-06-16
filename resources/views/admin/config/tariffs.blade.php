@@ -2,14 +2,14 @@
 @extends('layouts.app')
 @section('title', 'Tariff Configuration')
 @section('breadcrumb', 'Admin / Configuration / Tariffs')
-@section('page-title', 'Tariff Management')
+@section('page-title', 'TARIFF MANAGEMENT')
 
 @section('content')
 
 <div class="section-header">
   <div>
     <h2>Tariff Tiers</h2>
-    <p>Configure tiered water pricing rates</p>
+    <p>Add and configure tariff tiers applied during billing</p>
   </div>
   <button class="btn btn-primary" onclick="openTariffModal()">
     <span class="material-icons">add</span> Add Tier
@@ -19,7 +19,7 @@
 <div style="display:grid;grid-template-columns:1fr 380px;gap:24px;align-items:start;">
 
   {{-- TARIFF TABLE --}}
-  <div class="card">
+  <div class="card-tight-margin">
     <div class="table-wrapper">
       <table>
         <thead>
@@ -80,21 +80,21 @@
   </div>
 
   {{-- HOW TIERS WORK --}}
-  <div class="card">
+  <div class="card-tight-margin">
     <div class="card-body">
-      <h3 style="font-size:14px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px;">
+      <h3 style="font-size:16px;font-weight:600;margin-top:10px;margin-bottom:16px;display:flex;align-items:center;gap:8px;">
         <span class="material-icons" style="color:var(--accent-blue)">info</span>
         How Tiered Billing Works
       </h3>
 
-      <div style="font-size:13px;color:var(--text-secondary);line-height:1.7;margin-bottom:16px;">
+      <div style="font-size:14px;color:var(--text-secondary);line-height:1.7;margin-bottom:16px;">
         Consumption is billed progressively. Lower tiers have cheaper rates for essential usage;
         higher tiers have higher rates for greater consumption.
       </div>
 
       {{-- Example --}}
       <div style="background:rgba(26,115,232,0.06);border:1px solid rgba(26,115,232,0.15);border-radius:8px;padding:14px;">
-        <div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-muted);margin-bottom:10px;">Example: 25 m³ consumption</div>
+        <div style="font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-muted);margin-bottom:10px;">Example: 25 m³ consumption</div>
 
         @php
           $exampleTiers = $tiers->where('is_active', true)->values();

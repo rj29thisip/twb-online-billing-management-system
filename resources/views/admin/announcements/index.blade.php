@@ -1,21 +1,21 @@
 @extends('layouts.app')
 @section('title', 'Announcements')
 @section('breadcrumb', 'Admin / Announcements')
-@section('page-title', 'Announcements')
+@section('page-title', 'ANNOUNCEMENTS')
 
 @section('content')
 
 <div class="section-header">
   <div>
-    <h2>Announcements</h2>
-    <p>News, promotions, and events shown to customers</p>
+    <h2>Announcement Posting</h2>
+    <p>View, create, modify, and delete news, promotions, and events to be broadcasted to customers</p>
   </div>
   <a href="{{ route('admin.announcements.create') }}" class="btn btn-primary">
     <span class="material-icons">add</span> New Announcement
   </a>
 </div>
 
-<div class="card">
+<div class="card-tight-margin">
   <div class="table-wrapper">
     <table>
       <thead>

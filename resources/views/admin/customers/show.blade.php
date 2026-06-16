@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Customer: ' . $customer->full_name)
 @section('breadcrumb', 'Admin / Customers / ' . $customer->account_number)
-@section('page-title', 'Customer Detail')
+@section('page-title', 'CUSTOMER DETAILS')
 
 @section('content')
 
@@ -34,8 +34,7 @@
   {{-- ── LEFT COLUMN ─────────────────────────────────────────────────── --}}
   <div style="display:flex;flex-direction:column;gap:20px;">
 
-    {{-- Personal Details --}}
-    <div class="card">
+    <div class="card-tight-margin">
       <div class="table-card-header">
         <div style="padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">
           <h4 style="margin:0;font-size:13px;display:flex;align-items:center;gap:6px;">
@@ -127,7 +126,7 @@
   <div style="display:flex;flex-direction:column;gap:20px;">
 
     {{-- Account Details --}}
-    <div class="card">
+    <div class="card-tight-margin">
       <div class="table-card-header">
         <div style="padding:14px 20px;">
           <h4 style="margin:0;font-size:13px;display:flex;align-items:center;gap:6px;">

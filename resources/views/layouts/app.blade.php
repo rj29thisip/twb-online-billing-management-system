@@ -47,11 +47,11 @@
   <a href="{{ route('customer.dashboard') }}" class="sidebar-brand" style="text-decoration:none;display:flex;align-items:center;gap:12px;">
   @endif
     <div class="brand-logo">
-      <span class="material-icons" style="color:#fff;font-size:20px">water_drop</span>
+      <span class="material-icons" style="color:#fff;font-size:25px">water_drop</span>
     </div>
     <div>
-      <div class="brand-text">TWB Billing</div>
-      <div class="brand-sub">Water Management</div>
+        <div class="brand-text">TWB ONLINE</div>
+        <div class="brand-sub">Water Billing Management</div>
     </div>
   </a>
 
@@ -208,13 +208,15 @@
 
   <div class="sidebar-footer">
     @if(auth()->user()->isStaff())
+      {{-- <a href="{{ route('customer.profile') }}" class="user-profile" style="text-decoration:none;" onclick="closeSidebar()"></a> --}}
       <div class="user-profile">
         <div class="avatar">{{ substr(auth()->user()->name, 0, 2) }}</div>
-        <div>
-          <div class="user-name">{{ auth()->user()->name }}</div>
-          <div class="user-role">{{ ucfirst(auth()->user()->role) }}</div>
+          <div>
+            <div class="user-name">{{ auth()->user()->name }}</div>
+            <div class="user-role">{{ ucfirst(auth()->user()->role) }}</div>
         </div>
       </div>
+      {{-- </a> --}}
     @else
       <a href="{{ route('customer.profile') }}" class="user-profile" style="text-decoration:none;" onclick="closeSidebar()">
         <div class="avatar">{{ substr(auth()->user()->name, 0, 2) }}</div>
@@ -227,7 +229,8 @@
     <form action="{{ route('logout') }}" method="POST" style="margin-top:10px">
       @csrf
       <button type="submit" class="nav-item"
-              style="width:100%;border:none;background:none;cursor:pointer;color:rgba(255,255,255,0.55);font-size:13.5px;display:flex;align-items:center;gap:14px;font-family:inherit;">
+              {{-- style="width:100%;border:none;background:none;cursor:pointer;color:rgba(255,255,255,0.55);font-size:16px;display:flex;align-items:center;gap:14px;font-family:inherit;"> --}}
+              style="width:100%; border:none; background:none; cursor:pointer; font-size:16px; display:flex; align-items:center; justify-content:flex-start; padding-left:0; gap:14px; font-family:inherit;">
         <span class="material-icons">logout</span> Sign Out
       </button>
     </form>
