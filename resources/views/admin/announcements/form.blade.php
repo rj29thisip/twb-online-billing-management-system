@@ -15,7 +15,7 @@
 
   <div class="card">
     <div class="table-card-header">
-      <div class="card-header-float" style="background:var(--gradient-purple);">
+      <div class="card-header-float" style="background:var(--gradient-dark);">
         <div>
           <h3>{{ isset($announcement) ? 'Edit Announcement' : 'New Announcement' }}</h3>
           <p>{{ isset($announcement) ? 'Update existing announcement' : 'Create a new announcement for customers' }}</p>

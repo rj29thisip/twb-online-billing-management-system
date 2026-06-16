@@ -10,7 +10,7 @@
 
   <div class="card">
     <div class="table-card-header">
-      <div class="card-header-float" style="background:var(--gradient-blue);">
+      <div class="card-header-float" style="background:var(--gradient-dark);">
         <div>
           <h3>Upload File</h3>
           <p>Supported formats: TWB XML (Itron OpenWay) and CSV</p>

@@ -88,7 +88,7 @@
   <div>
     <div class="card">
       <div class="table-card-header">
-        <div class="card-header-float" style="background:var(--gradient-green);">
+        <div class="card-header-float" style="background:var(--gradient-dark);">
           <div><h3>Payment History</h3></div>
           <span class="material-icons">receipt</span>
         </div>

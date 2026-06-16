@@ -39,7 +39,7 @@
 <div class="stat-cards">
 
   <div class="stat-card">
-    <div class="stat-icon" style="background:var(--gradient-info);">
+    <div class="stat-icon" style="background:var(--gradient-dark);">
       <span class="material-icons">water_drop</span>
     </div>
     <div class="stat-body">
@@ -56,7 +56,7 @@
   </div>
 
   <div class="stat-card">
-    <div class="stat-icon" style="background:var(--gradient-blue);">
+    <div class="stat-icon" style="background:var(--gradient-dark);">
       <span class="material-icons">calculate</span>
     </div>
     <div class="stat-body">
@@ -91,7 +91,7 @@
   </div>
 
   <div class="stat-card">
-    <div class="stat-icon" style="background:var(--gradient-green);">
+    <div class="stat-icon" style="background:var(--gradient-dark);">
       <span class="material-icons">check_circle</span>
     </div>
     <div class="stat-body">
@@ -114,7 +114,7 @@
 {{-- ── USAGE CHART ─────────────────────────────────────────── --}}
 <div class="card">
   <div class="table-card-header">
-    <div class="card-header-float" style="background:var(--gradient-blue);">
+    <div class="card-header-float" style="background:var(--gradient-dark);">
       <div>
         <h3>Water Usage — {{ now()->format('F Y') }}</h3>
         <p id="chart-subtitle">Daily consumption — click a bar to see hourly breakdown</p>

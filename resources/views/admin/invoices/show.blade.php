@@ -95,9 +95,9 @@
     </div>
 
     {{-- Tier Breakdown --}}
-    <div class="card">
+    <div class="card-tight-margin">
       <div class="table-card-header">
-        <div class="card-header-float" style="background:var(--gradient-blue);">
+        <div class="card-header-float" style="background:var(--gradient-dark);">
           <div>
             <h3>Charge Breakdown</h3>
             <p>Tiered billing calculation
@@ -175,7 +175,7 @@
   <div>
     <div class="card">
       <div class="table-card-header">
-        <div class="card-header-float" style="background:var(--gradient-green);">
+        <div class="card-header-float" style="background:var(--gradient-dark);">
           <div><h3>Payment History</h3><p>{{ $invoice->payments->count() }} payment(s) recorded</p></div>
           <span class="material-icons">receipt</span>
         </div>

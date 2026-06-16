@@ -8,19 +8,19 @@
 {{-- STATS --}}
 <div class="stat-cards" style="grid-template-columns:repeat(4,1fr);margin-bottom:24px;">
   <div class="stat-card">
-    <div class="stat-icon" style="background:var(--gradient-blue);"><span class="material-icons">login</span></div>
+    <div class="stat-icon" style="background:var(--gradient-dark);"><span class="material-icons">login</span></div>
     <div class="stat-body"><div><div class="stat-label">Logins Today</div><div class="stat-value">{{ $loginsToday }}</div></div></div>
     <hr class="stat-divider">
     <div class="stat-footer"><span class="material-icons">calendar_today</span><span>{{ now()->format('d M Y') }}</span></div>
   </div>
   <div class="stat-card">
-    <div class="stat-icon" style="background:var(--gradient-pink);"><span class="material-icons">receipt_long</span></div>
+    <div class="stat-icon" style="background:var(--gradient-dark);"><span class="material-icons">receipt_long</span></div>
     <div class="stat-body"><div><div class="stat-label">Invoices Generated</div><div class="stat-value">{{ $invoicesToday }}</div></div></div>
     <hr class="stat-divider">
     <div class="stat-footer"><span class="material-icons">calendar_today</span><span>Today</span></div>
   </div>
   <div class="stat-card">
-    <div class="stat-icon" style="background:var(--gradient-green);"><span class="material-icons">payments</span></div>
+    <div class="stat-icon" style="background:var(--gradient-dark);"><span class="material-icons">payments</span></div>
     <div class="stat-body"><div><div class="stat-label">Payments Recorded</div><div class="stat-value">{{ $paymentsToday }}</div></div></div>
     <hr class="stat-divider">
     <div class="stat-footer"><span class="material-icons">calendar_today</span><span>Today</span></div>

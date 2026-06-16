@@ -23,7 +23,7 @@
   <div style="display:flex;flex-direction:column;gap:24px;">
     <div class="card">
       <div class="table-card-header">
-        <div class="card-header-float" style="background:var(--gradient-info);">
+        <div class="card-header-float" style="background:var(--gradient-dark);">
           <div>
             <h3>{{ $meter->meter_id }}</h3>
             <p>Endpoint: {{ $meter->endpoint_id ?? '—' }}</p>

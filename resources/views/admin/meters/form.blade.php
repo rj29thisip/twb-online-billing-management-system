@@ -13,7 +13,7 @@
 
   <div class="card">
     <div class="table-card-header">
-      <div class="card-header-float" style="background:var(--gradient-info);">
+      <div class="card-header-float" style="background:var(--gradient-dark);">
         <div>
           <h3>{{ isset($meter) ? 'Edit Meter' : 'Register New Meter' }}</h3>
           <p>{{ isset($meter) ? $meter->meter_id : 'Fill in meter device details' }}</p>

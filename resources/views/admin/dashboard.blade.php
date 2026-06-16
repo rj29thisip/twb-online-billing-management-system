@@ -13,7 +13,7 @@
 <div class="stat-cards">
 
   <div class="stat-card">
-    <div class="stat-icon" style="background:var(--gradient-blue);">
+    <div class="stat-icon" style="background:var(--gradient-dark);">
       <span class="material-icons">people</span>
     </div>
     <div class="stat-body">
@@ -30,7 +30,7 @@
   </div>
 
   <div class="stat-card">
-    <div class="stat-icon" style="background:var(--gradient-info);">
+    <div class="stat-icon" style="background:var(--gradient-dark);">
       <span class="material-icons">water_drop</span>
     </div>
     <div class="stat-body">
@@ -47,7 +47,7 @@
   </div>
 
   <div class="stat-card">
-    <div class="stat-icon" style="background:var(--gradient-green);">
+    <div class="stat-icon" style="background:var(--gradient-dark);">
       <span class="material-icons">payments</span>
     </div>
     <div class="stat-body">
@@ -87,8 +87,8 @@
 
   <div class="card">
     <div class="table-card-header">
-      <div class="card-header-float" style="background:var(--gradient-blue);">
-        <div><h3>Daily Consumption</h3><p>Water usage (m³) — this month</p></div>
+      <div class="card-header-float" style="background:var(--gradient-dark);">
+        <div><h3>Daily Consumption</h3><p>Water usage (m³) - current month</p></div>
         <span class="material-icons">show_chart</span>
       </div>
     </div>
@@ -101,7 +101,7 @@
 
   <div class="card">
     <div class="table-card-header">
-      <div class="card-header-float" style="background:var(--gradient-green);">
+      <div class="card-header-float" style="background:var(--gradient-dark);">
         <div><h3>Revenue (6 months)</h3><p>Invoiced vs Collected</p></div>
         <span class="material-icons">bar_chart</span>
       </div>

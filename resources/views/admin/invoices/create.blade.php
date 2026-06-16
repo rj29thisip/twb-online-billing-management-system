@@ -16,7 +16,12 @@
 <div style="display:grid;grid-template-columns:340px 1fr;gap:24px;align-items:start;">
 
   {{-- LEFT: Controls --}}
-  <div class="card">
+  <div class="card-tight-margin">
+
+    <div class="card-header-float" style="background:var(--gradient-dark);">
+      <div><h3>Billing Parameters</h3></div>
+        <span class="material-icons" style="color:var(--accent-blue)">tune</span>
+      </div>
     <div class="card-body">
       <h3 style="font-size:15px;font-weight:600;margin-bottom:20px;display:flex;align-items:center;gap:8px;">
         <span class="material-icons" style="color:var(--accent-blue)">tune</span>
