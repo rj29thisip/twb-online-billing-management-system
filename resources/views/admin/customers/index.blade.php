@@ -2,21 +2,21 @@
 @extends('layouts.app')
 @section('title', 'Customers')
 @section('breadcrumb', 'Admin / Customers')
-@section('page-title', 'Customer Management')
+@section('page-title', 'CUSTOMER MANAGEMENT')
 
 @section('content')
 
 <div class="section-header">
   <div>
-    <h2>Customers</h2>
-    <p>All registered water service subscribers</p>
+    <h2>Customer Accounts</h2>
+    <p>View, add, and modify registered customer accounts</p>
   </div>
   <a href="{{ route('admin.customers.create') }}" class="btn btn-primary">
     <span class="material-icons">person_add</span> Add Customer
   </a>
 </div>
 
-<div class="card">
+<div class="card-tight-margin">
   <form method="GET" class="filter-bar">
     <input type="text" name="search" class="form-control" placeholder="Name, account #, phone..."
            value="{{ request('search') }}">
@@ -75,7 +75,7 @@
             <td>{{ $customer->phone ?? '—' }}</td>
             <td>
               @if($customer->activeMeter)
-                <code style="font-size:11px;color:var(--accent-teal);">{{ $customer->activeMeter->meter_id }}</code>
+                <code style="font-size:14px;color:var(--accent-teal);">{{ $customer->activeMeter->meter_id }}</code>
               @else
                 <span style="color:var(--text-muted);">No meter</span>
               @endif

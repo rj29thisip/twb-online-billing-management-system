@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Meter Readings')
 @section('breadcrumb', 'Admin / Meters / Readings')
-@section('page-title', 'Meter Readings')
+@section('page-title', 'METER READINGS')
 
 @section('content')
 
@@ -15,17 +15,17 @@
 @endif
 
 <div class="section-header">
-  <div><h2>Meter Readings</h2><p>All AMR and manual readings</p></div>
+  <div><h2>Consumption Readings</h2><p>View Automated Meter Readings (AMR) or Manual Meter Readings and Import Manual Meter Readings.</p></div>
   <a href="{{ route('admin.readings.import') }}" class="btn btn-primary">
-    <span class="material-icons">upload_file</span> Import CSV
+    <span class="material-icons">upload_file</span> Import Meter Readings
   </a>
 </div>
 
-<div class="card">
+<div class="card-tight-margin">
   <form method="GET" class="filter-bar">
     <input type="text" name="meter" class="form-control" placeholder="Meter ID..." value="{{ request('meter') }}">
     <input type="date" name="date" class="form-control" value="{{ request('date') }}">
-    <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-secondary);cursor:pointer;">
+    <label style="display:flex;align-items:center;gap:6px;font-size:14px;color:var(--text-secondary);cursor:pointer;">
       <input type="checkbox" name="anomaly" value="1" {{ request('anomaly') ? 'checked' : '' }}>
       Anomalies only
     </label>
@@ -47,7 +47,7 @@
               <div class="u-name">{{ $r->meter->customer->name }}</div>
               <div class="u-sub">{{ $r->meter->customer->account_number }}</div>
             </td>
-            <td style="font-family:monospace;font-size:11px;color:var(--accent-teal);">{{ $r->meter->meter_id }}</td>
+            <td style="font-family:monospace;font-size:14px;color:var(--accent-teal);">{{ $r->meter->meter_id }}</td>
             <td>{{ $r->capture_time->format('d M Y H:i') }}</td>
             <td>{{ number_format($r->value, 0) }}</td>
             <td class="td-primary">{{ number_format($r->usage, 0) }}</td>

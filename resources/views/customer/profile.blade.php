@@ -1,14 +1,14 @@
 @extends('layouts.app')
 @section('title', 'My Profile')
 @section('breadcrumb', 'Customer / Profile')
-@section('page-title', 'My Profile')
+@section('page-title', 'MY PROFILE')
 
 @section('content')
 <div style="max-width:860px;margin:0 auto;">
 
   <div class="card">
     <div class="table-card-header">
-      <div class="card-header-float" style="background:var(--gradient-blue);">
+      <div class="card-header-float" style="background:var(--gradient-black);">
         <div>
           <h3>Account Information</h3>
           <p>{{ $customer->account_number }} — {{ ucfirst($customer->status ?? 'active') }}</p>
@@ -25,7 +25,7 @@
 
         {{-- Left: read-only info --}}
         <div>
-          <div style="font-size:11px;text-transform:uppercase;color:var(--text-muted);font-weight:600;letter-spacing:0.8px;margin-bottom:12px;">
+          <div style="font-size:14px;text-transform:uppercase;color:var(--text-muted);font-weight:600;letter-spacing:0.8px;margin-bottom:12px;">
             Account Details
           </div>
           <div class="detail-row">
@@ -62,7 +62,7 @@
 
         {{-- Right: editable form --}}
         <div>
-          <div style="font-size:11px;text-transform:uppercase;color:var(--text-muted);font-weight:600;letter-spacing:0.8px;margin-bottom:12px;">
+          <div style="font-size:14px;text-transform:uppercase;color:var(--text-muted);font-weight:600;letter-spacing:0.8px;margin-bottom:12px;">
             Update Details
           </div>
           <form action="{{ route('customer.profile.update') }}" method="POST">

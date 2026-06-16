@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Invoice ' . $invoice->invoice_number)
 @section('breadcrumb', 'Admin / Invoices / Detail')
-@section('page-title', 'Invoice Detail')
+@section('page-title', 'INVOICE DETAILS')
 
 @section('content')
 
@@ -44,7 +44,7 @@
   {{-- LEFT: Invoice Details --}}
   <div style="display:flex;flex-direction:column;gap:24px;">
 
-    <div class="card">
+    <div class="card-tight-margin">
       <div class="table-card-header">
         <div class="card-header-float" style="background:var(--gradient-dark);">
           <div>
@@ -97,9 +97,9 @@
     {{-- Tier Breakdown --}}
     <div class="card">
       <div class="table-card-header">
-        <div class="card-header-float" style="background:var(--gradient-blue);">
+        <div class="card-header-float" style="background:var(--gradient-black);">
           <div><h3>Charge Breakdown</h3><p>Tiered billing calculation</p></div>
-          <span class="material-icons">layers</span>
+          <span class="material-icons" style="color:var(--accent-blue)">layers</span>
         </div>
       </div>
       <div class="table-wrapper">
@@ -153,11 +153,11 @@
 
   {{-- RIGHT: Payment History --}}
   <div>
-    <div class="card">
+    <div class="card-tight-margin">
       <div class="table-card-header">
-        <div class="card-header-float" style="background:var(--gradient-green);">
+        <div class="card-header-float" style="background:var(--gradient-black);">
           <div><h3>Payment History</h3><p>{{ $invoice->payments->count() }} payment(s) recorded</p></div>
-          <span class="material-icons">receipt</span>
+          <span class="material-icons" style="color:var(--accent-blue)">receipt</span>
         </div>
       </div>
       <div class="table-wrapper">
@@ -168,7 +168,7 @@
           <tbody>
             @forelse($invoice->payments as $pay)
               <tr>
-                <td style="font-family:monospace;font-size:11px;">{{ $pay->receipt_number }}</td>
+                <td style="font-family:monospace;font-size:14px;">{{ $pay->receipt_number }}</td>
                 <td>{{ $pay->payment_date->format('d M Y') }}</td>
                 <td>{{ ucfirst(str_replace('_',' ',$pay->payment_method)) }}</td>
                 <td class="td-primary">T$ {{ number_format($pay->amount, 2) }}</td>

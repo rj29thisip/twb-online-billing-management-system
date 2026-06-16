@@ -2,7 +2,7 @@
 @extends('layouts.app')
 @section('title', 'Create Invoices')
 @section('breadcrumb', 'Admin / Billing / Create Invoices')
-@section('page-title', 'Create Invoices')
+@section('page-title', 'CREATE INVOICES')
 
 @section('content')
 
@@ -16,13 +16,13 @@
 <div style="display:grid;grid-template-columns:340px 1fr;gap:24px;align-items:start;">
 
   {{-- LEFT: Controls --}}
-  <div class="card">
-    <div class="card-body">
-      <h3 style="font-size:15px;font-weight:600;margin-bottom:20px;display:flex;align-items:center;gap:8px;">
-        <span class="material-icons" style="color:var(--accent-blue)">tune</span>
-        Billing Parameters
-      </h3>
+  <div class="card-tight-margin">
 
+    <div class="card-header-float" style="background:var(--gradient-black);">
+      <div><h3>Billing Parameters</h3></div>
+        <span class="material-icons" style="color:var(--accent-blue)">tune</span>
+      </div>
+    <div class="card-body">
       <form id="billingCheckForm" action="{{ route('admin.billing.check') }}" method="GET">
 
         <div class="form-group">
@@ -72,45 +72,52 @@
     @if(isset($previews) && count($previews) > 0)
 
       {{-- Summary Banner --}}
-      <div class="card" style="margin-bottom:24px;">
-        <div class="card-body" style="display:flex;gap:32px;align-items:center;flex-wrap:wrap;">
-          <div>
-            <div style="font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">Customers Ready</div>
-            <div style="font-size:28px;font-weight:700;color:var(--accent-green);">{{ count($previews) }}</div>
-          </div>
-          <div>
-            <div style="font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">Total Consumption</div>
-            <div style="font-size:28px;font-weight:700;">{{ number_format(collect($previews)->sum('total_usage_m3'), 1) }} m³</div>
-          </div>
-          <div>
-            <div style="font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">Total Amount</div>
-            <div style="font-size:28px;font-weight:700;color:var(--accent-blue);">T$ {{ number_format(collect($previews)->sum('total_amount'), 2) }}</div>
-          </div>
-          <div style="margin-left:auto;">
-            <form action="{{ route('admin.billing.generate') }}" method="POST" id="generateForm">
-              @csrf
-              <input type="hidden" name="period_start" value="{{ request('period_start') }}">
-              <input type="hidden" name="period_end"   value="{{ request('period_end') }}">
-              <input type="hidden" name="block"        value="{{ request('block') }}">
-              <input type="hidden" name="customer_id"  value="{{ request('customer_id') }}">
-              <button type="button" class="btn btn-success" onclick="confirmGenerate()">
-                <span class="material-icons">receipt_long</span>
-                Generate {{ count($previews) }} Invoice{{ count($previews) > 1 ? 's' : '' }}
-              </button>
-            </form>
+      <div class="card-tight-margin" style="margin-bottom:24px;">
+        <div class="card-header-float" style="background:var(--gradient-dark);">
+            <div>
+              <h3>Billing Summary</h3>
+              <p>{{ request('period_start') }} to {{ request('period_end') }}</p>
+              </div>
+              <span class="material-icons" style="color:var(--accent-blue)">bar_chart</span>
+            </div>        
+          <div class="card-body" style="display:flex;gap:32px;align-items:center;flex-wrap:wrap;">
+            <div>
+              <div style="font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">Customers Ready</div>
+              <div style="font-size:28px;font-weight:700;color:var(--accent-green);">{{ count($previews) }}</div>
+            </div>
+            <div>
+              <div style="font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">Total Consumption</div>
+              <div style="font-size:28px;font-weight:700;">{{ number_format(collect($previews)->sum('total_usage_m3'), 1) }} m³</div>
+            </div>
+            <div>
+              <div style="font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">Total Amount</div>
+              <div style="font-size:28px;font-weight:700;color:var(--accent-blue);">T$ {{ number_format(collect($previews)->sum('total_amount'), 2) }}</div>
+            </div>
+            <div style="margin-left:auto;">
+              <form action="{{ route('admin.billing.generate') }}" method="POST" id="generateForm">
+                @csrf
+                <input type="hidden" name="period_start" value="{{ request('period_start') }}">
+                <input type="hidden" name="period_end"   value="{{ request('period_end') }}">
+                <input type="hidden" name="block"        value="{{ request('block') }}">
+                <input type="hidden" name="customer_id"  value="{{ request('customer_id') }}">
+                <button type="button" class="btn btn-success" onclick="confirmGenerate()">
+                  <span class="material-icons">receipt_long</span>
+                  Generate {{ count($previews) }} Invoice{{ count($previews) > 1 ? 's' : '' }}
+                </button>
+              </form>
           </div>
         </div>
       </div>
 
       {{-- Preview Table --}}
-      <div class="card">
+      <div class="card";>
         <div class="table-card-header">
           <div class="card-header-float" style="background:var(--gradient-dark);">
             <div>
               <h3>Billing Preview</h3>
               <p>{{ request('period_start') }} to {{ request('period_end') }}</p>
             </div>
-            <span class="material-icons">preview</span>
+            <span class="material-icons" style="color:var(--accent-blue)">preview</span>
           </div>
         </div>
         <div class="table-wrapper">
@@ -164,7 +171,7 @@
         </div>
       </div>
     @else
-      <div class="card">
+      <div class="card-tight-margin">
         <div class="empty-state" style="padding:80px 20px;">
           <span class="material-icons" style="font-size:64px;color:var(--accent-blue);opacity:0.5;">receipt_long</span>
           <h3>Select billing parameters</h3>
