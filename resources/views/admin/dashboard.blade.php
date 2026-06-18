@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Dashboard — ' . $districtLabel)
 @section('breadcrumb', 'Dashboard')
-@section('page-title', 'Dashboard — ' . $districtLabel)
+@section('page-title', 'DASHBOARD — ' . strtoupper($districtLabel))
 
 @push('head')
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -18,7 +18,7 @@
     </div>
     <div class="stat-body">
       <div>
-        <div class="stat-label">Total Customers</div>
+        <div class="stat-label">Total Customer Count</div>
         <div class="stat-value">{{ number_format($stats['total_customers']) }}</div>
       </div>
     </div>
@@ -35,7 +35,7 @@
     </div>
     <div class="stat-body">
       <div>
-        <div class="stat-label">Consumption This Month</div>
+        <div class="stat-label">Water Consumption (Current Month)</div>
         <div class="stat-value">{{ number_format($stats['consumption_this_month'], 1) }} m³</div>
       </div>
     </div>
@@ -52,7 +52,7 @@
     </div>
     <div class="stat-body">
       <div>
-        <div class="stat-label">Collected This Month</div>
+        <div class="stat-label">Payments Collected (Current Month)</div>
         <div class="stat-value">T$ {{ number_format($stats['collected_this_month'], 0) }}</div>
       </div>
     </div>
@@ -64,12 +64,12 @@
   </div>
 
   <div class="stat-card">
-    <div class="stat-icon" style="background:var(--gradient-orange);">
+    <div class="stat-icon" style="background:var(--gradient-pink);">
       <span class="material-icons">pending_actions</span>
     </div>
     <div class="stat-body">
       <div>
-        <div class="stat-label">Outstanding Invoices</div>
+        <div class="stat-label">Outstanding Invoices (Unpaid)</div>
         <div class="stat-value">{{ $stats['outstanding_count'] }}</div>
       </div>
     </div>
@@ -121,8 +121,8 @@
   {{-- Overdue Invoices --}}
   <div class="card">
     <div class="table-card-header">
-      <div class="card-header-float" style="background:var(--gradient-orange);">
-        <div><h3>Overdue Invoices</h3><p>Requires immediate attention</p></div>
+      <div class="card-header-float" style="background:var(--gradient-pink);">
+        <div><h3>Overdue Invoices</h3><p>Unpaid Bills - requires immediate attention</p></div>
         <span class="material-icons">warning_amber</span>
       </div>
     </div>
@@ -135,7 +135,7 @@
           @forelse($overdueInvoices as $inv)
             <tr>
               <td class="td-primary">{{ $inv->customer->name }}</td>
-              <td style="font-size:11px;font-family:monospace;">{{ $inv->invoice_number }}</td>
+              <td style="font-size:14px;font-family:monospace;">{{ $inv->invoice_number }}</td>
               <td>
                 <span style="color:var(--accent-orange);">
                   {{ now()->diffInDays($inv->due_date) }} days
@@ -160,7 +160,7 @@
     </div>
     @if($overdueInvoices->count() > 0)
       <div style="padding:12px 20px;border-top:1px solid var(--border);">
-        <a href="{{ route('admin.invoices.index') }}?status=overdue" style="font-size:12px;color:var(--accent-blue);">
+        <a href="{{ route('admin.invoices.index') }}?status=overdue" style="font-size:14px;color:var(--accent-blue);">
           View all overdue invoices →
         </a>
       </div>
@@ -188,11 +188,11 @@
                 <div class="u-sub">{{ $reading->meter->customer->account_number ?? '—' }}</div>
               </td>
               <td>
-                <code style="font-size:11px;color:var(--accent-teal);">
+                <code style="font-size:14px;color:var(--accent-teal);">
                   {{ $reading->meter->meter_id }}
                 </code>
               </td>
-              <td style="font-size:12px;color:var(--text-muted);">
+              <td style="font-size:14px;color:var(--text-muted);">
                 {{ $reading->capture_time->format('d M H:i') }}
               </td>
               <td>
@@ -220,7 +220,7 @@
     </div>
     @if($anomalyReadings->count() > 0)
       <div style="padding:12px 20px;border-top:1px solid var(--border);">
-        <a href="{{ route('admin.readings.index') }}?anomaly=1" style="font-size:12px;color:var(--accent-blue);">
+        <a href="{{ route('admin.readings.index') }}?anomaly=1" style="font-size:14px;color:var(--accent-blue);">
           View all anomalies →
         </a>
       </div>

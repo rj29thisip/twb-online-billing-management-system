@@ -2,21 +2,21 @@
 @extends('layouts.app')
 @section('title', 'Customers')
 @section('breadcrumb', 'Admin / Customers')
-@section('page-title', 'Customer Management')
+@section('page-title', 'CUSTOMER MANAGEMENT')
 
 @section('content')
 
 <div class="section-header">
   <div>
-    <h2>Customers</h2>
-    <p>All registered water service subscribers</p>
+    <h2>Customer Accounts</h2>
+    <p>View, add, and modify registered customer accounts</p>
   </div>
   <a href="{{ route('admin.customers.create') }}" class="btn btn-primary">
     <span class="material-icons">person_add</span> Add Customer
   </a>
 </div>
 
-<div class="card">
+<div class="card-tight-margin">
   <form method="GET" class="filter-bar">
     <input type="text" name="search" class="form-control" placeholder="Name, account #, phone..."
            value="{{ request('search') }}">
@@ -74,7 +74,7 @@
           <tr>
             <td>
               <div class="user-cell">
-                <div class="u-avatar" style="background:var(--gradient-blue);color:#fff;font-size:11px;">
+                <div class="u-avatar" style="background:var(--gradient-blue);color:#fff;font-size:14px;">
                   {{ substr($customer->name, 0, 2) }}
                 </div>
                 <div>
@@ -86,7 +86,7 @@
             <td class="td-primary" style="font-family:monospace;">{{ $customer->account_number }}</td>
             <td>
               @if($customer->district)
-                <span style="font-size:11px;background:rgba(26,188,156,0.12);color:var(--accent-teal);padding:2px 8px;border-radius:10px;">
+                <span style="font-size:14px;background:rgba(26,188,156,0.12);color:var(--accent-teal);padding:2px 8px;border-radius:10px;">
                   {{ $customer->district->name }}
                 </span>
               @else
@@ -94,7 +94,7 @@
               @endif
             </td>
             <td>
-              <span style="display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;
+              <span style="display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:10px;font-size:14px;font-weight:600;
                            background:{{ ($customer->customer_type ?? 'residential') === 'commercial' ? 'rgba(20,184,166,.15)' : 'rgba(56,189,248,.15)' }};
                            color:{{ ($customer->customer_type ?? 'residential') === 'commercial' ? 'var(--accent-teal)' : 'var(--accent-blue)' }};">
                 <span class="material-icons" style="font-size:12px;">{{ ($customer->customer_type ?? 'residential') === 'commercial' ? 'business' : 'home' }}</span>
@@ -105,7 +105,7 @@
             <td>{{ $customer->phone ?? '—' }}</td>
             <td>
               @if($customer->activeMeter)
-                <code style="font-size:11px;color:var(--accent-teal);">{{ $customer->activeMeter->meter_id }}</code>
+                <code style="font-size:14px;color:var(--accent-teal);">{{ $customer->activeMeter->meter_id }}</code>
               @else
                 <span style="color:var(--text-muted);">No meter</span>
               @endif

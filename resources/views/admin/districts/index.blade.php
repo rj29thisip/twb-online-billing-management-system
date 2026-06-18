@@ -1,20 +1,27 @@
 @extends('layouts.app')
 @section('title', 'Districts')
 @section('breadcrumb', 'Admin / Settings / Districts')
-@section('page-title', 'Districts')
+@section('page-title', 'DISTRICTS')
 
 @section('content')
 <div class="section-header">
   <div>
-    <h2>Districts &amp; Areas</h2>
-    <p>Deactivating a district keeps all existing references intact — staff and customers remain linked.</p>
+    <h2>District Areas</h2>
+    <p>Add and cofigure district areas</p>
   </div>
   <a href="{{ route('admin.districts.create') }}" class="btn btn-primary">
     <span class="material-icons">add</span> Add District
   </a>
 </div>
 
-<div class="card">
+<div>
+  <p style="font-size:14px;color:var(--text-muted);margin-top:12px;">
+    <span class="material-icons" style="font-size:14px;vertical-align:middle;">info</span>
+    Districts are never permanently deleted. Deactivating hides a district from new assignments while keeping all existing records linked.
+  </p>
+</div>
+
+<div class="card-tight-margin">
   <div class="table-wrapper">
     <table>
       <thead>
@@ -29,7 +36,7 @@
             <div class="u-name">{{ $district->name }}</div>
             @if($district->description)<div class="u-sub">{{ $district->description }}</div>@endif
           </td>
-          <td style="font-family:monospace;font-size:11px;color:var(--accent-teal);">{{ $district->code }}</td>
+          <td style="font-family:monospace;font-size:14px;color:var(--accent-teal);">{{ $district->code }}</td>
           <td>
             @if($district->is_headquarters)
               <span class="badge-status badge-active">Headquarters</span>
@@ -85,8 +92,4 @@
   </div>
   @endif
 </div>
-<p style="font-size:12px;color:var(--text-muted);margin-top:12px;">
-  <span class="material-icons" style="font-size:13px;vertical-align:middle;">info</span>
-  Districts are never permanently deleted. Deactivating hides a district from new assignments while keeping all existing records linked.
-</p>
 @endsection

@@ -18,7 +18,9 @@
     <input type="text" name="code" class="form-control" required
            value="{{ old('code', $district->code) }}" placeholder="e.g. AREA1"
            style="text-transform:uppercase" maxlength="20">
-    <div class="form-hint">Short unique identifier. Automatically uppercased.</div>
+    <div class="form-hint" style="font-size:12px;margin-top:4px;padding:12px 8px;color:var(--text-secondary)">
+      Short unique identifier. Automatically uppercased.
+    </div>
     @error('code')<div class="form-error">{{ $message }}</div>@enderror
   </div>
 
@@ -33,9 +35,9 @@
       <input type="checkbox" name="is_headquarters" value="1"
              {{ old('is_headquarters', $district->is_headquarters) ? 'checked' : '' }}
              class="toggle-input">
-      <span>This is the <strong>Headquarters</strong> district</span>
+      <span><strong>Headquarters</strong> district</span>
     </label>
-    <div class="form-hint" style="margin-top:4px;">HQ staff can see all customers across all areas.</div>
+    <div class="form-hint" style="font-size:12px;margin-top:4px;color:var(--text-secondary);">HQ staff can see all customers across all areas.</div>
   </div>
 
   <div style="margin-top:28px;display:flex;gap:10px;">

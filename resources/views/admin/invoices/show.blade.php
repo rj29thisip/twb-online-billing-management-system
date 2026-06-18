@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Invoice ' . $invoice->invoice_number)
 @section('breadcrumb', 'Admin / Invoices / Detail')
-@section('page-title', 'Invoice Detail')
+@section('page-title', 'INVOICE DETAILS')
 
 @section('content')
 
@@ -44,7 +44,7 @@
   {{-- LEFT: Invoice Details --}}
   <div style="display:flex;flex-direction:column;gap:24px;">
 
-    <div class="card">
+    <div class="card-tight-margin">
       <div class="table-card-header">
         <div class="card-header-float" style="background:var(--gradient-dark);">
           <div>
@@ -69,7 +69,7 @@
             <a href="{{ route('admin.customers.show', $invoice->customer) }}" style="color:var(--accent-blue);">
               {{ $invoice->customer->name }}
             </a>
-            <span style="color:var(--text-muted);font-size:12px;margin-left:6px;">{{ $invoice->customer->account_number }}</span>
+            <span style="color:var(--text-muted);font-size:14px;margin-left:6px;">{{ $invoice->customer->account_number }}</span>
           </span>
         </div>
         <div class="detail-row">
@@ -104,22 +104,22 @@
               @php $mType = strtolower(optional($invoice->meter)->meter_type ?? 'residential'); @endphp
               @if($mType === 'commercial')
                 &nbsp;·&nbsp;
-                <span style="padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;
+                <span style="padding:2px 8px;border-radius:10px;font-size:14px;font-weight:600;
                              background:rgba(20,184,166,.2);color:var(--accent-teal);">
-                  <span class="material-icons" style="font-size:12px;vertical-align:middle;">business</span>
+                  <span class="material-icons" style="font-size:14px;vertical-align:middle;">business</span>
                   Commercial Tariff
                 </span>
               @else
                 &nbsp;·&nbsp;
-                <span style="padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;
+                <span style="padding:2px 8px;border-radius:10px;font-size:14px;font-weight:600;
                              background:rgba(56,189,248,.2);color:var(--accent-blue);">
-                  <span class="material-icons" style="font-size:12px;vertical-align:middle;">home</span>
+                  <span class="material-icons" style="font-size:14px;vertical-align:middle;">home</span>
                   Residential Tariff
                 </span>
               @endif
             </p>
           </div>
-          <span class="material-icons">layers</span>
+          <span class="material-icons" style="color:var(--accent-blue)">layers</span>
         </div>
       </div>
       <div class="table-wrapper">
@@ -173,11 +173,11 @@
 
   {{-- RIGHT: Payment History --}}
   <div>
-    <div class="card">
+    <div class="card-tight-margin">
       <div class="table-card-header">
         <div class="card-header-float" style="background:var(--gradient-dark);">
           <div><h3>Payment History</h3><p>{{ $invoice->payments->count() }} payment(s) recorded</p></div>
-          <span class="material-icons">receipt</span>
+          <span class="material-icons" style="color:var(--accent-blue)">receipt</span>
         </div>
       </div>
       <div class="table-wrapper">
@@ -188,7 +188,7 @@
           <tbody>
             @forelse($invoice->payments as $pay)
               <tr>
-                <td style="font-family:monospace;font-size:11px;">{{ $pay->receipt_number }}</td>
+                <td style="font-family:monospace;font-size:14px;">{{ $pay->receipt_number }}</td>
                 <td>{{ $pay->payment_date->format('d M Y') }}</td>
                 <td>{{ ucfirst(str_replace('_',' ',$pay->payment_method)) }}</td>
                 <td class="td-primary">T$ {{ number_format($pay->amount, 2) }}</td>
@@ -218,7 +218,7 @@
         <div style="background:rgba(26,115,232,0.08);border:1px solid rgba(26,115,232,0.2);border-radius:8px;padding:12px 16px;margin-bottom:20px;">
           <div style="font-size:12px;color:var(--text-muted);">Invoice</div>
           <div style="font-weight:600;" id="modal-invoice-num">—</div>
-          <div style="font-size:13px;color:var(--accent-orange);margin-top:2px;">Balance: T$ <span id="modal-balance">0.00</span></div>
+          <div style="font-size:14px;color:var(--accent-orange);margin-top:2px;">Balance: T$ <span id="modal-balance">0.00</span></div>
         </div>
         <div class="form-grid-2">
           <div class="form-group">

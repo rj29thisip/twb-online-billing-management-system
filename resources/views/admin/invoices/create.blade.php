@@ -2,7 +2,7 @@
 @extends('layouts.app')
 @section('title', 'Create Invoices')
 @section('breadcrumb', 'Admin / Billing / Create Invoices')
-@section('page-title', 'Create Invoices')
+@section('page-title', 'CREATE INVOICES')
 
 @section('content')
 
@@ -22,56 +22,56 @@
       <div><h3>Billing Parameters</h3></div>
         <span class="material-icons" style="color:var(--accent-blue)">tune</span>
       </div>
-    <div class="card-body">
-      <h3 style="font-size:15px;font-weight:600;margin-bottom:20px;display:flex;align-items:center;gap:8px;">
-        <span class="material-icons" style="color:var(--accent-blue)">tune</span>
-        Billing Parameters
-      </h3>
+      <div class="card-body">
+        <h3 style="font-size:15px;font-weight:600;margin-bottom:20px;display:flex;align-items:center;gap:8px;">
+          <span class="material-icons" style="color:var(--accent-blue)">tune</span>
+          Billing Parameters
+        </h3>
 
-      <form id="billingCheckForm" action="{{ route('admin.billing.check') }}" method="GET">
+        <form id="billingCheckForm" action="{{ route('admin.billing.check') }}" method="GET">
 
-        <div class="form-group">
-          <label class="form-label">Billing Period Start</label>
-          <input type="date" name="period_start" class="form-control"
-                 value="{{ request('period_start', now()->startOfMonth()->format('Y-m-d')) }}" required>
-        </div>
+          <div class="form-group">
+            <label class="form-label">Billing Period Start</label>
+            <input type="date" name="period_start" class="form-control"
+                  value="{{ request('period_start', now()->startOfMonth()->format('Y-m-d')) }}" required>
+          </div>
 
-        <div class="form-group">
-          <label class="form-label">Billing Period End</label>
-          <input type="date" name="period_end" class="form-control"
-                 value="{{ request('period_end', now()->endOfMonth()->format('Y-m-d')) }}" required>
-        </div>
+          <div class="form-group">
+            <label class="form-label">Billing Period End</label>
+            <input type="date" name="period_end" class="form-control"
+                  value="{{ request('period_end', now()->endOfMonth()->format('Y-m-d')) }}" required>
+          </div>
 
-        <div class="form-group">
-          <label class="form-label">Filter by Block</label>
-          <select name="block" class="form-control">
-            <option value="">All Blocks</option>
-            @foreach($blocks as $block)
-              <option value="{{ $block }}" {{ request('block') === $block ? 'selected' : '' }}>{{ $block }}</option>
-            @endforeach
-          </select>
-        </div>
+          <div class="form-group">
+            <label class="form-label">Filter by Block</label>
+            <select name="block" class="form-control">
+              <option value="">All Blocks</option>
+              @foreach($blocks as $block)
+                <option value="{{ $block }}" {{ request('block') === $block ? 'selected' : '' }}>{{ $block }}</option>
+              @endforeach
+            </select>
+          </div>
 
-        <div class="form-group">
-          <label class="form-label">Customer</label>
-          <select name="customer_id" id="invoiceCustomerSelect"
-                  class="form-control select2-customer" style="width:100%">
-            @if(request('customer_id'))
-              @php $sc = \App\Models\Customer::find(request('customer_id')) @endphp
-              @if($sc)
-                <option value="{{ $sc->id }}" selected>{{ $sc->account_number }} — {{ $sc->name }}</option>
+          <div class="form-group">
+            <label class="form-label">Customer</label>
+            <select name="customer_id" id="invoiceCustomerSelect"
+                    class="form-control select2-customer" style="width:100%">
+              @if(request('customer_id'))
+                @php $sc = \App\Models\Customer::find(request('customer_id')) @endphp
+                @if($sc)
+                  <option value="{{ $sc->id }}" selected>{{ $sc->account_number }} — {{ $sc->name }}</option>
+                @endif
+              @else
+                <option value="">All Customers</option>
               @endif
-            @else
-              <option value="">All Customers</option>
-            @endif
-          </select>
-        </div>
+            </select>
+          </div>
 
-        <button type="submit" class="btn btn-primary" style="width:100%;">
-          <span class="material-icons">search</span> Check Billing
-        </button>
+          <button type="submit" class="btn btn-primary" style="width:100%;">
+            <span class="material-icons">search</span> Check Billing
+          </button>
 
-      </form>
+        </form>
     </div>
   </div>
 
@@ -80,35 +80,42 @@
     @if(isset($previews) && count($previews) > 0)
 
       {{-- Summary Banner --}}
-      <div class="card" style="margin-bottom:24px;">
-        <div class="card-body" style="display:flex;gap:32px;align-items:center;flex-wrap:wrap;">
-          <div>
-            <div style="font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">Customers Ready</div>
-            <div style="font-size:28px;font-weight:700;color:var(--accent-green);">{{ count($previews) }}</div>
-          </div>
-          <div>
-            <div style="font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">Total Consumption</div>
-            <div style="font-size:28px;font-weight:700;">{{ number_format(collect($previews)->sum('total_usage_m3'), 1) }} m³</div>
-          </div>
-          <div>
-            <div style="font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">Total Amount</div>
-            <div style="font-size:28px;font-weight:700;color:var(--accent-blue);">T$ {{ number_format(collect($previews)->sum('total_amount'), 2) }}</div>
-          </div>
-          <div style="margin-left:auto;">
-            <form action="{{ route('admin.billing.generate') }}" method="POST" id="generateForm">
-              @csrf
-              <input type="hidden" name="period_start" value="{{ request('period_start') }}">
-              <input type="hidden" name="period_end"   value="{{ request('period_end') }}">
-              <input type="hidden" name="block"        value="{{ request('block') }}">
-              <input type="hidden" name="customer_id"  value="{{ request('customer_id') }}">
-              <button type="button" class="btn btn-success" onclick="confirmGenerate()">
-                <span class="material-icons">receipt_long</span>
-                Generate {{ count($previews) }} Invoice{{ count($previews) > 1 ? 's' : '' }}
-              </button>
-            </form>
-          </div>
+      <div class="card-tight-margin" style="margin-bottom:24px;">
+        <div class="card-header-float" style="background:var(--gradient-dark);">
+            <div>
+              <h3>Billing Summary</h3>
+              <p>{{ request('period_start') }} to {{ request('period_end') }}</p>
+              </div>
+              <span class="material-icons" style="color:var(--accent-blue)">bar_chart</span>
+            </div>            
+            <div class="card-body" style="display:flex;gap:32px;align-items:center;flex-wrap:wrap;">
+              <div>
+                <div style="font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">Customers Ready</div>
+                <div style="font-size:28px;font-weight:700;color:var(--accent-green);">{{ count($previews) }}</div>
+              </div>
+              <div>
+                <div style="font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">Total Consumption</div>
+                <div style="font-size:28px;font-weight:700;">{{ number_format(collect($previews)->sum('total_usage_m3'), 1) }} m³</div>
+              </div>
+              <div>
+                <div style="font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">Total Amount</div>
+                <div style="font-size:28px;font-weight:700;color:var(--accent-blue);">T$ {{ number_format(collect($previews)->sum('total_amount'), 2) }}</div>
+              </div>
+              <div style="margin-left:auto;">
+                <form action="{{ route('admin.billing.generate') }}" method="POST" id="generateForm">
+                  @csrf
+                  <input type="hidden" name="period_start" value="{{ request('period_start') }}">
+                  <input type="hidden" name="period_end"   value="{{ request('period_end') }}">
+                  <input type="hidden" name="block"        value="{{ request('block') }}">
+                  <input type="hidden" name="customer_id"  value="{{ request('customer_id') }}">
+                  <button type="button" class="btn btn-success" onclick="confirmGenerate()">
+                    <span class="material-icons">receipt_long</span>
+                    Generate {{ count($previews) }} Invoice{{ count($previews) > 1 ? 's' : '' }}
+                  </button>
+                </form>
+              </div>
+            </div>
         </div>
-      </div>
 
       {{-- Preview Table --}}
       <div class="card">
@@ -118,7 +125,7 @@
               <h3>Billing Preview</h3>
               <p>{{ request('period_start') }} to {{ request('period_end') }}</p>
             </div>
-            <span class="material-icons">preview</span>
+            <span class="material-icons" style="color:var(--accent-blue)">preview</span>
           </div>
         </div>
         <div class="table-wrapper">
@@ -142,7 +149,7 @@
                     <div class="u-name">{{ $p['customer']->name }}</div>
                     <div class="u-sub">{{ $p['customer']->account_number }}</div>
                   </td>
-                  <td><code style="font-size:11px;color:var(--accent-teal)">{{ $p['meter']->meter_id }}</code></td>
+                  <td><code style="font-size:14px;color:var(--accent-teal)">{{ $p['meter']->meter_id }}</code></td>
                   <td class="td-primary">{{ number_format($p['total_usage_m3'], 3) }}</td>
                   <td>T$ {{ number_format($p['subtotal'], 2) }}</td>
                   <td style="color:var(--text-muted);">T$ {{ number_format($p['tax_amount'], 2) }}</td>
@@ -172,11 +179,11 @@
         </div>
       </div>
     @else
-      <div class="card">
+      <div class="card-tight-margin">
         <div class="empty-state" style="padding:80px 20px;">
           <span class="material-icons" style="font-size:64px;color:var(--accent-blue);opacity:0.5;">receipt_long</span>
           <h3>Select billing parameters</h3>
-          <p style="color:var(--text-muted);font-size:13px;margin-top:4px;">
+          <p style="color:var(--text-muted);font-size:14px;margin-top:4px;">
             Choose a period on the left and click "Check Billing" to preview invoices.
           </p>
         </div>
@@ -188,7 +195,7 @@
 
 {{-- ── TIER DETAIL MODAL ──────────────────────────────────────── --}}
 <div class="modal-overlay" id="tierModal">
-  <div class="modal" style="max-width:480px;">
+  <div class="modal" style="max-width:680px;">
     <div class="modal-header">
       <h3 class="modal-title">Tariff Tier Breakdown — <span id="tier-customer-name"></span></h3>
       <button class="modal-close" onclick="closeTierModal()">
@@ -196,13 +203,13 @@
       </button>
     </div>
     <div class="modal-body">
-      <table style="width:100%;font-size:13px;">
+      <table style="width:100%;font-size:14px;">
         <thead>
           <tr>
-            <th style="text-align:left;padding:8px 0;border-bottom:1px solid var(--border);color:var(--text-muted);font-size:11px;text-transform:uppercase;">Tier</th>
-            <th style="text-align:right;padding:8px 0;border-bottom:1px solid var(--border);color:var(--text-muted);font-size:11px;text-transform:uppercase;">Qty (m³)</th>
-            <th style="text-align:right;padding:8px 0;border-bottom:1px solid var(--border);color:var(--text-muted);font-size:11px;text-transform:uppercase;">Rate</th>
-            <th style="text-align:right;padding:8px 0;border-bottom:1px solid var(--border);color:var(--text-muted);font-size:11px;text-transform:uppercase;">Amount</th>
+            <th style="text-align:left;padding:8px 0;border-bottom:1px solid var(--border);color:var(--text-muted);font-size:14px;text-transform:uppercase;">Tier</th>
+            <th style="text-align:right;padding:8px 0;border-bottom:1px solid var(--border);color:var(--text-muted);font-size:14px;text-transform:uppercase;">Qty (m³)</th>
+            <th style="text-align:right;padding:8px 0;border-bottom:1px solid var(--border);color:var(--text-muted);font-size:14px;text-transform:uppercase;">Rate</th>
+            <th style="text-align:right;padding:8px 0;border-bottom:1px solid var(--border);color:var(--text-muted);font-size:14px;text-transform:uppercase;">Amount</th>
           </tr>
         </thead>
         <tbody id="tier-rows"></tbody>

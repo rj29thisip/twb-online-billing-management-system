@@ -1,13 +1,13 @@
 @extends('layouts.app')
 @section('title', 'Email Configuration')
 @section('breadcrumb', 'Admin / Settings / Email Config')
-@section('page-title', 'Email Configuration')
+@section('page-title', 'EMAIL CONFIGURATION')
 
 @section('content')
 <div class="section-header">
   <div>
-    <h2>Email Configuration</h2>
-    <p>Manage outgoing email settings for all system notifications.</p>
+    <h2>E-mail Settings</h2>
+    <p>Manage outgoing email settings for all system notifications</p>
   </div>
   <a href="{{ route('admin.email-config.create') }}" class="btn btn-primary">
     <span class="material-icons">add</span> Add Config
@@ -19,7 +19,7 @@
   Only <strong>one</strong> configuration can be active at a time. The active config is used for all emails: password resets, customer portal credentials, and notifications.
 </div>
 
-<div class="card">
+<div class="card-tight-margin">
   <div class="table-wrapper">
     <table>
       <thead>
@@ -33,11 +33,11 @@
             <div class="u-sub">{{ $config->from_address }}</div>
           </td>
           <td>
-            <div style="font-family:monospace;font-size:11px;color:var(--accent-teal);">{{ $config->host ?: '—' }}</div>
+            <div style="font-family:monospace;font-size:14px;color:var(--accent-teal);">{{ $config->host ?: '—' }}</div>
             <div class="u-sub">{{ strtoupper($config->mailer) }}</div>
           </td>
           <td>{{ $config->port }}</td>
-          <td><span style="font-family:monospace;font-size:11px;">{{ strtoupper($config->encryption) }}</span></td>
+          <td><span style="font-family:monospace;font-size:14px;">{{ strtoupper($config->encryption) }}</span></td>
           <td>
             @if($config->is_active)
               <span class="badge-status badge-active">Active</span>
@@ -84,7 +84,7 @@
 {{-- Test Email Modal --}}
 <div id="testEmailModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.55);align-items:center;justify-content:center;">
   <div style="background:var(--surface,#1e2a3a);border:1px solid var(--border,rgba(255,255,255,0.1));border-radius:12px;padding:28px 32px;width:100%;max-width:400px;">
-    <h3 style="margin:0 0 16px;font-size:15px;">Send Test Email</h3>
+    <h3 style="margin:0 0 16px;font-size:16px;">Send Test Email</h3>
     <form id="testEmailForm" method="POST">
       @csrf
       <div class="form-group">

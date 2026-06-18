@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Billing History')
 @section('breadcrumb', 'Customer / History')
-@section('page-title', 'Billing History')
+@section('page-title', 'MY BILLING HISTORY')
 
 @section('content')
 
@@ -17,12 +17,18 @@
       </a>
     @endforeach
   </div>
-  <div style="margin-left:auto;font-size:13px;color:var(--text-muted);">
+  <div style="margin-left:auto;font-size:14px;color:var(--text-muted);">
     {{ $invoices->total() }} record(s) for {{ $selectedYear }}
   </div>
 </div>
 
-<div class="card">
+<div class="card-tight-margin">
+  <div class="table-card-header">
+    <div class="card-header-float" style="background:var(--gradient-dark);">
+      <div><h3>Bills</h3><p>Review past and current billing records</p></div>
+      <span class="material-icons" style="color:var(--accent-blue)">picture_as_pdf</span>
+    </div>
+  </div>  
   <div class="table-wrapper">
     <table>
       <thead>
@@ -42,7 +48,7 @@
         @forelse($invoices as $inv)
           <tr>
             <td class="td-primary">{{ $inv->billing_period_start->format('F Y') }}</td>
-            <td style="font-family:monospace;font-size:11px;color:var(--text-muted);">{{ $inv->invoice_number }}</td>
+            <td style="font-family:monospace;font-size:14px;color:var(--text-muted);">{{ $inv->invoice_number }}</td>
             <td>{{ number_format($inv->total_usage, 2) }}</td>
             <td>T$ {{ number_format($inv->total_amount, 2) }}</td>
             <td style="color:var(--accent-green);">T$ {{ number_format($inv->amount_paid, 2) }}</td>
@@ -62,7 +68,7 @@
               @endphp
               <span class="badge-status {{ $bc }}">{{ ucfirst(str_replace('_', ' ', $inv->status)) }}</span>
             </td>
-            <td style="{{ $inv->isOverdue() ? 'color:var(--accent-orange)' : 'color:var(--text-muted)' }};font-size:12px;">
+            <td style="{{ $inv->isOverdue() ? 'color:var(--accent-orange)' : 'color:var(--text-muted)' }};font-size:14px;">
               {{ $inv->due_date?->format('d M Y') ?? '—' }}
             </td>
             <td>

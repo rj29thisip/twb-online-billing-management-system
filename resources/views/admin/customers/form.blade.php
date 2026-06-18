@@ -1,12 +1,12 @@
 @extends('layouts.app')
 @section('title', isset($customer) ? 'Edit Customer' : 'Add Customer')
 @section('breadcrumb', 'Admin / Customers / ' . (isset($customer) ? 'Edit' : 'Add'))
-@section('page-title', isset($customer) ? 'Edit Customer' : 'Add Customer')
+@section('page-title', isset($customer) ? 'EDIT CUSTOMER' : 'ADD CUSTOMER')
 
 @section('content')
 <div style="max-width:860px;margin:0 auto;">
 
-  <div style="margin-bottom:20px;">
+  <div style="margin-bottom:24px;">
     <a href="{{ route('admin.customers.index') }}" class="btn btn-outline btn-sm">
       <span class="material-icons">arrow_back</span> Back to Customers
     </a>
@@ -28,14 +28,14 @@
     {{-- ══════════════════════════════════════════════════════════════
          SECTION 1 — Personal Details
          ══════════════════════════════════════════════════════════════ --}}
-    <div class="card" style="margin-bottom:20px;">
+    <div class="card" style="margin-bottom:24px;">
       <div class="table-card-header">
-        <div class="card-header-float" style="background:var(--gradient-blue);padding:16px 20px;">
+        <div class="card-header-float" style="background:var(--gradient-dark);padding:16px 20px;">
           <div>
-            <h3 style="font-size:14px;margin:0;">Personal Details</h3>
+            <h3 style="font-size:16px;margin:0;">Personal Details</h3>
             <p style="margin:2px 0 0;font-size:12px;opacity:.7;">Customer identity information</p>
           </div>
-          <span class="material-icons">person</span>
+          <span class="material-icons" style="color:var(--accent-blue)">person</span>
         </div>
       </div>
       <div class="card-body" style="padding:20px 24px;">
@@ -77,21 +77,21 @@
             @error('gender')<div class="form-error">{{ $message }}</div>@enderror
           </div>
         </div>
-
+        
       </div>
     </div>
 
     {{-- ══════════════════════════════════════════════════════════════
          SECTION 2 — Contact Information
          ══════════════════════════════════════════════════════════════ --}}
-    <div class="card" style="margin-bottom:20px;">
+    <div class="card" style="margin-bottom:24px;">
       <div class="table-card-header">
         <div class="card-header-float" style="background:var(--gradient-dark);padding:16px 20px;">
           <div>
-            <h3 style="font-size:14px;margin:0;">Contact Information</h3>
+            <h3 style="font-size:16px;margin:0;">Contact Information</h3>
             <p style="margin:2px 0 0;font-size:12px;opacity:.7;">Email and phone details</p>
           </div>
-          <span class="material-icons">contact_phone</span>
+          <span class="material-icons" style="color:var(--accent-blue)">contact_phone</span>
         </div>
       </div>
       <div class="card-body" style="padding:20px 24px;">
@@ -103,9 +103,9 @@
                    value="{{ old('email', $customer->email ?? '') }}"
                    placeholder="e.g. haveahfonua@yahoo.com">
             @if(!isset($customer))
-              <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">
-                <span class="material-icons" style="font-size:12px;vertical-align:middle;">info</span>
-                A portal account will be auto-created and credentials emailed if provided.
+              <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">
+                <span class="material-icons" style="font-size:14px;vertical-align:middle;">info</span>
+                TWB online account will be automatically created and details will be sent if email address is provided.
               </div>
             @endif
             @error('email')<div class="form-error">{{ $message }}</div>@enderror
@@ -116,7 +116,7 @@
                    value="{{ old('phone', $customer->phone ?? '') }}"
                    placeholder="e.g. 06421979">
             @error('phone')<div class="form-error">{{ $message }}</div>@enderror
-          </div>
+          </div>      
         </div>
 
       </div>
@@ -125,14 +125,14 @@
     {{-- ══════════════════════════════════════════════════════════════
          SECTION 3 — Residential Address
          ══════════════════════════════════════════════════════════════ --}}
-    <div class="card" style="margin-bottom:20px;">
+    <div class="card" style="margin-bottom:24px;">
       <div class="table-card-header">
         <div class="card-header-float" style="background:var(--gradient-dark);padding:16px 20px;">
           <div>
-            <h3 style="font-size:14px;margin:0;">Residential Address</h3>
+            <h3 style="font-size:16px;margin:0;">Residential Address</h3>
             <p style="margin:2px 0 0;font-size:12px;opacity:.7;">Property location details</p>
           </div>
-          <span class="material-icons">home</span>
+          <span class="material-icons" style="color:var(--accent-blue)">home</span>
         </div>
       </div>
       <div class="card-body" style="padding:20px 24px;">
@@ -178,14 +178,14 @@
     {{-- ══════════════════════════════════════════════════════════════
          SECTION 4 — Account Details
          ══════════════════════════════════════════════════════════════ --}}
-    <div class="card" style="margin-bottom:20px;">
+    <div class="card" style="margin-bottom:24px;">
       <div class="table-card-header">
         <div class="card-header-float" style="background:var(--gradient-dark);padding:16px 20px;">
           <div>
-            <h3 style="font-size:14px;margin:0;">Account Details</h3>
+            <h3 style="font-size:16px;margin:0;">Account Details</h3>
             <p style="margin:2px 0 0;font-size:12px;opacity:.7;">Billing account and district</p>
           </div>
-          <span class="material-icons">receipt_long</span>
+          <span class="material-icons" style="color:var(--accent-blue)">receipt_long</span>
         </div>
       </div>
       <div class="card-body" style="padding:20px 24px;">
@@ -233,9 +233,7 @@
           </div>
           <div class="form-group">
             <label class="form-label">Customer Type
-              <span style="font-size:11px;color:var(--text-muted);font-weight:400;margin-left:6px;">
-                Determines tariff category for billing
-              </span>
+              <span style="font-size:11px;color:var(--text-muted);font-weight:400;margin-left:6px;"></span>
             </label>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px;">
               <label style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:8px;
@@ -246,7 +244,7 @@
                        onchange="updateCTypeStyle()"
                        style="accent-color:var(--accent-blue);">
                 <span class="material-icons" style="font-size:16px;color:var(--accent-blue);">home</span>
-                <span style="font-size:13px;font-weight:600;">Residential</span>
+                <span style="font-size:14px;font-weight:600;">Residential</span>
               </label>
               <label style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:8px;
                             cursor:pointer;border:2px solid var(--border);transition:all .2s;"
@@ -256,9 +254,13 @@
                        onchange="updateCTypeStyle()"
                        style="accent-color:var(--accent-teal);">
                 <span class="material-icons" style="font-size:16px;color:var(--accent-teal);">business</span>
-                <span style="font-size:13px;font-weight:600;">Commercial</span>
-              </label>
+                <span style="font-size:14px;font-weight:600;">Commercial</span>          
+              </label>            
             </div>
+              <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">
+                <span class="material-icons" style="font-size:14px;vertical-align:middle;">info</span>
+                Select customer type to identify proper tariff category.
+              </div>
           </div>
         </div>
 
@@ -268,14 +270,14 @@
     {{-- ══════════════════════════════════════════════════════════════
          SECTION 5 — Property Details
          ══════════════════════════════════════════════════════════════ --}}
-    <div class="card" style="margin-bottom:20px;">
+    <div class="card" style="margin-bottom:24px;">
       <div class="table-card-header">
         <div class="card-header-float" style="background:var(--gradient-dark);padding:16px 20px;">
           <div>
-            <h3 style="font-size:14px;margin:0;">Property Details</h3>
+            <h3 style="font-size:16px;margin:0;">Property Details</h3>
             <p style="margin:2px 0 0;font-size:12px;opacity:.7;">Land title and survey information</p>
           </div>
-          <span class="material-icons">landscape</span>
+          <span class="material-icons" style="color:var(--accent-blue)">landscape</span>
         </div>
       </div>
       <div class="card-body" style="padding:20px 24px;">
@@ -309,14 +311,14 @@
          SECTION 6 — Smart Meter Details (create only)
          ══════════════════════════════════════════════════════════════ --}}
     @if(!isset($customer))
-    <div class="card" style="margin-bottom:20px;">
+    <div class="card" style="margin-bottom:24px;">
       <div class="table-card-header">
         <div class="card-header-float" style="background:var(--gradient-dark);padding:16px 20px;">
           <div>
-            <h3 style="font-size:14px;margin:0;">Smart Meter Details <span style="font-weight:400;opacity:.6;">(optional)</span></h3>
+            <h3 style="font-size:16px;margin:0;">Smart Meter Details <span style="font-weight:400;opacity:.6;">(optional)</span></h3>
             <p style="margin:2px 0 0;font-size:12px;opacity:.7;">Register a meter at the same time as the customer</p>
           </div>
-          <span class="material-icons">speed</span>
+          <span class="material-icons" style="color:var(--accent-blue)">speed</span>
         </div>
       </div>
       <div class="card-body" style="padding:20px 24px;">
@@ -391,9 +393,9 @@
          SECTION 7 — Record Info (edit mode)
          ══════════════════════════════════════════════════════════════ --}}
     @if(isset($customer) && $customer->createdBy)
-    <div class="card" style="margin-bottom:20px;">
+    <div class="card" style="margin-bottom:24px;">
       <div class="card-body" style="padding:16px 24px;">
-        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-secondary);">
+        <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text-secondary);">
           <span class="material-icons" style="font-size:16px;">history</span>
           Record created by
           <strong style="color:var(--text-primary);">{{ $customer->createdBy->name }}</strong>

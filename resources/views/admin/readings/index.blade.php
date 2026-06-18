@@ -1,27 +1,27 @@
 @extends('layouts.app')
 @section('title', 'Meter Readings')
 @section('breadcrumb', 'Admin / Meters / Readings')
-@section('page-title', 'Meter Readings')
+@section('page-title', 'METER READINGS')
 
 @section('content')
 
 @if($anomalyCount > 0)
   <div class="alert alert-error">
     <span class="material-icons" style="font-size:18px;">warning_amber</span>
-    {{ $anomalyCount }} anomalous reading(s) in the system.
+    {{ $anomalyCount }} anomalous reading(s) detected.
     <a href="{{ route('admin.readings.index') }}?anomaly=1" style="color:inherit;text-decoration:underline;margin-left:6px;">View anomalies →</a>
     <button class="alert-close" onclick="this.parentElement.remove()"><span class="material-icons" style="font-size:16px;">close</span></button>
   </div>
 @endif
 
 <div class="section-header">
-  <div><h2>Meter Readings</h2><p>All AMR and manual readings</p></div>
+  <div><h2>Consumption Readings</h2><p>View Automated Meter Readings (AMR) or Manual Meter Readings and Import Manual Meter Readings.</p></div>
   <a href="{{ route('admin.readings.import') }}" class="btn btn-primary">
-    <span class="material-icons">upload_file</span> Import CSV
+    <span class="material-icons">upload_file</span> Import Meter Readings
   </a>
 </div>
 
-<div class="card">
+<div class="card-tight-margin">
   <form method="GET" action="{{ route('admin.readings.index') }}" class="filter-bar" style="flex-wrap:wrap;gap:8px;">
 
     {{-- Meter ID --}}
@@ -43,7 +43,7 @@
     </div>
 
     {{-- Anomalies only — FIX: value="1", checked by boolean() --}}
-    <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-secondary);cursor:pointer;white-space:nowrap;">
+    <label style="display:flex;align-items:center;gap:6px;font-size:14px;color:var(--text-secondary);cursor:pointer;white-space:nowrap;">
       <input type="checkbox" name="anomaly" value="1"
              {{ request()->boolean('anomaly') ? 'checked' : '' }}>
       Anomalies only
@@ -63,19 +63,19 @@
   {{-- Active filter chips --}}
   @if($hasFilter)
   <div style="padding:0 20px 12px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;">
-    <span style="font-size:11px;color:var(--text-muted);">Active filters:</span>
+    <span style="font-size:14px;color:var(--text-muted);">Active filters:</span>
     @if(request('meter'))
-      <span style="font-size:11px;background:rgba(52,152,219,0.15);color:var(--accent-blue);padding:2px 8px;border-radius:10px;border:1px solid rgba(52,152,219,0.3);">
+      <span style="font-size:14px;background:rgba(52,152,219,0.15);color:var(--accent-blue);padding:2px 8px;border-radius:10px;border:1px solid rgba(52,152,219,0.3);">
         Meter: {{ request('meter') }}
       </span>
     @endif
     @if(request('date_from') || request('date_to'))
-      <span style="font-size:11px;background:rgba(52,152,219,0.15);color:var(--accent-blue);padding:2px 8px;border-radius:10px;border:1px solid rgba(52,152,219,0.3);">
+      <span style="font-size:14px;background:rgba(52,152,219,0.15);color:var(--accent-blue);padding:2px 8px;border-radius:10px;border:1px solid rgba(52,152,219,0.3);">
         Date: {{ request('date_from','—') }} → {{ request('date_to','now') }}
       </span>
     @endif
     @if(request()->boolean('anomaly'))
-      <span style="font-size:11px;background:rgba(233,30,99,0.15);color:var(--accent-pink);padding:2px 8px;border-radius:10px;border:1px solid rgba(233,30,99,0.3);">
+      <span style="font-size:14px;background:rgba(233,30,99,0.15);color:var(--accent-pink);padding:2px 8px;border-radius:10px;border:1px solid rgba(233,30,99,0.3);">
         ⚠ Anomalies only
       </span>
     @endif
@@ -97,7 +97,7 @@
               <div class="u-name">{{ $r->meter->customer->name ?? '—' }}</div>
               <div class="u-sub">{{ $r->meter->customer->account_number ?? '' }}</div>
             </td>
-            <td style="font-family:monospace;font-size:11px;color:var(--accent-teal);">
+            <td style="font-family:monospace;font-size:14px;color:var(--accent-teal);">
               {{ $r->meter->meter_id ?? '—' }}
             </td>
             <td>{{ $r->capture_time->format('d M Y H:i') }}</td>
@@ -108,7 +108,7 @@
               @if($r->is_anomaly)
                 <span class="badge-status badge-overdue" title="{{ $r->anomaly_note }}">Anomaly</span>
               @else
-                <span style="color:var(--text-muted);font-size:12px;">—</span>
+                <span style="color:var(--text-muted);font-size:14px;">—</span>
               @endif
             </td>
             <td>

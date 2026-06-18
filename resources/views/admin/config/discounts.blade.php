@@ -1,21 +1,21 @@
 @extends('layouts.app')
 @section('title', 'Discount Configuration')
 @section('breadcrumb', 'Admin / Configuration / Discounts')
-@section('page-title', 'Discount Management')
+@section('page-title', 'DISCOUNT MANAGEMENT')
 
 @section('content')
 
 <div class="section-header">
   <div>
     <h2>Discounts</h2>
-    <p>Configure discounts applied during billing</p>
+    <p>Add and configure discounts applied during billing</p>
   </div>
   <button class="btn btn-primary" onclick="openModal()">
     <span class="material-icons">add</span> Add Discount
   </button>
 </div>
 
-<div class="card">
+<div class="card-tight-margin">
   <div class="table-wrapper">
     <table>
       <thead>
@@ -118,7 +118,7 @@
         <div class="form-group">
           <label class="checkbox-label" style="cursor:pointer;">
             <input type="checkbox" name="is_active" id="f-active" value="1" checked>
-            <span style="font-size:13px;color:var(--text-secondary);">Active</span>
+            <span style="font-size:14px;color:var(--text-secondary);">Active</span>
           </label>
         </div>
       </div>

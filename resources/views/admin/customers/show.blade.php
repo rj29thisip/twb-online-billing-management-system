@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Customer: ' . $customer->full_name)
 @section('breadcrumb', 'Admin / Customers / ' . $customer->account_number)
-@section('page-title', 'Customer Detail')
+@section('page-title', 'CUSTOMER DETAILS')
 
 @section('content')
 
@@ -13,7 +13,7 @@
     </a>
     <div>
       <h2 style="margin:0;font-size:20px;">{{ $customer->full_name }}</h2>
-      <div style="font-size:13px;color:var(--text-muted);margin-top:2px;">
+      <div style="font-size:14px;color:var(--text-muted);margin-top:2px;">
         Account #{{ $customer->account_number }}
         @if($customer->district)
           &nbsp;·&nbsp;
@@ -35,10 +35,10 @@
   <div style="display:flex;flex-direction:column;gap:20px;">
 
     {{-- Personal Details --}}
-    <div class="card">
+    <div class="card-tight-margin">
       <div class="table-card-header">
-        <div style="padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">
-          <h4 style="margin:0;font-size:13px;display:flex;align-items:center;gap:6px;">
+        <div class="card-header-float" style="background:var(--gradient-dark)">
+          <h4>
             <span class="material-icons" style="font-size:16px;color:var(--accent-blue);">person</span>
             Personal Details
           </h4>
@@ -47,12 +47,12 @@
             'suspended' => 'badge-overdue',
             default     => 'badge-inactive'
           } }}">{{ ucfirst($customer->status) }}</span>
-          <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600;
-                       background:{{ $customer->customer_type === 'commercial' ? 'rgba(20,184,166,.15)' : 'rgba(56,189,248,.15)' }};
-                       color:{{ $customer->customer_type === 'commercial' ? 'var(--accent-teal)' : 'var(--accent-blue)' }};">
-            <span class="material-icons" style="font-size:13px;">{{ $customer->customer_type === 'commercial' ? 'business' : 'home' }}</span>
+          <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:12px;font-size:14px;font-weight:600;
+                      background:{{ $customer->customer_type === 'commercial' ? 'rgba(20,184,166,.15)' : 'rgba(56,189,248,.15)' }};
+                      color:{{ $customer->customer_type === 'commercial' ? 'var(--accent-teal)' : 'var(--accent-blue)' }};">
+            <span class="material-icons" style="font-size:16px;">{{ $customer->customer_type === 'commercial' ? 'business' : 'home' }}</span>
             {{ $customer->customer_type_label }}
-          </span>
+            </span>
         </div>
       </div>
       <div class="card-body" style="padding:0 20px 16px;">
@@ -78,8 +78,8 @@
     {{-- Residential Address --}}
     <div class="card">
       <div class="table-card-header">
-        <div style="padding:14px 20px;">
-          <h4 style="margin:0;font-size:13px;display:flex;align-items:center;gap:6px;">
+        <div class="card-header-float" style="background:var(--gradient-dark)">
+          <h4>
             <span class="material-icons" style="font-size:16px;color:var(--accent-blue);">home</span>
             Residential Address
           </h4>
@@ -104,8 +104,8 @@
     {{-- Record Info --}}
     <div class="card">
       <div class="table-card-header">
-        <div style="padding:14px 20px;">
-          <h4 style="margin:0;font-size:13px;display:flex;align-items:center;gap:6px;">
+        <div class="card-header-float" style="background:var(--gradient-dark)">
+          <h4>        
             <span class="material-icons" style="font-size:16px;color:var(--accent-blue);">history</span>
             Record Information
           </h4>
@@ -133,10 +133,10 @@
   <div style="display:flex;flex-direction:column;gap:20px;">
 
     {{-- Account Details --}}
-    <div class="card">
+    <div class="card-tight-margin">
       <div class="table-card-header">
-        <div style="padding:14px 20px;">
-          <h4 style="margin:0;font-size:13px;display:flex;align-items:center;gap:6px;">
+        <div class="card-header-float" style="background:var(--gradient-dark)">
+          <h4>        
             <span class="material-icons" style="font-size:16px;color:var(--accent-blue);">receipt_long</span>
             Account Details
           </h4>
@@ -175,8 +175,8 @@
     {{-- Property Details --}}
     <div class="card">
       <div class="table-card-header">
-        <div style="padding:14px 20px;">
-          <h4 style="margin:0;font-size:13px;display:flex;align-items:center;gap:6px;">
+        <div class="card-header-float" style="background:var(--gradient-dark)">
+          <h4>        
             <span class="material-icons" style="font-size:16px;color:var(--accent-blue);">landscape</span>
             Property Details
           </h4>
@@ -203,25 +203,25 @@
     {{-- Smart Meters --}}
     <div class="card">
       <div class="table-card-header">
-        <div style="padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">
-          <h4 style="margin:0;font-size:13px;display:flex;align-items:center;gap:6px;">
+        <div class="card-header-float" style="background:var(--gradient-dark)">
+          <h4>        
             <span class="material-icons" style="font-size:16px;color:var(--accent-blue);">speed</span>
             Smart Meters ({{ $customer->meters->count() }})
           </h4>
           <a href="{{ route('admin.meters.create') }}?customer_id={{ $customer->id }}"
-             class="btn btn-outline btn-sm">
+             class="btn btn-outline btn-sm" style="background: var(--accent-blue)">
             <span class="material-icons" style="font-size:14px;">add</span> Add Meter
           </a>
         </div>
       </div>
       @forelse($customer->meters as $meter)
-      <div style="padding:12px 20px;border-bottom:1px solid var(--border);font-size:13px;">
+      <div style="padding:12px 20px;border-bottom:1px solid var(--border);font-size:14px;">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;">
           <div>
             <div style="font-family:monospace;color:var(--accent-teal);font-weight:600;">
               {{ $meter->meter_id }}
             </div>
-            <div style="color:var(--text-secondary);font-size:12px;margin-top:2px;">
+            <div style="color:var(--text-secondary);font-size:14px;margin-top:2px;">
               @if($meter->brand || $meter->model)
                 {{ implode(' ', array_filter([$meter->brand, $meter->model])) }}
               @endif
@@ -230,7 +230,7 @@
               @endif
             </div>
             @if($meter->installation_date)
-            <div style="color:var(--text-muted);font-size:11px;margin-top:2px;">
+            <div style="color:var(--text-muted);font-size:12px;margin-top:2px;">
               Installed: {{ $meter->installation_date->format('d M Y') }}
             </div>
             @endif
@@ -255,8 +255,8 @@
 <div style="margin-top:20px;">
   <div class="card">
     <div class="table-card-header">
-      <div style="padding:14px 20px;">
-        <h4 style="margin:0;font-size:13px;display:flex;align-items:center;gap:6px;">
+      <div class="card-header-float" style="background:var(--gradient-dark)">
+        <h4>      
           <span class="material-icons" style="font-size:16px;color:var(--accent-blue);">receipt</span>
           Recent Invoices
         </h4>
@@ -270,11 +270,11 @@
         <tbody>
           @forelse($customer->invoices->take(10) as $inv)
           <tr>
-            <td style="font-family:monospace;font-size:12px;color:var(--accent-teal);">{{ $inv->invoice_number }}</td>
-            <td style="font-size:12px;">{{ \Carbon\Carbon::parse($inv->billing_period_start)->format('M Y') }}</td>
+            <td style="font-family:monospace;font-size:14px;color:var(--accent-teal);">{{ $inv->invoice_number }}</td>
+            <td style="font-size:14px;">{{ \Carbon\Carbon::parse($inv->billing_period_start)->format('M Y') }}</td>
             <td class="td-primary">T$ {{ number_format($inv->total_amount, 2) }}</td>
             <td><span class="badge-status badge-{{ $inv->status }}">{{ ucfirst($inv->status) }}</span></td>
-            <td style="font-size:12px;color:var(--text-muted);">
+            <td style="font-size:14px;color:var(--text-muted);">
               {{ $inv->due_date ? \Carbon\Carbon::parse($inv->due_date)->format('d M Y') : '—' }}
             </td>
             <td>

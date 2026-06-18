@@ -1,21 +1,21 @@
 @extends('layouts.app')
 @section('title', 'Tax Configuration')
 @section('breadcrumb', 'Admin / Configuration / Taxes')
-@section('page-title', 'Tax Rate Management')
+@section('page-title', 'TAX RATE MANAGEMENT')
 
 @section('content')
 
 <div class="section-header">
   <div>
     <h2>Tax Rates</h2>
-    <p>Configure tax rates applied during billing</p>
+    <p>Add and configure tax rates applied during billing</p>
   </div>
   <button class="btn btn-primary" onclick="openModal()">
     <span class="material-icons">add</span> Add Tax Rate
   </button>
 </div>
 
-<div class="card">
+<div class="card-tight-margin">
   <div class="table-wrapper">
     <table>
       <thead>
@@ -100,7 +100,7 @@
         <div class="form-group">
           <label class="checkbox-label" style="cursor:pointer;">
             <input type="checkbox" name="is_active" id="f-active" value="1" checked>
-            <span style="font-size:13px;color:var(--text-secondary);">Active</span>
+            <span style="font-size:14px;color:var(--text-secondary);">Active</span>
           </label>
         </div>
       </div>

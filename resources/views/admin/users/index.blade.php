@@ -1,21 +1,21 @@
 @extends('layouts.app')
 @section('title', 'User Management')
 @section('breadcrumb', 'Admin / System / Users')
-@section('page-title', 'User Management')
+@section('page-title', 'USER MANAGEMENT')
 
 @section('content')
 
 <div class="section-header">
   <div>
-    <h2>System Users</h2>
-    <p>Manage admin, officer, and customer portal accounts</p>
+    <h2>Staff - System Users</h2>
+    <p>Add and manage staff users: admin, cashier, counter, engineers, etc.</p>
   </div>
   <button class="btn btn-primary" onclick="openModal()">
     <span class="material-icons">person_add</span> Add Staff User
   </button>
 </div>
 
-<div class="card">
+<div class="card-tight-margin">
   <form method="GET" class="filter-bar">
     <input type="text" name="search" class="form-control" placeholder="Name, email..."
            value="{{ request('search') }}">
@@ -77,16 +77,16 @@
             </td>
             <td>
               @if($user->district)
-                <span style="font-size:12px;background:rgba(26,188,156,0.12);color:var(--accent-teal);padding:2px 8px;border-radius:10px;">
+                <span style="font-size:14px;background:rgba(26,188,156,0.12);color:var(--accent-teal);padding:2px 8px;border-radius:10px;">
                   {{ $user->district->name }}
                 </span>
               @else
-                <span style="color:var(--text-muted);font-size:12px;">—</span>
+                <span style="color:var(--text-muted);font-size:14px;">—</span>
               @endif
             </td>
             <td>
               @if($user->customer)
-                <a href="{{ route('admin.customers.show', $user->customer) }}" style="color:var(--accent-blue);font-size:13px;">
+                <a href="{{ route('admin.customers.show', $user->customer) }}" style="color:var(--accent-blue);font-size:14px;">
                   {{ $user->customer->account_number }}
                 </a>
               @else
@@ -98,7 +98,7 @@
                 {{ $user->is_active ? 'Active' : 'Inactive' }}
               </span>
             </td>
-            <td style="color:var(--text-muted);font-size:12px;">
+            <td style="color:var(--text-muted);font-size:14px;">
               {{ $user->created_at->format('d M Y') }}
             </td>
             <td>
@@ -114,7 +114,7 @@
                     </button>
                   </form>
                 @elseif($user->id === auth()->id())
-                  <span style="font-size:11px;color:var(--text-muted);padding:4px 8px;">(you)</span>
+                  <span style="font-size:14px;color:var(--text-muted);padding:4px 8px;">(you)</span>
                 @endif
               </div>
             </td>
@@ -157,7 +157,7 @@
     <div class="modal-header">
       <div>
         <h3 class="modal-title">Add Staff User</h3>
-        <p style="font-size:12px;color:var(--text-muted);margin-top:3px;">
+        <p style="font-size:14px;color:var(--text-muted);margin-top:3px;">
           Create a new admin or officer account
         </p>
       </div>
@@ -198,7 +198,7 @@
               <option value="accountant">Accountant</option>
               <option value="manager">Manager</option>
             </select>
-            <div id="roleHintText" style="font-size:11px;color:var(--text-muted);margin-top:4px;"></div>
+            <div id="roleHintText" style="font-size:12px;color:var(--text-muted);margin-top:4px;"></div>
           </div>
           <div class="form-group">
             <label class="form-label">District / Area</label>
@@ -208,7 +208,7 @@
                 <option value="{{ $dist->id }}">{{ $dist->name }}{{ $dist->is_headquarters ? ' (HQ)' : '' }}</option>
               @endforeach
             </select>
-            <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">HQ staff see all customers. Area staff see their district only.</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">HQ staff see all users. Area staff see district-based customers only.</div>
           </div>
         </div>
 
@@ -217,7 +217,7 @@
           <label class="form-label">Password <span style="color:var(--accent-pink)">*</span></label>
           <input type="password" name="password" class="form-control" required minlength="8"
                  placeholder="Minimum 8 characters" style="font-size:14px;padding:11px 14px;">
-          <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">
             Staff will be asked to change this password on their first login.
           </div>
         </div>
