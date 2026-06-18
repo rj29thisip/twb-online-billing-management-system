@@ -1,13 +1,20 @@
 @extends('layouts.app')
 @section('title', 'Payments')
 @section('breadcrumb', 'Admin / Billing / Payments')
-@section('page-title', 'Payment Records')
+@section('page-title', 'PAYMENT RECORDS')
 
 @section('content')
 
-<div class="card">
+<div class="section-header">
+  <div>
+    <h2>Payment Collections</h2>
+    <p>View payments data as recorded in the invoice feature</p>
+  </div>
+</div>
+
+<div class="card-tight-margin">
   <form method="GET" class="filter-bar">
-    <input type="text" name="search" class="form-control" placeholder="Receipt #, customer name..." value="{{ request('search') }}">
+    <input type="text" name="search" class="form-control" placeholder="Receipt # or Customer Name..." value="{{ request('search') }}">
     <button type="submit" class="btn btn-outline btn-sm"><span class="material-icons">filter_list</span> Filter</button>
     @if(request('search'))
       <a href="{{ route('admin.payments.index') }}" class="btn btn-outline btn-sm"><span class="material-icons">clear</span> Clear</a>
@@ -24,9 +31,9 @@
           <tr>
             <td class="td-primary" style="font-family:monospace;">{{ $pay->receipt_number }}</td>
             <td>{{ $pay->customer->name }}</td>
-            <td style="font-family:monospace;font-size:11px;">{{ $pay->invoice->invoice_number }}</td>
+            <td style="font-family:monospace;font-size:14px;">{{ $pay->invoice->invoice_number }}</td>
             <td>{{ ucfirst(str_replace('_',' ',$pay->payment_method)) }}</td>
-            <td style="color:var(--text-muted);font-size:12px;">{{ $pay->reference_code ?? '—' }}</td>
+            <td style="color:var(--text-muted);font-size:14px;">{{ $pay->reference_code ?? '—' }}</td>
             <td>{{ $pay->payment_date->format('d M Y') }}</td>
             <td class="td-primary" style="font-weight:600;">T$ {{ number_format($pay->amount, 2) }}</td>
           </tr>

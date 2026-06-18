@@ -2,14 +2,14 @@
 @extends('layouts.app')
 @section('title', 'Invoices')
 @section('breadcrumb', 'Admin / Billing / Invoices')
-@section('page-title', 'Invoices')
+@section('page-title', 'INVOICE MANAGEMENT')
 
 @section('content')
 
 <div class="section-header">
   <div>
-    <h2>Invoice Management</h2>
-    <p>All customer invoices and billing records</p>
+    <h2>Invoice Records</h2>
+    <p>View and create invoices, billing records, and record payments</p>
   </div>
   <div style="display:flex;gap:10px;">
     <a href="{{ route('admin.billing.check') }}" class="btn btn-primary">
@@ -18,7 +18,7 @@
   </div>
 </div>
 
-<div class="card">
+<div class="card-tight-margin">
   {{-- FILTER BAR --}}
   <form method="GET" class="filter-bar">
     <input type="text" name="search" class="form-control" placeholder="Search customer / invoice #..."

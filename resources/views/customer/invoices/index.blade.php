@@ -2,15 +2,15 @@
 @extends('layouts.app')
 @section('title', 'My Invoices')
 @section('breadcrumb', 'Customer / Invoices')
-@section('page-title', 'My Invoices')
+@section('page-title', 'MY INVOICES')
 
 @section('content')
 
-<div class="card">
+<div class="card-tight-margin">
   <div class="table-card-header">
     <div class="card-header-float" style="background:var(--gradient-dark);">
-      <div><h3>Invoices</h3><p>Your billing documents</p></div>
-      <span class="material-icons">receipt</span>
+      <div><h3>Invoices</h3><p>Review past and current invoice records</p></div>
+      <span class="material-icons" style="color:var(--accent-blue)">receipt</span>
     </div>
   </div>
   <div class="table-wrapper">

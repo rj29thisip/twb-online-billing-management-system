@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Change Password')
 @section('breadcrumb', 'Admin / Account / Change Password')
-@section('page-title', 'Change Password')
+@section('page-title', 'CHANGE PASSWORD')
 
 @section('content')
 <div style="max-width:480px;margin:0 auto;">
@@ -12,7 +12,7 @@
           <h3>Change Password</h3>
           <p>Update your account password</p>
         </div>
-        <span class="material-icons">lock_reset</span>
+        <span class="material-icons" style="color:var(--accent-blue)">lock_reset</span>
       </div>
     </div>
     <div class="card-body" style="padding:24px;">

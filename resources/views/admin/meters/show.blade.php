@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Meter Detail')
 @section('breadcrumb', 'Admin / Meters / Detail')
-@section('page-title', 'Meter Detail')
+@section('page-title', 'METER DETAILS')
 
 @push('head')
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -21,14 +21,14 @@
 <div class="detail-grid">
 
   <div style="display:flex;flex-direction:column;gap:24px;">
-    <div class="card">
+    <div class="card-tight-margin">
       <div class="table-card-header">
         <div class="card-header-float" style="background:var(--gradient-dark);">
           <div>
             <h3>{{ $meter->meter_id }}</h3>
             <p>Endpoint: {{ $meter->endpoint_id ?? '—' }}</p>
           </div>
-          <span class="badge-status badge-{{ $meter->status }}" style="font-size:13px;padding:6px 14px;">
+          <span class="badge-status badge-{{ $meter->status }}" style="font-size:14px;padding:6px 14px;">
             {{ ucfirst($meter->status) }}
           </span>
         </div>
@@ -78,11 +78,11 @@
   </div>
 
   <div>
-    <div class="card">
+    <div class="card-tight-margin">
       <div class="table-card-header">
         <div class="card-header-float" style="background:var(--gradient-dark);">
           <div><h3>Recent Readings</h3><p>Last 48 hourly readings</p></div>
-          <span class="material-icons">data_usage</span>
+          <span class="material-icons" style="color:var(--accent-blue)">data_usage</span>
         </div>
       </div>
       <div class="table-wrapper" style="max-height:500px;overflow-y:auto;">
@@ -93,13 +93,13 @@
           <tbody>
             @forelse($meter->readings as $r)
               <tr style="{{ $r->is_anomaly ? 'background:rgba(233,30,99,0.05)' : '' }}">
-                <td style="font-size:12px;">{{ $r->capture_time->format('d M H:i') }}</td>
-                <td style="font-family:monospace;font-size:11px;">{{ number_format($r->value, 0) }}</td>
+                <td style="font-size:14px;">{{ $r->capture_time->format('d M H:i') }}</td>
+                <td style="font-family:monospace;font-size:14px;">{{ number_format($r->value, 0) }}</td>
                 <td class="td-primary">{{ number_format($r->usage, 0) }}</td>
-                <td style="font-size:11px;color:var(--text-muted);">{{ ucfirst(str_replace('_',' ',$r->source)) }}</td>
+                <td style="font-size:14px;color:var(--text-muted);">{{ ucfirst(str_replace('_',' ',$r->source)) }}</td>
                 <td>
                   @if($r->is_anomaly)
-                    <span class="badge-status badge-overdue" style="font-size:10px;padding:2px 6px;">!</span>
+                    <span class="badge-status badge-overdue" style="font-size:14px;padding:2px 6px;">!</span>
                   @endif
                 </td>
               </tr>

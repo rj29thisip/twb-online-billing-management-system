@@ -2,7 +2,7 @@
 @extends('layouts.app')
 @section('title', 'Tariff Configuration')
 @section('breadcrumb', 'Admin / Configuration / Tariffs')
-@section('page-title', 'Tariff Management')
+@section('page-title', 'TARIFF MANAGEMENT')
 
 @section('content')
 
@@ -11,7 +11,7 @@
 <div class="section-header">
   <div>
     <h2>Tariff Tiers</h2>
-    <p>Configure tiered water pricing for Residential and Commercial categories</p>
+    <p>Add and configure tariff tiers applied during billing fore Residential and Commercial account types</p>
   </div>
   <button class="btn btn-primary" onclick="openAddModal()">
     <span class="material-icons">add</span> Add Tier
@@ -28,7 +28,7 @@
                  margin-bottom:-2px;transition:all .2s;">
     <span class="material-icons" style="vertical-align:middle;font-size:18px;margin-right:6px;">home</span>
     Residential
-    <span style="margin-left:8px;padding:2px 8px;border-radius:12px;font-size:11px;
+    <span style="margin-left:8px;padding:2px 8px;border-radius:12px;font-size:14px;
                  background:rgba(56,189,248,.15);color:var(--accent-blue);">
       {{ $residential->count() }}
     </span>
@@ -41,7 +41,7 @@
                  margin-bottom:-2px;transition:all .2s;">
     <span class="material-icons" style="vertical-align:middle;font-size:18px;margin-right:6px;">business</span>
     Commercial
-    <span style="margin-left:8px;padding:2px 8px;border-radius:12px;font-size:11px;
+    <span style="margin-left:8px;padding:2px 8px;border-radius:12px;font-size:14px;
                  background:rgba(20,184,166,.15);color:var(--accent-teal);">
       {{ $commercial->count() }}
     </span>
@@ -58,8 +58,8 @@
       <div style="padding:16px 20px 0;display:flex;align-items:center;gap:12px;">
         <span class="material-icons" style="color:var(--accent-blue);">home</span>
         <div>
-          <h3 style="margin:0;font-size:15px;">Residential Tariff Tiers</h3>
-          <p style="margin:2px 0 0;font-size:12px;color:var(--text-muted);">Applied to meters with type: Residential</p>
+          <h3 style="margin:0;font-size:16px;">Residential Tariff Tiers</h3>
+          <p style="margin:2px 0 0;font-size:14px;color:var(--text-muted);">Applied to meters with type: Residential</p>
         </div>
       </div>
       <div class="table-wrapper">
@@ -116,7 +116,7 @@
 
     {{-- Residential preview card --}}
     <div class="card" style="padding:20px;">
-      <h3 style="font-size:14px;margin:0 0 16px;display:flex;align-items:center;gap:8px;">
+      <h3 style="font-size:16px;margin:0 0 16px;display:flex;align-items:center;gap:8px;">
         <span class="material-icons" style="font-size:18px;color:var(--accent-blue);">calculate</span>
         Residential Billing Preview
       </h3>
@@ -140,11 +140,11 @@
         <div style="display:flex;justify-content:space-between;align-items:center;
                     padding:10px 14px;margin-bottom:8px;border-radius:8px;
                     background:rgba(56,189,248,.07);border:1px solid rgba(56,189,248,.15);">
-          <span style="font-size:13px;color:var(--text-muted);">{{ $usage }} m³</span>
+          <span style="font-size:14px;color:var(--text-muted);">{{ $usage }} m³</span>
           <span style="font-weight:700;color:var(--accent-blue);">T$ {{ number_format($charge, 2) }}</span>
         </div>
       @endforeach
-      <p style="font-size:11px;color:var(--text-muted);margin:12px 0 0;">
+      <p style="font-size:12px;color:var(--text-muted);margin:12px 0 0;">
         Preview is before tax. Based on active tiers only.
       </p>
     </div>
@@ -162,8 +162,8 @@
       <div style="padding:16px 20px 0;display:flex;align-items:center;gap:12px;">
         <span class="material-icons" style="color:var(--accent-teal);">business</span>
         <div>
-          <h3 style="margin:0;font-size:15px;">Commercial Tariff Tiers</h3>
-          <p style="margin:2px 0 0;font-size:12px;color:var(--text-muted);">Applied to meters with type: Commercial or Industrial</p>
+          <h3 style="margin:0;font-size:16px;">Commercial Tariff Tiers</h3>
+          <p style="margin:2px 0 0;font-size:14px;color:var(--text-muted);">Applied to meters with type: Commercial or Industrial</p>
         </div>
       </div>
       <div class="table-wrapper">
@@ -220,7 +220,7 @@
 
     {{-- Commercial preview card --}}
     <div class="card" style="padding:20px;">
-      <h3 style="font-size:14px;margin:0 0 16px;display:flex;align-items:center;gap:8px;">
+      <h3 style="font-size:16px;margin:0 0 16px;display:flex;align-items:center;gap:8px;">
         <span class="material-icons" style="font-size:18px;color:var(--accent-teal);">calculate</span>
         Commercial Billing Preview
       </h3>
@@ -241,11 +241,11 @@
         <div style="display:flex;justify-content:space-between;align-items:center;
                     padding:10px 14px;margin-bottom:8px;border-radius:8px;
                     background:rgba(20,184,166,.07);border:1px solid rgba(20,184,166,.15);">
-          <span style="font-size:13px;color:var(--text-muted);">{{ $usage }} m³</span>
+          <span style="font-size:14px;color:var(--text-muted);">{{ $usage }} m³</span>
           <span style="font-weight:700;color:var(--accent-teal);">T$ {{ number_format($charge, 2) }}</span>
         </div>
       @endforeach
-      <p style="font-size:11px;color:var(--text-muted);margin:12px 0 0;">
+      <p style="font-size:12px;color:var(--text-muted);margin:12px 0 0;">
         Preview is before tax. Based on active tiers only.
       </p>
     </div>
@@ -255,7 +255,7 @@
 
 {{-- ── ADD / EDIT MODAL ────────────────────────────────────────── --}}
 <div id="tariffModal" class="modal-overlay" style="display:none;">
-  <div class="modal-box" style="max-width:520px;">
+  <div class="modal" style="max-width:520px;">
     <div class="modal-header">
       <h3 id="modalTitle">Add Tariff Tier</h3>
       <button class="modal-close" onclick="closeTariffModal()">
@@ -279,7 +279,7 @@
               <input type="radio" name="category" value="residential" checked
                      onchange="onCategoryChange('residential')" style="accent-color:var(--accent-blue);">
               <span class="material-icons" style="font-size:18px;color:var(--accent-blue);">home</span>
-              <span style="font-weight:600;font-size:13px;">Residential</span>
+              <span style="font-weight:600;font-size:14px;">Residential</span>
             </label>
             <label id="lbl-commercial" style="display:flex;align-items:center;gap:10px;padding:12px 16px;
                    border-radius:8px;cursor:pointer;border:2px solid var(--border);
@@ -287,7 +287,7 @@
               <input type="radio" name="category" value="commercial"
                      onchange="onCategoryChange('commercial')" style="accent-color:var(--accent-teal);">
               <span class="material-icons" style="font-size:18px;color:var(--text-muted);" id="ico-commercial">business</span>
-              <span style="font-weight:600;font-size:13px;">Commercial</span>
+              <span style="font-weight:600;font-size:14px;">Commercial</span>
             </label>
           </div>
         </div>

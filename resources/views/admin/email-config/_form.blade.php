@@ -63,7 +63,10 @@
   <div style="margin-top:16px;">
     <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
       <input type="checkbox" name="is_active" value="1" {{ old('is_active',$config->is_active??false)?'checked':'' }}>
-      <span><strong>Set as Active Configuration</strong> <span style="font-size:12px;color:var(--text-muted);">(will deactivate all others)</span></span>
+      <span><strong>Set as Active</strong></span>
+      <div>
+        <span style="font-size:12px;color:var(--text-muted);">Checking will deactivate all other email configurations</span>
+      </div>
     </label>
   </div>
 

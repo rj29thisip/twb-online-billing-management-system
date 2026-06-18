@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', isset($announcement) ? 'Edit Announcement' : 'New Announcement')
 @section('breadcrumb', 'Admin / Announcements / ' . (isset($announcement) ? 'Edit' : 'New'))
-@section('page-title', isset($announcement) ? 'Edit Announcement' : 'New Announcement')
+@section('page-title', isset($announcement) ? 'EDIT ANNOUNCEMENT' : 'NEW ANNOUNCEMENT')
 
 @section('content')
 
@@ -20,7 +20,7 @@
           <h3>{{ isset($announcement) ? 'Edit Announcement' : 'New Announcement' }}</h3>
           <p>{{ isset($announcement) ? 'Update existing announcement' : 'Create a new announcement for customers' }}</p>
         </div>
-        <span class="material-icons">campaign</span>
+        <span class="material-icons" style="color:var(--accent-blue)">campaign</span>
       </div>
     </div>
 

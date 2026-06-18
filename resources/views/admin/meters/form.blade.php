@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', isset($meter) ? 'Edit Meter' : 'Add Meter')
 @section('breadcrumb', 'Admin / Meters / ' . (isset($meter) ? 'Edit' : 'Add'))
-@section('page-title', isset($meter) ? 'Edit Meter' : 'Add Meter')
+@section('page-title', isset($meter) ? 'EDIT METER' : 'ADD METER')
 
 @section('content')
 <div style="max-width:700px;margin:0 auto;">
@@ -18,7 +18,7 @@
           <h3>{{ isset($meter) ? 'Edit Meter' : 'Register New Meter' }}</h3>
           <p>{{ isset($meter) ? $meter->meter_id : 'Fill in meter device details' }}</p>
         </div>
-        <span class="material-icons">speed</span>
+        <span class="material-icons" style="color:var(--accent-blue)">speed</span>
       </div>
     </div>
     <div class="card-body" style="padding-top:0;">
@@ -30,13 +30,13 @@
         @if(isset($meter)) @method('PUT') @endif
 
         <div class="form-group">
-          <label class="form-label">Customer <span style="color:var(--accent-pink)">*</span></label>
+          <label class="form-label" style="">Customer <span style="color:var(--accent-pink)">*</span></label>
           <select
             name="customer_id"
             id="customerSelect"
             class="form-control select2-customer @error('customer_id') is-invalid @enderror"
             {{ isset($meter) ? 'disabled' : 'required' }}
-            style="width:100%">
+            style="width:100%;background: var(--bg-input);">
             @if(isset($meter) && $meter->customer)
               <option value="{{ $meter->customer->id }}" selected>
                 {{ $meter->customer->account_number }} — {{ $meter->customer->name }}
